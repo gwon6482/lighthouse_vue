@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Vue3 App</string>
+    <string name="title_activity_main">Vue3 App</string>
+    <string name="package_name">com.vue3.app</string>
+    <string name="custom_url_scheme">com.vue3.app</string>
+</resources>
