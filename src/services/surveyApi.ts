@@ -5,10 +5,10 @@
  * - 설문지 데이터 조회
  * - 설문 응답 제출
  *
- * Base URL: http://localhost:3000 (프록시를 통해 접근)
- * Vite 프록시 설정으로 CORS 문제 해결
+ * 개발 환경: 프록시를 통해 http://localhost:3000 접근
+ * 프로덕션: 환경변수 VITE_API_BASE_URL 사용
  */
-const API_BASE = ''
+const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
 
 // 타입 정의
 export interface SurveyQuestion {
