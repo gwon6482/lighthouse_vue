@@ -90,9 +90,9 @@ npm run cap:sync
 
 ### 빌드 후 실행
 
-| 플랫폼 | IDE | 실행 방법 |
-|--------|-----|----------|
-| iOS | Xcode | 시뮬레이터 선택 → ▶ 클릭 |
+| 플랫폼  | IDE            | 실행 방법                |
+| ------- | -------------- | ------------------------ |
+| iOS     | Xcode          | 시뮬레이터 선택 → ▶ 클릭 |
 | Android | Android Studio | 에뮬레이터 선택 → ▶ 클릭 |
 
 ### 앱스토어 배포
@@ -120,6 +120,7 @@ server: {
 ### 1. 환경변수 파일 확인
 
 프로젝트에 다음 파일들이 있어야 합니다:
+
 - `.env.development` - 로컬 개발용 (프록시 사용)
 - `.env.production` - 프로덕션용 (실제 API URL)
 
@@ -183,6 +184,7 @@ vercel --prod
 ### 5. 도메인 연결 (선택사항)
 
 Vercel 프로젝트 설정에서:
+
 1. **Settings** → **Domains**
 2. 커스텀 도메인 추가
 3. DNS 레코드 설정 (Vercel이 안내)
@@ -194,6 +196,7 @@ Vercel 프로젝트 설정에서:
 프론트엔드만 배포해서는 동작하지 않습니다. **API 서버도 함께 배포**해야 합니다.
 
 #### 옵션 1: Railway / Render (무료 시작 가능)
+
 ```sh
 # Railway 사용 예시
 npm i -g @railway/cli
@@ -203,11 +206,13 @@ railway up
 ```
 
 #### 옵션 2: Vercel Serverless Functions
+
 - API를 `/api` 폴더에 Serverless Function으로 구현
 - 같은 도메인에서 운영 가능
 - CORS 문제 없음
 
 #### 옵션 3: AWS / GCP / Azure
+
 - EC2, Cloud Run, App Service 등 사용
 - 더 많은 제어 및 확장성
 
@@ -217,12 +222,11 @@ API 서버에서 Vercel 도메인을 허용해야 합니다:
 
 ```js
 // Express 예시
-app.use(cors({
-  origin: [
-    'https://your-vercel-domain.vercel.app',
-    'https://your-custom-domain.com'
-  ]
-}))
+app.use(
+  cors({
+    origin: ['https://your-vercel-domain.vercel.app', 'https://your-custom-domain.com'],
+  }),
+)
 ```
 
 ### 환경변수 업데이트
