@@ -1,10 +1,10 @@
 import 'pretendard/dist/web/variable/pretendardvariable.css'
-import './assets/main.css'
+import './appearance/styles.scss'
 
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import router from './router'
+import router from './shared/router'
 
 const app = createApp(App)
 
