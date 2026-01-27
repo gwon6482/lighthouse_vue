@@ -12,7 +12,7 @@
  * 싱글톤 패턴으로 구현되어 상태가 전역적으로 공유됨
  */
 import { ref, computed, reactive } from 'vue'
-import { fetchSurveyForm, submitSurveyResponse, type SurveyFormResponse, type SurveyAnswers, type SurveyQuestion, type SurveyItem } from '@/services/surveyApi'
+import { fetchSurveyForm, submitSurveyResponse, type SurveyFormResponse, type SurveyAnswers, type SurveyQuestion, type SurveyItem } from '@/shared/api/surveyApi'
 
 // 페이지 정보 타입
 export interface PageInfo {

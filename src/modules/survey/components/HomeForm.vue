@@ -24,6 +24,6 @@ const goToSelfUnderstanding = () => {
 }
 
 const goToCareerEncyclopedia = () => {
-  router.push('/career-encyclopedia')
+router.push('/career-encyclopedia')
 }
 </script>
