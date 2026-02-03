@@ -104,9 +104,8 @@
  *
  * 라우트: /self-understanding/test
  */
-import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useSurvey } from '../composables/useSurvey'
+import { useSurvey } from '@/modules/survey/composables/useSurvey'
 
 import ScaleQuestion from './SUQuestions/ScaleQuestion.vue'
 import MultiSelectQuestion from './SUQuestions/MultiSelectQuestion.vue'
@@ -136,9 +135,6 @@ const {
   submitSurvey,
 } = useSurvey()
 
-onMounted(() => {
-  loadSurvey()
-})
 
 // 응답을 JSON 파일로 다운로드
 function downloadResponse(surveyId: string, respondentId: string) {

@@ -11,7 +11,7 @@
  *
  * 싱글톤 패턴으로 구현되어 상태가 전역적으로 공유됨
  */
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted } from 'vue'
 import { fetchSurveyForm, submitSurveyResponse, type SurveyFormResponse, type SurveyAnswers, type SurveyQuestion, type SurveyItem } from '@/shared/api/surveyApi'
 
 // 페이지 정보 타입
@@ -156,10 +156,14 @@ export function useSurvey() {
     error.value = null
 
     try {
-      const data = await fetchSurveyForm()
-      surveyData.value = data
-      surveyId.value = data.survey_id
-      currentPageIndex.value = 0
+      const { data, status } = await fetchSurveyForm()
+      if (status === 200) {
+        surveyData.value = data
+        surveyId.value = data.survey_id
+        currentPageIndex.value = 0
+      } else {
+        throw new Error('설문지를 불러오는데 실패했습니다.')
+      }
     } catch (e) {
       error.value = e instanceof Error ? e.message : '설문지를 불러오는데 실패했습니다.'
     } finally {
@@ -228,7 +232,19 @@ export function useSurvey() {
     error.value = null
 
     try {
-      const response = await submitSurveyResponse({
+      // const response = await submitSurveyResponse({
+      //   survey_id: surveyId.value,
+      //   respondent_id: respondentId,
+      //   answers
+      // })
+
+      // if (!response.success) {
+      //   throw new Error(response.error?.message || '제출에 실패했습니다.')
+      // }
+
+      // return response
+
+      const { data: response } = await submitSurveyResponse({
         survey_id: surveyId.value,
         respondent_id: respondentId,
         answers
@@ -239,6 +255,7 @@ export function useSurvey() {
       }
 
       return response
+
     } catch (e) {
       error.value = e instanceof Error ? e.message : '제출에 실패했습니다.'
       throw e
@@ -246,6 +263,10 @@ export function useSurvey() {
       isLoading.value = false
     }
   }
+
+  onMounted(() => {
+    loadSurvey()
+  })
 
   return {
     // 상태

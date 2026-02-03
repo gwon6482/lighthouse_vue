@@ -1,3 +1,24 @@
+<template>
+  <div class="scale-question">
+    <p class="question-text">
+      <span class="question-num">{{ questionNum }}.</span>
+      {{ questionText }}
+    </p>
+    <div class="options" :class="`scale-${scaleType || 5}`">
+      <button
+        v-for="option in options"
+        :key="option.value"
+        type="button"
+        class="option-btn"
+        :class="{ selected: modelValue === option.value }"
+        @click="selectOption(option.value)"
+      >
+        {{ option.label }}
+      </button>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 /**
  * ScaleQuestion 컴포넌트
@@ -55,27 +76,6 @@ function selectOption(value: string) {
   emit('update:modelValue', value)
 }
 </script>
-
-<template>
-  <div class="scale-question">
-    <p class="question-text">
-      <span class="question-num">{{ questionNum }}.</span>
-      {{ questionText }}
-    </p>
-    <div class="options" :class="`scale-${scaleType || 5}`">
-      <button
-        v-for="option in options"
-        :key="option.value"
-        type="button"
-        class="option-btn"
-        :class="{ selected: modelValue === option.value }"
-        @click="selectOption(option.value)"
-      >
-        {{ option.label }}
-      </button>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .scale-question {

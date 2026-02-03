@@ -1,7 +1,15 @@
 <template>
-  <HomeForm />
+  <div class="home">
+    <h1 class="title">라이트하우스 관리자 페이지</h1>
+    <HomeButtonContainer :menus="menus" />
+  </div>
 </template>
 
 <script setup lang="ts">
-import HomeForm from '../components/HomeForm.vue'
+import HomeButtonContainer from '../components/page/HomeButtonContainer.vue';
+
+const menus = [
+  { name: '자기이해', icon: '🔍', route: '/self-understanding' },
+  { name: '진로백과', icon: '📚', route: '/career-encyclopedia' },
+]
 </script>

@@ -1,3 +1,23 @@
+<template>
+  <div class="multi-select-question">
+    <p class="instruction">관심 있는 분야를 모두 선택해주세요.</p>
+    <div class="items-grid">
+      <button
+        v-for="item in items"
+        :key="item.item_id"
+        type="button"
+        class="item-btn"
+        :class="{ selected: isSelected(item.item_id) }"
+        @click="toggleItem(item.item_id)"
+      >
+        <span class="item-name">{{ item.item_name || item.item_id }}</span>
+        <span v-if="item.item_text" class="item-text">{{ item.item_text }}</span>
+      </button>
+    </div>
+    <p class="selected-count">선택된 항목: {{ modelValue.length }}개</p>
+  </div>
+</template>
+
 <script setup lang="ts">
 /**
  * MultiSelectQuestion 컴포넌트
@@ -40,26 +60,6 @@ function isSelected(itemId: string) {
   return selectedSet.value.has(itemId)
 }
 </script>
-
-<template>
-  <div class="multi-select-question">
-    <p class="instruction">관심 있는 분야를 모두 선택해주세요.</p>
-    <div class="items-grid">
-      <button
-        v-for="item in items"
-        :key="item.item_id"
-        type="button"
-        class="item-btn"
-        :class="{ selected: isSelected(item.item_id) }"
-        @click="toggleItem(item.item_id)"
-      >
-        <span class="item-name">{{ item.item_name || item.item_id }}</span>
-        <span v-if="item.item_text" class="item-text">{{ item.item_text }}</span>
-      </button>
-    </div>
-    <p class="selected-count">선택된 항목: {{ modelValue.length }}개</p>
-  </div>
-</template>
 
 <style scoped>
 .multi-select-question {

@@ -1,3 +1,5 @@
+import { req } from "."
+
 /**
  * surveyApi 서비스
  *
@@ -8,7 +10,8 @@
  * 개발 환경: 프록시를 통해 http://localhost:3000 접근
  * 프로덕션: 환경변수 VITE_API_BASE_URL 사용
  */
-const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
+
+// const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
 
 // 타입 정의
 export interface SurveyQuestion {
@@ -71,19 +74,23 @@ export interface SurveySubmitResponse {
 }
 
 // API 함수
-export async function fetchSurveyForm(): Promise<SurveyFormResponse> {
-  const res = await fetch(`${API_BASE}/api/survey/form`)
-  if (!res.ok) {
-    throw new Error('설문지를 불러오는데 실패했습니다.')
-  }
-  return res.json()
-}
+// export async function fetchSurveyForm(): Promise<SurveyFormResponse> {
+//   const res = await fetch(`${API_BASE}/api/survey/form`)
+//   if (!res.ok) {
+//     throw new Error('설문지를 불러오는데 실패했습니다.')
+//   }
+//   return res.json()
+// }
 
-export async function submitSurveyResponse(data: SurveySubmitRequest): Promise<SurveySubmitResponse> {
-  const res = await fetch(`${API_BASE}/api/survey/response`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  return res.json()
-}
+export const fetchSurveyForm = () => req.get<SurveyFormResponse>(`/api/survey/form`)
+
+// export async function submitSurveyResponse(data: SurveySubmitRequest): Promise<SurveySubmitResponse> {
+//   const res = await fetch(`${API_BASE}/api/survey/response`, {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(data)
+//   })
+//   return res.json()
+// }
+
+export const submitSurveyResponse = (data: SurveySubmitRequest) => req.post<SurveySubmitResponse>(`/api/survey/response`, { data })
