@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-  defineProps<{
-    progress: number
-  }>()
+defineProps<{
+  progress: number
+}>()
 </script>

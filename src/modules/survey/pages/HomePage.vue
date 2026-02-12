@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import HomeButtonContainer from '../components/page/HomeButtonContainer.vue';
+import HomeButtonContainer from '../components/page/HomeButtonContainer.vue'
 
 const menus = [
   { name: '자기이해', icon: '🔍', route: '/self-understanding' },

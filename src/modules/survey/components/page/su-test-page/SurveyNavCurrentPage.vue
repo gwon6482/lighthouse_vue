@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-  defineProps<{
-    currentPageIndex: number
-    totalPages: number
-  }>()
+defineProps<{
+  currentPageIndex: number
+  totalPages: number
+}>()
 </script>

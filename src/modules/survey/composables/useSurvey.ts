@@ -12,38 +12,28 @@
  * 싱글톤 패턴으로 구현되어 상태가 전역적으로 공유됨
  */
 import { ref, computed, reactive, onMounted } from 'vue'
-import { fetchSurveyForm, submitSurveyResponse, type SurveyFormResponse, type SurveyAnswers, type SurveyQuestion, type SurveyItem } from '@/shared/api/surveyApi'
-
-// 페이지 정보 타입
-export interface PageInfo {
-  part: string
-  pageKey: string
-  pageNumber: number
-  questions?: SurveyQuestion[]
-  items?: SurveyItem[]
-  type: 'scale' | 'multiSelect' | 'priority' | 'threeChoice'
-}
-
-// 상태를 모듈 레벨에서 정의 (싱글톤)
-const surveyId = ref<string>('')
-const surveyData = ref<SurveyFormResponse | null>(null)
-const isLoading = ref(false)
-const error = ref<string | null>(null)
-const scaleType = ref<2 | 5 | 10>(5) // 확장용: 2지선다, 5지선다, 10지선다
-
-// 답변 저장
-const answers = reactive<SurveyAnswers>({
-  T1: {},
-  T21: {},
-  T22: { checked: [] },
-  T23: { priority_1: '', priority_2: '', priority_3: '', no_priority: [] },
-  T3: {}
-})
-
-// 현재 페이지 인덱스
-const currentPageIndex = ref(0)
+import { fetchSurveyForm, submitSurveyResponse } from '../survey.api'
+import type { SurveyFormResponse, SurveyAnswers, SurveyQuestion, PageInfo } from '../types/survey'
 
 export function useSurvey() {
+  // 상태를 모듈 레벨에서 정의 (싱글톤)
+  const surveyId = ref<string>('')
+  const surveyData = ref<SurveyFormResponse | null>(null)
+  const isLoading = ref(false)
+  const error = ref<string | null>(null)
+  const scaleType = ref<2 | 5 | 10>(5) // 확장용: 2지선다, 5지선다, 10지선다
+
+  // 답변 저장
+  const answers = reactive<SurveyAnswers>({
+    T1: {},
+    T21: {},
+    T22: { checked: [] },
+    T23: { priority_1: '', priority_2: '', priority_3: '', no_priority: [] },
+    T3: {},
+  })
+
+  // 현재 페이지 인덱스
+  const currentPageIndex = ref(0)
 
   // 모든 페이지 목록 생성
   const allPages = computed<PageInfo[]>(() => {
@@ -56,7 +46,7 @@ export function useSurvey() {
 
       if (partName === 'T1' || partName === 'T21') {
         // 페이지별 질문
-        const pageKeys = Object.keys(part).filter(k => k.startsWith('page_'))
+        const pageKeys = Object.keys(part).filter((k) => k.startsWith('page_'))
         pageKeys.sort((a, b) => {
           const numA = parseInt(a.split('_').pop() || '0')
           const numB = parseInt(b.split('_').pop() || '0')
@@ -70,7 +60,7 @@ export function useSurvey() {
             pageKey,
             pageNumber: pageNum,
             questions: part[pageKey] as SurveyQuestion[],
-            type: 'scale'
+            type: 'scale',
           })
         }
       } else if (partName === 'T22') {
@@ -79,7 +69,7 @@ export function useSurvey() {
           pageKey: 'items',
           pageNumber: 1,
           items: part.items,
-          type: 'multiSelect'
+          type: 'multiSelect',
         })
       } else if (partName === 'T23') {
         pages.push({
@@ -87,7 +77,7 @@ export function useSurvey() {
           pageKey: 'items',
           pageNumber: 1,
           items: part.items,
-          type: 'priority'
+          type: 'priority',
         })
       } else if (partName === 'T3') {
         pages.push({
@@ -95,7 +85,7 @@ export function useSurvey() {
           pageKey: 'items',
           pageNumber: 1,
           items: part.items,
-          type: 'threeChoice'
+          type: 'threeChoice',
         })
       }
     }
@@ -119,7 +109,7 @@ export function useSurvey() {
       T21: { number: 2, name: '재능' },
       T22: { number: 2, name: '흥미' },
       T23: { number: 2, name: '가치관' },
-      T3: { number: 3, name: '근무환경' }
+      T3: { number: 3, name: '근무환경' },
     }
 
     return partLabels[page.part] || null
@@ -130,12 +120,12 @@ export function useSurvey() {
     const page = currentPage.value
     if (!page) return null
 
-    const partPages = allPages.value.filter(p => p.part === page.part)
-    const currentIndexInPart = partPages.findIndex(p => p.pageKey === page.pageKey)
+    const partPages = allPages.value.filter((p) => p.part === page.part)
+    const currentIndexInPart = partPages.findIndex((p) => p.pageKey === page.pageKey)
 
     return {
       current: currentIndexInPart + 1,
-      total: partPages.length
+      total: partPages.length,
     }
   })
 
@@ -180,7 +170,12 @@ export function useSurvey() {
     answers.T22.checked = checkedIds
   }
 
-  function setPriorityAnswer(priorities: { priority_1: string; priority_2: string; priority_3: string; no_priority: string[] }) {
+  function setPriorityAnswer(priorities: {
+    priority_1: string
+    priority_2: string
+    priority_3: string
+    no_priority: string[]
+  }) {
     answers.T23 = priorities
   }
 
@@ -208,7 +203,7 @@ export function useSurvey() {
 
     if (page.type === 'scale' && page.questions) {
       const partAnswers = answers[page.part as 'T1' | 'T21']
-      return page.questions.every(q => partAnswers[q.question_id])
+      return page.questions.every((q) => partAnswers[q.question_id])
     }
 
     if (page.type === 'multiSelect') {
@@ -220,7 +215,7 @@ export function useSurvey() {
     }
 
     if (page.type === 'threeChoice' && page.items) {
-      return page.items.every(item => answers.T3[item.item_id])
+      return page.items.every((item) => answers.T3[item.item_id])
     }
 
     return false
@@ -244,18 +239,17 @@ export function useSurvey() {
 
       // return response
 
-      const { data: response } = await submitSurveyResponse({
+      const { data } = await submitSurveyResponse({
         survey_id: surveyId.value,
         respondent_id: respondentId,
-        answers
+        answers,
       })
 
-      if (!response.success) {
-        throw new Error(response.error?.message || '제출에 실패했습니다.')
+      if (!data.success) {
+        throw new Error(data.error?.message || '제출에 실패했습니다.')
       }
 
-      return response
-
+      return data
     } catch (e) {
       error.value = e instanceof Error ? e.message : '제출에 실패했습니다.'
       throw e
@@ -298,6 +292,6 @@ export function useSurvey() {
     setThreeChoiceAnswer,
     goToNextPage,
     goToPrevPage,
-    submitSurvey
+    submitSurvey,
   }
 }

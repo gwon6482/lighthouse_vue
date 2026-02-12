@@ -8,5 +8,4 @@ const emit = defineEmits<{
 }>()
 
 const goToPrevPage = () => emit('goToPrevPage')
-
 </script>

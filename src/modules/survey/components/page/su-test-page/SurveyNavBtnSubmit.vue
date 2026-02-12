@@ -1,11 +1,9 @@
 <template>
-  <button @click="handleSubmit" class="nav-btn submit">
-    제출
-  </button>
+  <button @click="handleSubmit" class="nav-btn submit">제출</button>
 </template>
 
 <script setup lang="ts">
-const emit =defineEmits<{
+const emit = defineEmits<{
   (e: 'handleSumbit'): void
 }>()
 

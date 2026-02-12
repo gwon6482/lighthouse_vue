@@ -9,7 +9,8 @@
     <!-- 설문 내용 -->
     <template v-else-if="currentPage">
       <!-- 헤더 -->
-      <SurveyHeader v-if="currentPartInfo && currentPartPageInfo"
+      <SurveyHeader
+        v-if="currentPartInfo && currentPartPageInfo"
         :currentPartInfo="currentPartInfo"
         :currentPartPageInfo="currentPartPageInfo"
       />
@@ -55,14 +56,21 @@
 
         <SurveyNavCurrentPage :currentPageIndex="currentPageIndex" :totalPages="totalPages" />
 
-        <SurveyNavBtnNext v-if="!isLastPage" :disabled="!isCurrentPageComplete" @goToNextPage="goToNextPage" />
+        <SurveyNavBtnNext
+          v-if="!isLastPage"
+          :disabled="!isCurrentPageComplete"
+          @goToNextPage="goToNextPage"
+        />
 
-        <SurveyNavBtnSubmit v-else :disabled="!isCurrentPageComplete" @handleSubmit="handleSubmit" />
+        <SurveyNavBtnSubmit
+          v-else
+          :disabled="!isCurrentPageComplete"
+          @handleSubmit="handleSubmit"
+        />
       </footer>
     </template>
   </div>
 </template>
-
 
 <script setup lang="ts">
 /**
@@ -115,7 +123,6 @@ const {
   submitSurvey,
 } = useSurvey()
 
-
 // 응답을 JSON 파일로 다운로드
 function downloadResponse(surveyId: string, respondentId: string) {
   const responseData = {
@@ -166,4 +173,3 @@ function handleScaleAnswer(questionId: string, value: string) {
   }
 }
 </script>
-

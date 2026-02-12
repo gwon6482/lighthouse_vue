@@ -27,16 +27,11 @@
  *
  * 사용처: T22(흥미) 파트
  */
+import type { MultiSelectItem } from '@/modules/survey/types/survey'
 import { computed } from 'vue'
 
-interface Item {
-  item_id: string
-  item_name?: string
-  item_text?: string
-}
-
 const props = defineProps<{
-  items: Item[]
+  items: MultiSelectItem[]
   modelValue: string[]
 }>()
 

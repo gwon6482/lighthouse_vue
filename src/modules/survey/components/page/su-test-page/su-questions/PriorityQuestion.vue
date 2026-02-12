@@ -8,23 +8,11 @@
  *
  * 사용처: T23(가치관) 파트
  */
+import type { PriorityItem, PriorityValue } from '@/modules/survey/types/survey'
 import { ref } from 'vue'
 
-interface Item {
-  item_id: string
-  item_text?: string
-  item_definition?: string
-}
-
-interface PriorityValue {
-  priority_1: string
-  priority_2: string
-  priority_3: string
-  no_priority: string[]
-}
-
 const props = defineProps<{
-  items: Item[]
+  items: PriorityItem[]
   modelValue: PriorityValue
 }>()
 
@@ -67,10 +55,12 @@ function togglePriority(itemId: string) {
   }
 
   // no_priority 업데이트
-  const selectedIds = [newValue.priority_1, newValue.priority_2, newValue.priority_3].filter(Boolean)
+  const selectedIds = [newValue.priority_1, newValue.priority_2, newValue.priority_3].filter(
+    Boolean,
+  )
   newValue.no_priority = props.items
-    .map(item => item.item_id)
-    .filter(id => !selectedIds.includes(id))
+    .map((item) => item.item_id)
+    .filter((id) => !selectedIds.includes(id))
 
   emit('update:modelValue', newValue)
 }
@@ -82,21 +72,25 @@ function toggleExpand(itemId: string) {
 
 <template>
   <div class="priority-question">
-    <p class="instruction">
-      가장 중요하게 생각하는 가치를 순서대로 3개 선택해주세요.
-    </p>
+    <p class="instruction">가장 중요하게 생각하는 가치를 순서대로 3개 선택해주세요.</p>
     <div class="priority-display">
       <div class="priority-slot" :class="{ filled: modelValue.priority_1 }">
         <span class="slot-label">1순위</span>
-        <span class="slot-value">{{ items.find(i => i.item_id === modelValue.priority_1)?.item_text || '-' }}</span>
+        <span class="slot-value">{{
+          items.find((i) => i.item_id === modelValue.priority_1)?.item_text || '-'
+        }}</span>
       </div>
       <div class="priority-slot" :class="{ filled: modelValue.priority_2 }">
         <span class="slot-label">2순위</span>
-        <span class="slot-value">{{ items.find(i => i.item_id === modelValue.priority_2)?.item_text || '-' }}</span>
+        <span class="slot-value">{{
+          items.find((i) => i.item_id === modelValue.priority_2)?.item_text || '-'
+        }}</span>
       </div>
       <div class="priority-slot" :class="{ filled: modelValue.priority_3 }">
         <span class="slot-label">3순위</span>
-        <span class="slot-value">{{ items.find(i => i.item_id === modelValue.priority_3)?.item_text || '-' }}</span>
+        <span class="slot-value">{{
+          items.find((i) => i.item_id === modelValue.priority_3)?.item_text || '-'
+        }}</span>
       </div>
     </div>
     <div class="items-list">

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { ThreeChoiceItem } from '@/modules/survey/types/survey';
+
 /**
  * ThreeChoiceQuestion 컴포넌트
  *
@@ -9,14 +11,10 @@
  *
  * 사용처: T3(근무환경) 파트
  */
-interface Item {
-  item_id: string
-  item_name?: string
-  item_definition?: string
-}
+
 
 const props = defineProps<{
-  items: Item[]
+  items: ThreeChoiceItem[]
   modelValue: Record<string, string>
 }>()
 

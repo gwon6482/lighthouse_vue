@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps <{
+defineProps<{
   currentPartInfo: { number: number; name: string }
   currentPartPageInfo: { current: number; total: number }
 }>()

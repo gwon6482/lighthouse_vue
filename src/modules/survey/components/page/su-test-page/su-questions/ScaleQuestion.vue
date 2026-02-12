@@ -5,12 +5,21 @@
       {{ questionText }}
     </p>
     <div class="options" :class="`scale-${scaleType || 5}`">
-      <button
+      <!-- <button
         v-for="option in options"
         :key="option.value"
         type="button"
         class="option-btn"
         :class="{ selected: modelValue === option.value }"
+        @click="selectOption(option.value)"
+      >
+        {{ option.label }}
+      </button> -->
+      <button
+        v-for="option in options"
+        :key="option.value"
+        type="button"
+        :class="['option-btn', { selected: modelValue === option.value } ]"
         @click="selectOption(option.value)"
       >
         {{ option.label }}
@@ -51,7 +60,7 @@ const options = computed(() => {
   if (scale === 2) {
     return [
       { value: 'O', label: 'O' },
-      { value: 'X', label: 'X' }
+      { value: 'X', label: 'X' },
     ]
   }
 
@@ -61,14 +70,14 @@ const options = computed(() => {
       { value: 'B', label: '아니다' },
       { value: 'C', label: '보통' },
       { value: 'D', label: '그렇다' },
-      { value: 'E', label: '매우 그렇다' }
+      { value: 'E', label: '매우 그렇다' },
     ]
   }
 
   // 10점 척도
   return Array.from({ length: 10 }, (_, i) => ({
     value: String(i + 1),
-    label: String(i + 1)
+    label: String(i + 1),
   }))
 })
 

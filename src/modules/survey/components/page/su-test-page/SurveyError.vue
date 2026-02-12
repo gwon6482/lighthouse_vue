@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps <{
+defineProps<{
   error: string
 }>()
 
@@ -15,5 +15,4 @@ const emit = defineEmits<{
 }>()
 
 const loadSurvey = () => emit('loadSurvey')
-
 </script>
