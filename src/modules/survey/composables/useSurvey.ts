@@ -39,7 +39,7 @@ export function useSurvey() {
   const allPages = computed<PageInfo[]>(() => {
     if (!surveyData.value) return []
 
-    const pages: PageInfo[] = []
+    const pages:PageInfo[] = []
 
     for (const part of surveyData.value.survey) {
       const partName = part.survey_part
@@ -87,7 +87,7 @@ export function useSurvey() {
           items: part.items,
           type: 'threeChoice',
         })
-      }
+      } 
     }
 
     return pages
@@ -187,12 +187,14 @@ export function useSurvey() {
   function goToNextPage() {
     if (canGoNext.value) {
       currentPageIndex.value++
+      window.scrollTo(0, 0)
     }
   }
 
   function goToPrevPage() {
     if (canGoPrev.value) {
       currentPageIndex.value--
+      window.scrollTo(0, 0)
     }
   }
 

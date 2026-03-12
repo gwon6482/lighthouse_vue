@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-  (e: 'handleSumbit'): void
+  (e: 'handleSubmit'): void
 }>()
 
-const handleSubmit = () => emit('handleSumbit')
+const handleSubmit = () => emit('handleSubmit')
 </script>

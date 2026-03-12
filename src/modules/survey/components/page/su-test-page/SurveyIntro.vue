@@ -5,5 +5,3 @@
     <p>설문지를 불러오는 중...</p>
   </div>
 </template>
-
-<script setup lang="ts"></script>
