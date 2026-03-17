@@ -30,7 +30,7 @@ function getPriorityRank(itemId: string): number | null {
   return null
 }
 
-// 항목 클릭 시 순위 토글
+// 항목 클릭 시 순위 토글45u
 function togglePriority(itemId: string) {
   const currentRank = getPriorityRank(itemId)
   const newValue = { ...props.modelValue }
