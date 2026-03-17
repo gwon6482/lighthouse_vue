@@ -22,16 +22,39 @@
       <main class="question-area">
         <!-- T1, T21: 스케일 질문 -->
         <template v-if="currentPage.type === 'scale' && currentPage.questions">
-          <ScaleQuestion
-            v-for="q in currentPage.questions"
-            :key="q.question_id"
-            :question-id="q.question_id"
-            :question-num="q.question_num"
-            :question-text="q.question_text"
-            :model-value="answers[currentPage.part as 'T1' | 'T21'][q.question_id] || ''"
-            :scale-type="scaleType"
-            @update:model-value="handleScaleAnswer(q.question_id, $event)"
-          />
+          <template v-if="scaleType === 2">
+            <ScaleQuestion2
+              v-for="q in currentPage.questions"
+              :key="`2-${q.question_id}`"
+              :question-id="q.question_id"
+              :question-num="q.question_num"
+              :question-text="q.question_text"
+              :model-value="answers[currentPage.part as 'T1' | 'T21'][q.question_id] || ''"
+              @update:model-value="handleScaleAnswer(q.question_id, $event)"
+            />
+          </template>
+          <template v-else-if="scaleType === 5">
+            <ScaleQuestion5
+              v-for="q in currentPage.questions"
+              :key="`5-${q.question_id}`"
+              :question-id="q.question_id"
+              :question-num="q.question_num"
+              :question-text="q.question_text"
+              :model-value="answers[currentPage.part as 'T1' | 'T21'][q.question_id] || ''"
+              @update:model-value="handleScaleAnswer(q.question_id, $event)"
+            />
+          </template>
+          <template v-else-if="scaleType === 10">
+            <ScaleQuestion10
+              v-for="q in currentPage.questions"
+              :key="`10-${q.question_id}`"
+              :question-id="q.question_id"
+              :question-num="q.question_num"
+              :question-text="q.question_text"
+              :model-value="answers[currentPage.part as 'T1' | 'T21'][q.question_id] || ''"
+              @update:model-value="handleScaleAnswer(q.question_id, $event)"
+            />
+          </template>
         </template>
 
         <!-- T22: 다중 선택 -->
@@ -87,7 +110,7 @@
 import { useRouter } from 'vue-router'
 import { useSurvey } from '../composables/useSurvey'
 
-import ScaleQuestion from '../components/page/su-test-page/su-questions/ScaleQuestion.vue'
+import ScaleQuestion5 from '../components/page/su-test-page/su-questions/ScaleQuestion5.vue'
 import MultiSelectQuestion from '../components/page/su-test-page/su-questions/MultiSelectQuestion.vue'
 import PriorityQuestion from '../components/page/su-test-page/su-questions/PriorityQuestion.vue'
 import ThreeChoiceQuestion from '../components/page/su-test-page/su-questions/ThreeChoiceQuestion.vue'
@@ -99,6 +122,8 @@ import SurveyNavBtnNext from '../components/page/su-test-page/SurveyNavBtnNext.v
 import SurveyNavBtnSubmit from '../components/page/su-test-page/SurveyNavBtnSubmit.vue'
 import SurveyNavBtnPrev from '../components/page/su-test-page/SurveyNavBtnPrev.vue'
 import SurveyNavCurrentPage from '../components/page/su-test-page/SurveyNavCurrentPage.vue'
+import ScaleQuestion2 from '../components/page/su-test-page/su-questions/ScaleQuestion2.vue'
+import ScaleQuestion10 from '../components/page/su-test-page/su-questions/ScaleQuestion10.vue'
 
 const router = useRouter()
 const {

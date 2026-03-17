@@ -10,6 +10,11 @@ export default [
     component: () => import('./pages/SelfUnderstandingPage.vue'),
   },
   {
+    path: '/self-understanding/select',
+    name: 'Self Understanding Select',
+    component: () => import('./pages/SelfUnderstandingSelectPage.vue'),
+  },
+  {
     path: '/self-understanding/test',
     name: 'Self Understanding Test',
     component: () => import('./pages/SelfUnderstandingTestPage.vue'),

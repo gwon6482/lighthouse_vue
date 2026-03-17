@@ -242,7 +242,7 @@ VITE_API_BASE_URL=https://your-api-server.com
 ```
 src/
 ├── components/survey/   # 설문 질문 컴포넌트
-│   ├── ScaleQuestion.vue        # 척도형 (2/5/10지선다)
+│   ├── ScaleQuestion5.vue       # 척도형 (2/5/10지선다)
 │   ├── MultiSelectQuestion.vue  # 다중선택
 │   ├── PriorityQuestion.vue     # 우선순위
 │   └── ThreeChoiceQuestion.vue  # 3지선다 (O/M/X)

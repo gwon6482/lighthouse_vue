@@ -15,25 +15,26 @@ import { ref, computed, reactive, onMounted } from 'vue'
 import { fetchSurveyForm, submitSurveyResponse } from '../survey.api'
 import type { SurveyFormResponse, SurveyAnswers, SurveyQuestion, PageInfo } from '../types/survey'
 
+// 모듈 레벨에서 상태 정의 (모든 인스턴스가 공유)
+const surveyId = ref<string>('')
+const surveyData = ref<SurveyFormResponse | null>(null)
+const isLoading = ref(false)
+const error = ref<string | null>(null)
+const scaleType = ref<2 | 5 | 10>(5) // 확장용: 2지선다, 5지선다, 10지선다
+
+// 답변 저장
+const answers = reactive<SurveyAnswers>({
+  T1: {},
+  T21: {},
+  T22: { checked: [] },
+  T23: { priority_1: '', priority_2: '', priority_3: '', no_priority: [] },
+  T3: {},
+})
+
+// 현재 페이지 인덱스
+const currentPageIndex = ref(0)
+
 export function useSurvey() {
-  // 상태를 모듈 레벨에서 정의 (싱글톤)
-  const surveyId = ref<string>('')
-  const surveyData = ref<SurveyFormResponse | null>(null)
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
-  const scaleType = ref<2 | 5 | 10>(5) // 확장용: 2지선다, 5지선다, 10지선다
-
-  // 답변 저장
-  const answers = reactive<SurveyAnswers>({
-    T1: {},
-    T21: {},
-    T22: { checked: [] },
-    T23: { priority_1: '', priority_2: '', priority_3: '', no_priority: [] },
-    T3: {},
-  })
-
-  // 현재 페이지 인덱스
-  const currentPageIndex = ref(0)
 
   // 모든 페이지 목록 생성
   const allPages = computed<PageInfo[]>(() => {
@@ -87,11 +88,16 @@ export function useSurvey() {
           items: part.items,
           type: 'threeChoice',
         })
-      } 
+      }
     }
 
     return pages
   })
+
+  // ScaleQuestion 2, 5, 10 값 선택
+  function setScaleType(type: 2 | 5 | 10) {
+    scaleType.value = type
+  }
 
   // 현재 페이지 정보
   const currentPage = computed(() => allPages.value[currentPageIndex.value] || null)
@@ -288,6 +294,7 @@ export function useSurvey() {
 
     // 함수
     loadSurvey,
+    setScaleType,
     setScaleAnswer,
     setMultiSelectAnswer,
     setPriorityAnswer,

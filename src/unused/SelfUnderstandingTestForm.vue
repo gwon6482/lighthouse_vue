@@ -91,7 +91,6 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 /**
  * SurveyTestView 컴포넌트
@@ -107,7 +106,7 @@
 import { useRouter } from 'vue-router'
 import { useSurvey } from '@/modules/survey/composables/useSurvey'
 
-import ScaleQuestion from './SUQuestions/ScaleQuestion.vue'
+import ScaleQuestion from './SUQuestions/ScaleQuestion5.vue'
 import MultiSelectQuestion from './SUQuestions/MultiSelectQuestion.vue'
 import PriorityQuestion from './SUQuestions/PriorityQuestion.vue'
 import ThreeChoiceQuestion from './SUQuestions/ThreeChoiceQuestion.vue'
@@ -134,7 +133,6 @@ const {
   goToPrevPage,
   submitSurvey,
 } = useSurvey()
-
 
 // 응답을 JSON 파일로 다운로드
 function downloadResponse(surveyId: string, respondentId: string) {
@@ -186,4 +184,3 @@ function handleScaleAnswer(questionId: string, value: string) {
   }
 }
 </script>
-

@@ -4,7 +4,7 @@
       <span class="question-num">{{ questionNum }}.</span>
       {{ questionText }}
     </p>
-    <div class="options" :class="`scale-${scaleType || 5}`">
+    <div class="options">
       <button
         v-for="option in options"
         :key="option.value"
@@ -18,23 +18,19 @@
 
 <script setup lang="ts">
 /**
- * ScaleQuestion 컴포넌트
+ * ScaleQuestion5 컴포넌트
  *
  * 설문 조사의 척도형 질문을 렌더링하는 컴포넌트
- * - 2지선다 (O/X)
  * - 5지선다 (매우 아니다 ~ 매우 그렇다)
- * - 10점 척도 (1~10)
  *
  * 사용처: T1(성격), T21(재능) 파트
  */
-import { computed } from 'vue'
 
-const props = defineProps<{
+defineProps<{
   questionId: string
   questionNum: string
   questionText: string
   modelValue: string
-  scaleType?: 2 | 5 | 10
 }>()
 
 const emit = defineEmits<{
@@ -42,33 +38,13 @@ const emit = defineEmits<{
 }>()
 
 // 스케일 타입에 따른 옵션 생성
-const options = computed(() => {
-  const scale = props.scaleType || 5
-
-  if (scale === 2) {
-    return [
-      { value: 'O', label: 'O', colorClass: '' },
-      { value: 'X', label: 'X', colorClass: '' },
-    ]
-  }
-
-  if (scale === 5) {
-    return [
-      { value: 'A', label: '매우 아니다', colorClass: 'btn-bad' },
-      { value: 'B', label: '아니다', colorClass: 'btn-bad2' },
-      { value: 'C', label: '보통', colorClass: 'btn-mid' },
-      { value: 'D', label: '그렇다', colorClass: 'btn-good2' },
-      { value: 'E', label: '매우 그렇다', colorClass: 'btn-good' },
-    ]
-  }
-
-  // 10점 척도
-  return Array.from({ length: 10 }, (_, i) => ({
-    value: String(i + 1),
-    label: String(i + 1),
-    colorClass: '',
-  }))
-})
+const options = [
+  { value: 'A', label: '매우 아니다', colorClass: 'btn-bad' },
+  { value: 'B', label: '아니다', colorClass: 'btn-bad2' },
+  { value: 'C', label: '보통', colorClass: 'btn-mid' },
+  { value: 'D', label: '그렇다', colorClass: 'btn-good2' },
+  { value: 'E', label: '매우 그렇다', colorClass: 'btn-good' },
+]
 
 function selectOption(value: string) {
   emit('update:modelValue', value)
@@ -106,36 +82,18 @@ function selectOption(value: string) {
 .options {
   display: flex;
   gap: 28px;
-  /* flex-wrap: wrap; */
-}
-
-.options.scale-5 {
   justify-content: center;
-}
-
-.options.scale-2 {
-  justify-content: center;
-  gap: 24px;
-}
-
-.options.scale-10 {
-  justify-content: flex-start;
+  align-items: center;
 }
 
 .option-btn {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 999px;
   border: 2px solid;
   background: #fff;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-
-.options.scale-10 .option-btn {
-  min-width: 40px;
-  max-width: 50px;
-  padding: 10px 6px;
 }
 
 .option-btn:hover {
@@ -154,11 +112,15 @@ function selectOption(value: string) {
   --btn-color: #ff6b57;
   border-color: rgba(255, 107, 87, 0.4);
   color: #ff6b57;
+  width: 44px;
+  height: 44px;
 }
 .btn-bad2 {
   --btn-color: #ff9a8b;
   border-color: rgba(255, 107, 87, 0.25);
   color: #ff9a8b;
+  width: 37px;
+  height: 37px;
 }
 .btn-mid {
   --btn-color: #9aa0a6;
@@ -169,11 +131,15 @@ function selectOption(value: string) {
   --btn-color: #5dba8a;
   border-color: rgba(31, 182, 106, 0.35);
   color: #5dba8a;
+  width: 37px;
+  height: 37px;
 }
 .btn-good {
   --btn-color: #1fb66a;
   border-color: rgba(31, 182, 106, 0.5);
   color: #1fb66a;
+  width: 44px;
+  height: 44px;
 }
 
 .btn-bad.selected,
@@ -187,7 +153,7 @@ function selectOption(value: string) {
 }
 
 @media (max-width: 480px) {
-  .options.scale-5 .option-btn {
+  .options .option-btn {
     padding: 10px 4px;
   }
 }
