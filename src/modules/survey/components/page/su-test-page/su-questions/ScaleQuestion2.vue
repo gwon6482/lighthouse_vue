@@ -11,7 +11,9 @@
         type="button"
         :class="['option-btn', option.colorClass, { selected: modelValue === option.value }]"
         @click="selectOption(option.value)"
-      >{{ option.label }}</button>
+      >
+        {{ option.label }}
+      </button>
     </div>
   </div>
 </template>
@@ -103,26 +105,19 @@ function selectOption(value: string) {
 }
 
 .option-btn.selected {
-  border-color: #333;
-  background: #333;
+  background: var(--btn-color);
+  border-color: var(--btn-color);
   color: #fff;
 }
 
 .btn-O {
-color: #ff6b57;
---btn-color: #ff6b57;
-border-color: rgba(255, 107, 87, 0.4);
+  color: #ff6b57;
+  --btn-color: #ff6b57;
+  border-color: rgba(255, 107, 87, 0.4);
 }
 .btn-X {
-color: #1fb66a;
---btn-color: #1fb66a;
-border-color: rgba(31, 182, 106, 0.5);
-}
-
-.btn-0.selected,
-.btn-X.selected {
-  background: var(--btn-color);
-  border-color: var(--btn-color);
-  color: #fff;
+  color: #1fb66a;
+  --btn-color: #1fb66a;
+  border-color: rgba(31, 182, 106, 0.5);
 }
 </style>
