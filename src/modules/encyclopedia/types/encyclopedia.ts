@@ -43,16 +43,24 @@ export interface JobDetails {
   }
 }
 
+export interface JobSalary {
+  lower: number   // 하위 25% 임금 (만원)
+  median: number  // 중위 임금 (만원)
+  upper: number   // 상위 25% 임금 (만원)
+}
+
 /** 직업 데이터 */
 export interface Job {
   _id: string
   jobCode: string
   classification: JobClassification
   title: string
-  overview: string      // 직업 개요
-  duties: string[]      // 수행직무 목록
-  details: JobDetails   // 능력/지식/환경, 성격/흥미/가치관, 업무활동
+  overview: string           // 직업 개요
+  duties: string[]           // 수행직무 목록
+  details: JobDetails        // 능력/지식/환경, 성격/흥미/가치관, 업무활동
   lastUpdated: string
+  jobSatisfaction?: number   // 직업 만족도 백분위 (%)
+  salary?: JobSalary         // 임금 정보 (만원)
 }
 
 /** GET /api/job/:jobCode 응답 */

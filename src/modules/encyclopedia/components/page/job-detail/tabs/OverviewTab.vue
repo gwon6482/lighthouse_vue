@@ -79,6 +79,53 @@
       </ul>
     </section>
 
+    <!-- 직업 현황 -->
+    <section v-if="job.jobSatisfaction != null || job.salary" class="overview-section">
+      <h3 class="overview-section__title">직업 현황</h3>
+      <div class="overview-stats">
+
+        <!-- 직업 만족도 -->
+        <div v-if="job.jobSatisfaction != null" class="overview-stats__card">
+          <span class="overview-stats__label">직업 만족도</span>
+          <div class="overview-satisfaction">
+            <div class="overview-satisfaction__bar-bg">
+              <div
+                class="overview-satisfaction__bar-fill"
+                :style="{ width: job.jobSatisfaction + '%' }"
+              />
+            </div>
+            <span class="overview-satisfaction__value">상위 {{ (100 - job.jobSatisfaction).toFixed(1) }}%</span>
+          </div>
+        </div>
+
+        <!-- 임금 정보 -->
+        <div v-if="job.salary" class="overview-stats__card">
+          <span class="overview-stats__label">연봉 (만원)</span>
+          <div class="overview-salary">
+            <div class="overview-salary__track">
+              <div class="overview-salary__bar" />
+              <div class="overview-salary__point overview-salary__point--lower">
+                <div class="overview-salary__dot" />
+                <span class="overview-salary__tip">하위 25%</span>
+                <span class="overview-salary__amount">{{ job.salary.lower.toLocaleString() }}</span>
+              </div>
+              <div class="overview-salary__point overview-salary__point--median">
+                <div class="overview-salary__dot overview-salary__dot--median" />
+                <span class="overview-salary__tip">중위</span>
+                <span class="overview-salary__amount overview-salary__amount--median">{{ job.salary.median.toLocaleString() }}</span>
+              </div>
+              <div class="overview-salary__point overview-salary__point--upper">
+                <div class="overview-salary__dot" />
+                <span class="overview-salary__tip">상위 25%</span>
+                <span class="overview-salary__amount">{{ job.salary.upper.toLocaleString() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </div>
 </template>
 
@@ -137,6 +184,133 @@ const abilityItems = computed(() => {
   color: #333;
   padding-bottom: 8px;
   border-bottom: 1.5px solid #eee;
+}
+
+/* 직업 현황 */
+.overview-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.overview-stats__card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.overview-stats__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+}
+
+/* 만족도 */
+.overview-satisfaction {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.overview-satisfaction__bar-bg {
+  flex: 1;
+  height: 8px;
+  background-color: #e4e4e4;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.overview-satisfaction__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a7fc1, #6fa3e8);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.overview-satisfaction__value {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a7fc1;
+}
+
+/* 임금 */
+.overview-salary {
+  padding: 20px 8px 8px;
+}
+
+.overview-salary__track {
+  position: relative;
+  height: 4px;
+  background-color: #e4e4e4;
+  border-radius: 2px;
+  margin: 0 16px;
+}
+
+.overview-salary__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #c8daf5, #4a7fc1);
+  border-radius: 2px;
+}
+
+.overview-salary__point {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.overview-salary__point--lower  { left: 0%; }
+.overview-salary__point--median { left: 50%; }
+.overview-salary__point--upper  { left: 100%; }
+
+.overview-salary__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4a7fc1;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #4a7fc1;
+}
+
+.overview-salary__dot--median {
+  width: 14px;
+  height: 14px;
+  background-color: #2b5fa8;
+  box-shadow: 0 0 0 1px #2b5fa8;
+}
+
+.overview-salary__tip {
+  position: absolute;
+  top: -22px;
+  font-size: 11px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.overview-salary__amount {
+  position: absolute;
+  top: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  white-space: nowrap;
+}
+
+.overview-salary__amount--median {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2b5fa8;
 }
 
 /* 주요업무 */
