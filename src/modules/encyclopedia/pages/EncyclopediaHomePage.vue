@@ -1,10 +1,7 @@
 <template>
   <div class="encyclopedia-home">
     <!-- 상단 타이틀 -->
-    <header class="encyclopedia-home__header">
-      <h1 class="encyclopedia-home__title">진로백과</h1>
-      <p class="encyclopedia-home__subtitle">관심 있는 직업을 검색하거나 추천 진로를 확인해보세요</p>
-    </header>
+    <MainTitle />
 
     <!-- 검색 바 -->
     <SearchBar
@@ -62,6 +59,7 @@
 import { useRouter } from 'vue-router'
 import { useEncyclopedia } from '../composables/useEncyclopedia'
 import type { JobSummary } from '../types/encyclopedia'
+import MainTitle from '../components/page/home/MainTitle.vue'
 import SearchBar from '../components/page/home/SearchBar.vue'
 import SearchResultCard from '../components/page/home/SearchResultCard.vue'
 import RecommendedJobCard from '../components/page/home/RecommendedJobCard.vue'
@@ -110,24 +108,6 @@ function goToRecommended() {
   min-height: 100vh;
   padding: 40px 0 32px;
   gap: 24px;
-}
-
-.encyclopedia-home__header {
-  text-align: center;
-  padding: 0 20px;
-}
-
-.encyclopedia-home__title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 8px;
-}
-
-.encyclopedia-home__subtitle {
-  font-size: 14px;
-  color: #888;
-  line-height: 1.5;
 }
 
 .encyclopedia-home__section {
