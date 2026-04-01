@@ -11,72 +11,56 @@
     <section class="overview-section">
       <h3 class="overview-section__title">수행직무</h3>
       <ul class="overview-duties">
-        <li
-          v-for="(duty, i) in job.duties"
-          :key="i"
-          class="overview-duties__item"
-        >
+        <li v-for="(duty, i) in job.duties" :key="i" class="overview-duties__item">
           {{ duty }}
         </li>
       </ul>
     </section>
 
-    <!-- 추천성향 -->
-    <section class="overview-section">
-      <h3 class="overview-section__title">추천성향</h3>
+    <!-- 개인요소 / 업무요소 -->
+    <section v-for="section in detailSections" :key="section.title" class="overview-section">
+      <h3 class="overview-section__title">{{ section.title }}</h3>
+      <div class="factor-group">
+        <div v-for="catKey in section.keys" :key="catKey" class="factor-card">
+          <h4 class="factor-card__title">{{ catKey }}</h4>
 
-      <div class="overview-personality">
-        <!-- 성격 -->
-        <div class="overview-personality__group">
-          <span class="overview-personality__label">성격</span>
-          <div class="overview-personality__tags">
-            <span
-              v-for="item in personalityItems"
-              :key="item.name"
-              class="overview-tag"
-            >
-              {{ item.name }}
-            </span>
-          </div>
-        </div>
+          <div v-for="dimKey in dimensionsOf(catKey)" :key="dimKey" class="factor-dim">
+            <span class="factor-dim__badge">{{ dimKey }}</span>
 
-        <!-- 흥미 -->
-        <div class="overview-personality__group">
-          <span class="overview-personality__label">흥미</span>
-          <div class="overview-personality__tags">
-            <span
-              v-for="item in interestItems"
-              :key="item.name"
-              class="overview-tag overview-tag--interest"
-            >
-              {{ item.name }}
-            </span>
+            <!-- 직업 내 -->
+            <div class="factor-block">
+              <span class="factor-block__label factor-block__label--inner">직업 내</span>
+              <ul class="rank-list">
+                <li v-for="item in getItems(catKey, dimKey, '직업내')" :key="item.name" class="rank-item">
+                  <div class="rank-item__row">
+                    <span class="rank-item__name">{{ item.name }}</span>
+                    <span class="rank-item__score">{{ item.score }}</span>
+                  </div>
+                  <div class="rank-bar-bg">
+                    <div class="rank-bar-fill rank-bar-fill--inner" :style="{ width: pct(item.score, 7) }" />
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 직업 간 -->
+            <div class="factor-block">
+              <span class="factor-block__label factor-block__label--inter">직업 간</span>
+              <ul class="rank-list">
+                <li v-for="item in getItems(catKey, dimKey, '직업간')" :key="item.name" class="rank-item">
+                  <div class="rank-item__row">
+                    <span class="rank-item__name">{{ item.name }}</span>
+                    <span class="rank-item__score">{{ item.score }}</span>
+                  </div>
+                  <div class="rank-bar-bg">
+                    <div class="rank-bar-fill rank-bar-fill--inter" :style="{ width: pct(item.score, 100) }" />
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- 주요업무수행능력 -->
-    <section class="overview-section">
-      <h3 class="overview-section__title">주요업무수행능력</h3>
-      <ul class="overview-abilities">
-        <li
-          v-for="item in abilityItems"
-          :key="item.name"
-          class="overview-abilities__item"
-        >
-          <div class="overview-abilities__info">
-            <span class="overview-abilities__name">{{ item.name }}</span>
-            <span class="overview-abilities__score">{{ item.score }}</span>
-          </div>
-          <div class="overview-abilities__bar-bg">
-            <div
-              class="overview-abilities__bar-fill"
-              :style="{ width: item.score + '%' }"
-            />
-          </div>
-        </li>
-      </ul>
     </section>
 
     <!-- 직업 현황 -->
@@ -130,37 +114,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Job, RankingGroup, RankItem } from '../../../../types/encyclopedia'
+import type { Job, JobDetails, CategoryRankings, RankItem } from '../../../../types/encyclopedia'
 
-const props = defineProps<{
-  job: Job
-}>()
+const props = defineProps<{ job: Job }>()
 
-function rankingToArray(group: RankingGroup): RankItem[] {
-  return [
-    group.item_1st,
-    group.item_2nd,
-    group.item_3rd,
-    group.item_4th,
-    group.item_5th,
-  ]
+type FactorKey = keyof JobDetails
+type DimKey = '중요도' | '수준'
+type CompareKey = '직업내' | '직업간'
+
+const detailSections: Array<{ title: string; keys: FactorKey[] }> = [
+  { title: '개인요소', keys: ['성격', '지식', '흥미', '가치관'] },
+  { title: '업무요소', keys: ['업무수행능력', '업무활동', '업무환경'] },
+]
+
+function dimensionsOf(catKey: FactorKey): DimKey[] {
+  const cat = props.job.details[catKey] as CategoryRankings
+  return (['중요도', '수준'] as DimKey[]).filter(k => cat[k] !== undefined)
 }
 
-const personalityItems = computed(() => {
-  const group = props.job.details['성격/흥미/가치관']['성격']['성격 > 중요도 > 직업 내 비교']
-  return group ? rankingToArray(group) : []
-})
+function getItems(catKey: FactorKey, dimKey: DimKey, compareKey: CompareKey): RankItem[] {
+  return (props.job.details[catKey] as CategoryRankings)[dimKey]?.[compareKey] ?? []
+}
 
-const interestItems = computed(() => {
-  const group = props.job.details['성격/흥미/가치관']['흥미']['흥미 > 중요도 > 직업 내 비교']
-  return group ? rankingToArray(group) : []
-})
-
-const abilityItems = computed(() => {
-  const group = props.job.details['능력/지식/환경']['업무수행능력']['업무수행능력 > 중요도 > 직업 간 비교']
-  return group ? rankingToArray(group) : []
-})
+function pct(score: number, max: number): string {
+  return `${Math.min((score / max) * 100, 100).toFixed(1)}%`
+}
 </script>
 
 <style scoped>
@@ -184,6 +162,155 @@ const abilityItems = computed(() => {
   color: #333;
   padding-bottom: 8px;
   border-bottom: 1.5px solid #eee;
+}
+
+/* 주요업무 텍스트 */
+.overview-section__text {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* 수행직무 */
+.overview-duties {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overview-duties__item {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  padding-left: 14px;
+  position: relative;
+}
+
+.overview-duties__item::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #bbb;
+}
+
+/* 개인요소 / 업무요소 그룹 */
+.factor-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 카테고리 카드 */
+.factor-card {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.factor-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #222;
+}
+
+/* 중요도 / 수준 구분 */
+.factor-dim {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.factor-dim__badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  background-color: #e9ecef;
+  border-radius: 6px;
+  padding: 3px 8px;
+  align-self: flex-start;
+}
+
+/* 직업내 / 직업간 블록 */
+.factor-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.factor-block__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.factor-block__label--inner {
+  color: #4a7fc1;
+}
+
+.factor-block__label--inter {
+  color: #e0a030;
+}
+
+/* 순위 리스트 */
+.rank-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rank-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rank-item__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rank-item__name {
+  font-size: 13px;
+  color: #444;
+  flex: 1;
+  margin-right: 8px;
+  line-height: 1.4;
+}
+
+.rank-item__score {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.rank-bar-bg {
+  width: 100%;
+  height: 5px;
+  background-color: #e4e4e4;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.rank-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.rank-bar-fill--inner {
+  background-color: #4a7fc1;
+}
+
+.rank-bar-fill--inter {
+  background-color: #e0a030;
 }
 
 /* 직업 현황 */
@@ -311,125 +438,5 @@ const abilityItems = computed(() => {
   font-size: 15px;
   font-weight: 700;
   color: #2b5fa8;
-}
-
-/* 주요업무 */
-.overview-section__text {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.7;
-}
-
-/* 수행직무 */
-.overview-duties {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.overview-duties__item {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.6;
-  padding-left: 14px;
-  position: relative;
-}
-
-.overview-duties__item::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: #bbb;
-}
-
-/* 추천성향 */
-.overview-personality {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.overview-personality__group {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.overview-personality__label {
-  flex-shrink: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: #888;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  padding: 4px 8px;
-  margin-top: 2px;
-}
-
-.overview-personality__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.overview-tag {
-  font-size: 13px;
-  font-weight: 500;
-  color: #555;
-  background-color: #f0f0f0;
-  border-radius: 20px;
-  padding: 5px 12px;
-}
-
-.overview-tag--interest {
-  color: #4a7fc1;
-  background-color: #eef3fb;
-}
-
-/* 주요업무수행능력 */
-.overview-abilities {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.overview-abilities__item {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.overview-abilities__info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.overview-abilities__name {
-  font-size: 14px;
-  color: #444;
-}
-
-.overview-abilities__score {
-  font-size: 13px;
-  font-weight: 600;
-  color: #888;
-}
-
-.overview-abilities__bar-bg {
-  width: 100%;
-  height: 6px;
-  background-color: #eee;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.overview-abilities__bar-fill {
-  height: 100%;
-  background-color: #333;
-  border-radius: 3px;
-  transition: width 0.4s ease;
 }
 </style>
