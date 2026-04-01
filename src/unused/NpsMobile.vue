@@ -75,7 +75,7 @@
 import { ref } from 'vue'
 
 const options = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-const selected = ref(null)
+const selected = ref<number | null>(null)
 const currentStep = ref(3)
 const totalSteps = ref(4)
 
@@ -84,11 +84,11 @@ const colors = [
   '#9B9020', '#639922', '#3B6D11', '#0F6E56', '#185FA5'
 ]
 
-function getColor(n) {
+function getColor(n: number) {
   return colors[n]
 }
 
-function getLabel(n) {
+function getLabel(n: number) {
   if (n <= 2) return '비추천'
   if (n <= 4) return '부정적'
   if (n <= 6) return '중립'
@@ -96,7 +96,7 @@ function getLabel(n) {
   return '강력 추천'
 }
 
-function getDesc(n) {
+function getDesc(n: number) {
   if (n <= 2) return '개선이 필요한 영역이 있었나요?'
   if (n <= 4) return '아쉬운 경험이 있으셨군요.'
   if (n <= 6) return '보통 수준의 경험이었네요.'
@@ -104,7 +104,7 @@ function getDesc(n) {
   return '최고의 경험 감사합니다!'
 }
 
-function pick(n) {
+function pick(n: number) {
   selected.value = n
 }
 

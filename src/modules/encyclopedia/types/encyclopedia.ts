@@ -8,13 +8,10 @@ export interface RankItem {
   score: number
 }
 
-/** 순위 그룹 (상위 5개 항목) */
-export interface RankingGroup {
-  item_1st: RankItem
-  item_2nd: RankItem
-  item_3rd: RankItem
-  item_4th: RankItem
-  item_5th: RankItem
+/** 카테고리별 순위 데이터 (직업내/직업간 비교 × 중요도/수준) */
+export interface CategoryRankings {
+  중요도: { 직업내: RankItem[]; 직업간: RankItem[] }
+  수준?: { 직업내: RankItem[]; 직업간: RankItem[] }
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -26,21 +23,21 @@ export interface JobClassification {
   secondary: string  // 중분류 (예: 의회의원·고위공무원 및 기업 고위임원)
 }
 
-/** 직업 details 내 각 카테고리는 Record<비교기준명, RankingGroup> 형태 */
+/** 직업 details — 플랫 구조, 각 카테고리별 중요도/수준 × 직업내/직업간 배열 */
 export interface JobDetails {
-  '능력/지식/환경': {
-    '업무수행능력': Record<string, RankingGroup>
-    '지식': Record<string, RankingGroup>
-    '업무환경': Record<string, RankingGroup>
-  }
-  '성격/흥미/가치관': {
-    '성격': Record<string, RankingGroup>
-    '흥미': Record<string, RankingGroup>
-    '가치관': Record<string, RankingGroup>
-  }
-  '업무활동': {
-    '업무활동 중요도': Record<string, RankingGroup>
-  }
+  '업무수행능력': CategoryRankings
+  '지식': CategoryRankings
+  '업무환경': CategoryRankings
+  '성격': CategoryRankings
+  '흥미': CategoryRankings
+  '가치관': CategoryRankings
+  '업무활동': CategoryRankings
+}
+
+export interface JobSalary {
+  lower: number   // 하위 25% 임금 (만원)
+  median: number  // 중위 임금 (만원)
+  upper: number   // 상위 25% 임금 (만원)
 }
 
 /** 직업 데이터 */
@@ -49,10 +46,14 @@ export interface Job {
   jobCode: string
   classification: JobClassification
   title: string
-  overview: string      // 직업 개요
-  duties: string[]      // 수행직무 목록
-  details: JobDetails   // 능력/지식/환경, 성격/흥미/가치관, 업무활동
+  overview: string               // 직업 개요
+  duties: string[]               // 수행직무 목록
+  relatedMajors: string[]        // 관련학과
+  relatedCertifications: string[] // 관련자격
+  details: JobDetails            // 능력/지식/환경, 성격/흥미/가치관, 업무활동
   lastUpdated: string
+  jobSatisfaction?: number       // 직업 만족도 (백점 기준)
+  salary?: JobSalary             // 임금 정보 (만원)
 }
 
 /** GET /api/job/:jobCode 응답 */
