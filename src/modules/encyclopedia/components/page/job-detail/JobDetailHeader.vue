@@ -29,7 +29,7 @@ const router = useRouter()
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 20px 20px 16px;
+  padding: 40px 20px 30px;
   width: 100%;
 }
 
@@ -80,7 +80,7 @@ const router = useRouter()
 }
 
 .job-detail-header__title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: #333;
 }

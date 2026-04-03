@@ -1,5 +1,5 @@
 <template>
-  <div class="search-result-card" @click="emit('click')">
+  <!-- <div class="search-result-card" @click="emit('click')">
     <div class="search-result-card__classifications">
       <span class="search-result-card__primary">{{ job.classification.primary }}</span>
       <span class="search-result-card__dot">·</span>
@@ -7,7 +7,16 @@
     </div>
     <p class="search-result-card__title">{{ job.title }}</p>
     <span class="search-result-card__arrow">›</span>
-  </div>
+  </div> -->
+  <RouterLink class="search-result-card" :to="`/career-encyclopedia/job/${job.jobCode}`">
+    <div class="search-result-card__classifications">
+      <span class="search-result-card__primary">{{ job.classification.primary }}</span>
+      <span class="search-result-card__dot">·</span>
+      <span class="search-result-card__secondary">{{ job.classification.secondary }}</span>
+    </div>
+    <p class="search-result-card__title">{{ job.title }}</p>
+    <span class="search-result-card__arrow">›</span>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
@@ -17,10 +26,12 @@ defineProps<{
   job: JobSummary
 }>()
 
-const emit = defineEmits<{
-  click: []
-}>()
+// const emit = defineEmits<{
+//   click: []
+// }>()
 </script>
+
+
 
 <style scoped>
 .search-result-card {

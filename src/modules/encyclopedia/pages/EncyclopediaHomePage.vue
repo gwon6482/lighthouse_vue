@@ -4,14 +4,17 @@
     <MainTitle />
 
     <!-- 검색 바 -->
-    <SearchBar
-      :query="searchQuery"
-      @search="searchJob"
-      @clear="clearSearch"
-    />
+    <SearchBar :query="searchQuery" @search="searchJob" @clear="clearSearch" />
 
     <!-- 검색 결과 (검색어 있을 때만 노출) -->
-    <section v-if="searchQuery" class="encyclopedia-home__section">
+    <SearchResult
+      v-if="searchQuery"
+      :searchQuery="searchQuery"
+      :isLoading="isLoading"
+      :searchResults="searchResults"
+    />
+
+    <!-- <section v-if="searchQuery" class="encyclopedia-home__section">
       <h2 class="encyclopedia-home__section-title">검색 결과</h2>
       <div v-if="isLoading" class="encyclopedia-home__state">로딩 중...</div>
       <div v-else-if="searchResults.length === 0" class="encyclopedia-home__state">검색 결과가 없습니다.</div>
@@ -23,7 +26,7 @@
           @click="goToJobDetail(job.jobCode)"
         />
       </div>
-    </section>
+    </section> -->
 
     <!-- 메인 메뉴 (검색어 없을 때 노출) -->
     <template v-else>
@@ -46,7 +49,9 @@
           <span class="encyclopedia-home__menu-icon">⭐</span>
           <div class="encyclopedia-home__menu-text">
             <span class="encyclopedia-home__menu-title">나의 추천 진로</span>
-            <span class="encyclopedia-home__menu-desc">자기이해 결과를 바탕으로 추천된 직업을 확인해보세요</span>
+            <span class="encyclopedia-home__menu-desc"
+              >자기이해 결과를 바탕으로 추천된 직업을 확인해보세요</span
+            >
           </div>
           <span class="encyclopedia-home__menu-arrow">›</span>
         </button>
@@ -61,17 +66,11 @@ import { useEncyclopedia } from '../composables/useEncyclopedia'
 import type { JobSummary } from '../types/encyclopedia'
 import MainTitle from '../components/page/home/MainTitle.vue'
 import SearchBar from '../components/page/home/SearchBar.vue'
-import SearchResultCard from '../components/page/home/SearchResultCard.vue'
 import RecommendedJobCard from '../components/page/home/RecommendedJobCard.vue'
+import SearchResult from '../components/page/home/SearchResult.vue'
 
 const router = useRouter()
-const {
-  searchQuery,
-  searchResults,
-  isLoading,
-  searchJob,
-  clearSearch,
-} = useEncyclopedia()
+const { searchQuery, searchResults, isLoading, searchJob, clearSearch } = useEncyclopedia()
 
 const featuredJobs: JobSummary[] = [
   {
@@ -100,13 +99,13 @@ function goToRecommended() {
 }
 </script>
 
-<style scoped>
+<style>
 .encyclopedia-home {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 40px 0 32px;
+  padding: 150px 0 32px;
   gap: 24px;
 }
 

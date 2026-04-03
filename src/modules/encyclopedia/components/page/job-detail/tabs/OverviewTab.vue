@@ -146,7 +146,8 @@ function pct(score: number, max: number): string {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  padding: 24px 20px 40px;
+  padding: 50px 40px;
+  background-color: #f9fafb;
 }
 
 /* 섹션 공통 */
@@ -154,10 +155,13 @@ function pct(score: number, max: number): string {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 20px;
 }
 
 .overview-section__title {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: #333;
   padding-bottom: 8px;
@@ -287,7 +291,7 @@ function pct(score: number, max: number): string {
 .rank-item__score {
   font-size: 12px;
   font-weight: 600;
-  color: #888;
+  color: #3365E3;
   flex-shrink: 0;
 }
 

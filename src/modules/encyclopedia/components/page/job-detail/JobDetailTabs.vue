@@ -35,7 +35,7 @@ const tabs: { value: JobDetailTab; label: string }[] = [
   display: flex;
   width: 100%;
   border-bottom: 1.5px solid #eee;
-  padding: 0 20px;
+  padding: 0 55px;
   gap: 4px;
 }
 
@@ -44,7 +44,7 @@ const tabs: { value: JobDetailTab; label: string }[] = [
   border: none;
   background: transparent;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #aaa;
   cursor: pointer;
@@ -59,14 +59,13 @@ const tabs: { value: JobDetailTab; label: string }[] = [
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #333;
-  border-radius: 2px 2px 0 0;
+  background-color: #3365E3;
   opacity: 0;
   transition: opacity 0.15s ease;
 }
 
 .job-detail-tabs__btn--active {
-  color: #333;
+  color: #3365E3;
   font-weight: 700;
 }
 
