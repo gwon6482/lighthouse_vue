@@ -33,7 +33,7 @@ defineProps<{
 
 
 
-<style scoped>
+<style scoped lang="scss">
 .search-result-card {
   display: flex;
   flex-direction: column;
@@ -45,49 +45,45 @@ defineProps<{
   cursor: pointer;
   transition: background-color 0.15s ease;
   position: relative;
-}
 
-.search-result-card:active {
-  background-color: #e8e8e8;
-}
+  &:active { background-color: #e8e8e8; }
 
-@media (hover: hover) {
-  .search-result-card:hover {
-    background-color: #e8e8e8;
+  @media (hover: hover) {
+    &:hover { background-color: #e8e8e8; }
   }
-}
 
-.search-result-card__classifications {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
-}
+  &__classifications {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
 
-.search-result-card__primary,
-.search-result-card__secondary {
-  font-size: 12px;
-  color: #888;
-}
+  &__primary,
+  &__secondary {
+    font-size: 12px;
+    color: #888;
+  }
 
-.search-result-card__dot {
-  font-size: 12px;
-  color: #ccc;
-}
+  &__dot {
+    font-size: 12px;
+    color: #ccc;
+  }
 
-.search-result-card__title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  padding-right: 24px;
-}
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    padding-right: 24px;
+  }
 
-.search-result-card__arrow {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 22px;
-  color: #bbb;
+  &__arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: #bbb;
+  }
 }
 </style>

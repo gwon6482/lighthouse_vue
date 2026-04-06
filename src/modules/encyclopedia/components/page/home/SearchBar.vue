@@ -47,70 +47,64 @@ function handleClear() {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .search-bar {
   width: 100%;
   padding: 0 20px;
-}
 
-.search-bar__inner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  background-color: #f5f5f5;
-  border-radius: 14px;
-  padding: 10px 14px;
-}
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    border-radius: 14px;
+    padding: 10px 14px;
+  }
 
-.search-bar__input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 15px;
-  color: #333;
-  outline: none;
-}
+  &__input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    color: #333;
+    outline: none;
 
-.search-bar__input::placeholder {
-  color: #aaa;
-}
+    &::placeholder { color: #aaa; }
+  }
 
-.search-bar__clear {
-  flex-shrink: 0;
-  border: none;
-  background: transparent;
-  color: #aaa;
-  font-size: 13px;
-  cursor: pointer;
-  padding: 2px 4px;
-  line-height: 1;
-}
+  &__clear {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: #aaa;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+  }
 
-.search-bar__btn {
-  flex-shrink: 0;
-  border: none;
-  border-radius: 10px;
-  background-color: #333;
-  color: #fff;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 18px;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
+  &__btn {
+    flex-shrink: 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #333;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 
-.search-bar__btn:active {
-  background-color: #555;
-}
+    &:active { background-color: #555; }
 
-@media (hover: hover) {
-  .search-bar__btn:hover {
-    background-color: #555;
+    @media (hover: hover) {
+      &:hover { background-color: #555; }
+    }
   }
 }
 </style>

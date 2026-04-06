@@ -30,46 +30,44 @@ const tabs: { value: JobDetailTab; label: string }[] = [
 ]
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .job-detail-tabs {
   display: flex;
   width: 100%;
   border-bottom: 1.5px solid #eee;
   padding: 0 55px;
   gap: 4px;
-}
 
-.job-detail-tabs__btn {
-  padding: 10px 16px;
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 500;
-  color: #aaa;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.15s ease;
-}
+  &__btn {
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    color: #aaa;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.15s ease;
 
-.job-detail-tabs__btn::after {
-  content: '';
-  position: absolute;
-  bottom: -1.5px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #3365E3;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1.5px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #3365E3;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
 
-.job-detail-tabs__btn--active {
-  color: #3365E3;
-  font-weight: 700;
-}
+    &--active {
+      color: #3365E3;
+      font-weight: 700;
 
-.job-detail-tabs__btn--active::after {
-  opacity: 1;
+      &::after { opacity: 1; }
+    }
+  }
 }
 </style>

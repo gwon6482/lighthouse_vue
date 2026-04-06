@@ -5,22 +5,24 @@
   </header>
 </template>
 
-<style>
-.encyclopedia-home__header {
-  text-align: center;
-  padding: 0 20px;
-}
+<style lang="scss">
+.encyclopedia-home {
+  &__header {
+    text-align: center;
+    padding: 0 20px;
+  }
 
-.encyclopedia-home__title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 8px;
-}
+  &__title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+  }
 
-.encyclopedia-home__subtitle {
-  font-size: 14px;
-  color: #888;
-  line-height: 1.5;
+  &__subtitle {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.5;
+  }
 }
 </style>

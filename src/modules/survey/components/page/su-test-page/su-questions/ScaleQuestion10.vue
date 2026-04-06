@@ -1,5 +1,5 @@
 <template>
-  <div class="scale-question">
+  <div class="scale-question-10">
     <p class="question-text">
       <span class="question-num">{{ questionNum }}.</span>
       {{ questionText }}
@@ -61,68 +61,3 @@ function selectOption(value: string) {
   emit('update:modelValue', value)
 }
 </script>
-
-<style scoped>
-.scale-question {
-  padding: 32px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.scale-question:first-child {
-  padding-top: 10px;
-}
-
-.scale-question:last-child {
-  border-bottom: none;
-}
-
-.question-text {
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  margin-bottom: 18px;
-}
-
-.question-num {
-  font-weight: 600;
-  color: #666;
-  margin-right: 4px;
-}
-
-.options {
-  display: grid;
-  grid-template-columns: repeat(5, 55px);
-  gap: 10px;
-  justify-content: center;
-}
-
-.option-btn {
-  width: 55px;
-  height: 55px;
-  border-radius: 12px;
-  border: 1.5px solid #ccc;
-  background: #fff;
-  color: #000;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.option-btn:hover {
-  border-color: #999;
-  background: #f5f5f5;
-}
-
-.option-btn.selected {
-  border-color: #333;
-  background: #333;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-}
-</style>

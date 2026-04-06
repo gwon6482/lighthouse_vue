@@ -141,7 +141,7 @@ function pct(score: number, max: number): string {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .overview-tab {
   display: flex;
   flex-direction: column;
@@ -158,21 +158,20 @@ function pct(score: number, max: number): string {
   background-color: #fff;
   padding: 30px;
   border-radius: 20px;
-}
 
-.overview-section__title {
-  font-size: 17px;
-  font-weight: 700;
-  color: #333;
-  padding-bottom: 8px;
-  border-bottom: 1.5px solid #eee;
-}
+  &__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #333;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid #eee;
+  }
 
-/* 주요업무 텍스트 */
-.overview-section__text {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.7;
+  &__text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+  }
 }
 
 /* 수행직무 */
@@ -181,28 +180,28 @@ function pct(score: number, max: number): string {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
 
-.overview-duties__item {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.6;
-  padding-left: 14px;
-  position: relative;
-}
+  &__item {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    padding-left: 14px;
+    position: relative;
 
-.overview-duties__item::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: #bbb;
+    &::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #bbb;
+    }
+  }
 }
 
 /* 개인요소 / 업무요소 그룹 */
 .factor-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 /* 카테고리 카드 */
@@ -212,31 +211,31 @@ function pct(score: number, max: number): string {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
+  gap: 10px;
 
-.factor-card__title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #222;
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+  }
 }
 
 /* 중요도 / 수준 구분 */
 .factor-dim {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
+  gap: 16px;
 
-.factor-dim__badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  color: #666;
-  background-color: #e9ecef;
-  border-radius: 6px;
-  padding: 3px 8px;
-  align-self: flex-start;
+  &__badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    padding: 3px 8px;
+    align-self: flex-start;
+  }
 }
 
 /* 직업내 / 직업간 블록 */
@@ -244,20 +243,18 @@ function pct(score: number, max: number): string {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
+  margin-bottom: 4px;
 
-.factor-block__label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
+  &:last-child { margin-bottom: 8px; }
 
-.factor-block__label--inner {
-  color: #4a7fc1;
-}
+  &__label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
 
-.factor-block__label--inter {
-  color: #e0a030;
+    &--inner { color: #4a7fc1; }
+    &--inter  { color: #e0a030; }
+  }
 }
 
 /* 순위 리스트 */
@@ -272,27 +269,27 @@ function pct(score: number, max: number): string {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
 
-.rank-item__row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.rank-item__name {
-  font-size: 13px;
-  color: #444;
-  flex: 1;
-  margin-right: 8px;
-  line-height: 1.4;
-}
+  &__name {
+    font-size: 13px;
+    color: #444;
+    flex: 1;
+    margin-right: 8px;
+    line-height: 1.4;
+  }
 
-.rank-item__score {
-  font-size: 12px;
-  font-weight: 600;
-  color: #3365E3;
-  flex-shrink: 0;
+  &__score {
+    font-size: 12px;
+    font-weight: 600;
+    color: #3365E3;
+    flex-shrink: 0;
+  }
 }
 
 .rank-bar-bg {
@@ -307,14 +304,9 @@ function pct(score: number, max: number): string {
   height: 100%;
   border-radius: 3px;
   transition: width 0.4s ease;
-}
 
-.rank-bar-fill--inner {
-  background-color: #4a7fc1;
-}
-
-.rank-bar-fill--inter {
-  background-color: #e0a030;
+  &--inner { background-color: #4a7fc1; }
+  &--inter  { background-color: #e0a030; }
 }
 
 /* 직업 현황 */
@@ -322,21 +314,23 @@ function pct(score: number, max: number): string {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
 
-.overview-stats__card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  padding: 16px;
-}
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px 16px 20px;
 
-.overview-stats__label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #888;
+    &:last-child { padding: 16px 16px 35px; }
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+  }
 }
 
 /* 만족도 */
@@ -344,103 +338,103 @@ function pct(score: number, max: number): string {
   display: flex;
   align-items: center;
   gap: 12px;
-}
 
-.overview-satisfaction__bar-bg {
-  flex: 1;
-  height: 8px;
-  background-color: #e4e4e4;
-  border-radius: 4px;
-  overflow: hidden;
-}
+  &__bar-bg {
+    flex: 1;
+    height: 8px;
+    background-color: #e4e4e4;
+    border-radius: 4px;
+    overflow: hidden;
+  }
 
-.overview-satisfaction__bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4a7fc1, #6fa3e8);
-  border-radius: 4px;
-  transition: width 0.5s ease;
-}
+  &__bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4a7fc1, #6fa3e8);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
 
-.overview-satisfaction__value {
-  flex-shrink: 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: #4a7fc1;
+  &__value {
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4a7fc1;
+  }
 }
 
 /* 임금 */
 .overview-salary {
   padding: 20px 8px 8px;
-}
 
-.overview-salary__track {
-  position: relative;
-  height: 4px;
-  background-color: #e4e4e4;
-  border-radius: 2px;
-  margin: 0 16px;
-}
+  &__track {
+    position: relative;
+    height: 4px;
+    background-color: #e4e4e4;
+    border-radius: 2px;
+    margin: 0 16px;
+  }
 
-.overview-salary__bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 100%;
-  background: linear-gradient(90deg, #c8daf5, #4a7fc1);
-  border-radius: 2px;
-}
+  &__bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #c8daf5, #4a7fc1);
+    border-radius: 2px;
+  }
 
-.overview-salary__point {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
+  &__point {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
 
-.overview-salary__point--lower  { left: 0%; }
-.overview-salary__point--median { left: 50%; }
-.overview-salary__point--upper  { left: 100%; }
+    &--lower  { left: 0%; }
+    &--median { left: 50%; }
+    &--upper  { left: 100%; }
+  }
 
-.overview-salary__dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #4a7fc1;
-  border: 2px solid #fff;
-  box-shadow: 0 0 0 1px #4a7fc1;
-}
+  &__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4a7fc1;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #4a7fc1;
 
-.overview-salary__dot--median {
-  width: 14px;
-  height: 14px;
-  background-color: #2b5fa8;
-  box-shadow: 0 0 0 1px #2b5fa8;
-}
+    &--median {
+      width: 14px;
+      height: 14px;
+      background-color: #2b5fa8;
+      box-shadow: 0 0 0 1px #2b5fa8;
+    }
+  }
 
-.overview-salary__tip {
-  position: absolute;
-  top: -22px;
-  font-size: 11px;
-  color: #aaa;
-  white-space: nowrap;
-}
+  &__tip {
+    position: absolute;
+    top: -22px;
+    font-size: 11px;
+    color: #aaa;
+    white-space: nowrap;
+  }
 
-.overview-salary__amount {
-  position: absolute;
-  top: 18px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #444;
-  white-space: nowrap;
-}
+  &__amount {
+    position: absolute;
+    top: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    white-space: nowrap;
 
-.overview-salary__amount--median {
-  font-size: 15px;
-  font-weight: 700;
-  color: #2b5fa8;
+    &--median {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2b5fa8;
+    }
+  }
 }
 </style>

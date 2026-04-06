@@ -24,64 +24,62 @@ defineProps<{
 const router = useRouter()
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .job-detail-header {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 40px 20px 30px;
   width: 100%;
-}
 
-.job-detail-header__back {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border: none;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  font-size: 22px;
-  color: #333;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  padding-bottom: 1px;
-  transition: background-color 0.15s ease;
-}
+  &__back {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding-bottom: 1px;
+    transition: background-color 0.15s ease;
 
-.job-detail-header__back:active {
-  background-color: #e8e8e8;
-}
+    &:active { background-color: #e8e8e8; }
+  }
 
-.job-detail-header__info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
 
-.job-detail-header__classifications {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
-}
+  &__classifications {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
 
-.job-detail-header__primary,
-.job-detail-header__secondary {
-  font-size: 12px;
-  color: #888;
-}
+  &__primary,
+  &__secondary {
+    font-size: 12px;
+    color: #888;
+  }
 
-.job-detail-header__dot {
-  font-size: 12px;
-  color: #ccc;
-}
+  &__dot {
+    font-size: 12px;
+    color: #ccc;
+  }
 
-.job-detail-header__title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #333;
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+  }
 }
 </style>

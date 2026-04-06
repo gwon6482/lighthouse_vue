@@ -22,7 +22,7 @@ const emit = defineEmits<{
 }>()
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .recommended-job-card {
   display: flex;
   flex-direction: column;
@@ -34,49 +34,45 @@ const emit = defineEmits<{
   cursor: pointer;
   transition: background-color 0.15s ease;
   position: relative;
-}
 
-.recommended-job-card:active {
-  background-color: #e8e8e8;
-}
+  &:active { background-color: #e8e8e8; }
 
-@media (hover: hover) {
-  .recommended-job-card:hover {
-    background-color: #e8e8e8;
+  @media (hover: hover) {
+    &:hover { background-color: #e8e8e8; }
   }
-}
 
-.recommended-job-card__classifications {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
-}
+  &__classifications {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
 
-.recommended-job-card__primary,
-.recommended-job-card__secondary {
-  font-size: 12px;
-  color: #888;
-}
+  &__primary,
+  &__secondary {
+    font-size: 12px;
+    color: #888;
+  }
 
-.recommended-job-card__dot {
-  font-size: 12px;
-  color: #ccc;
-}
+  &__dot {
+    font-size: 12px;
+    color: #ccc;
+  }
 
-.recommended-job-card__title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  padding-right: 24px;
-}
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    padding-right: 24px;
+  }
 
-.recommended-job-card__arrow {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 22px;
-  color: #bbb;
+  &__arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: #bbb;
+  }
 }
 </style>

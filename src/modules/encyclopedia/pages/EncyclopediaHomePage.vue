@@ -99,7 +99,7 @@ function goToRecommended() {
 }
 </script>
 
-<style>
+<style lang="scss">
 .encyclopedia-home {
   display: flex;
   flex-direction: column;
@@ -107,85 +107,81 @@ function goToRecommended() {
   min-height: 100vh;
   padding: 150px 0 32px;
   gap: 24px;
-}
 
-.encyclopedia-home__section {
-  width: 100%;
-  max-width: 480px;
-  padding: 0 20px;
-}
-
-.encyclopedia-home__section-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-}
-
-.encyclopedia-home__state {
-  font-size: 14px;
-  color: #aaa;
-  text-align: center;
-  padding: 32px 0;
-}
-
-.encyclopedia-home__menu-btn {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  padding: 20px;
-  border: none;
-  border-radius: 16px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-  text-align: left;
-  transition: background-color 0.15s ease;
-}
-
-.encyclopedia-home__menu-btn:active {
-  background-color: #e8e8e8;
-}
-
-@media (hover: hover) {
-  .encyclopedia-home__menu-btn:hover {
-    background-color: #e8e8e8;
+  &__section {
+    width: 100%;
+    max-width: 480px;
+    padding: 0 20px;
   }
-}
 
-.encyclopedia-home__menu-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-}
+  &__section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+  }
 
-.encyclopedia-home__menu-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
+  &__state {
+    font-size: 14px;
+    color: #aaa;
+    text-align: center;
+    padding: 32px 0;
+  }
 
-.encyclopedia-home__menu-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-}
+  &__menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 20px;
+    border: none;
+    border-radius: 16px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.15s ease;
 
-.encyclopedia-home__menu-desc {
-  font-size: 13px;
-  color: #888;
-  line-height: 1.4;
-}
+    &:active { background-color: #e8e8e8; }
 
-.encyclopedia-home__menu-arrow {
-  font-size: 22px;
-  color: #bbb;
-  flex-shrink: 0;
-}
+    @media (hover: hover) {
+      &:hover { background-color: #e8e8e8; }
+    }
+  }
 
-.encyclopedia-home__card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  &__menu-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  &__menu-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  &__menu-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  &__menu-desc {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  &__menu-arrow {
+    font-size: 22px;
+    color: #bbb;
+    flex-shrink: 0;
+  }
+
+  &__card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 </style>

@@ -67,25 +67,25 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .job-detail-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
 
-.job-detail-page__loading,
-.job-detail-page__error {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: #aaa;
-  padding: 40px 20px;
-}
+  &__loading,
+  &__error {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #aaa;
+    padding: 40px 20px;
+  }
 
-.job-detail-page__content {
-  flex: 1;
+  &__content {
+    flex: 1;
+  }
 }
 </style>
