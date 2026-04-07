@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ThreeChoiceItem } from '@/modules/survey/types/survey';
+import type { ThreeChoiceItem } from '@/modules/survey/types/survey'
 
 /**
  * ThreeChoiceQuestion 컴포넌트
@@ -12,7 +12,6 @@ import type { ThreeChoiceItem } from '@/modules/survey/types/survey';
  * 사용처: T3(근무환경) 파트
  */
 
-
 const props = defineProps<{
   items: ThreeChoiceItem[]
   modelValue: Record<string, string>
@@ -23,15 +22,15 @@ const emit = defineEmits<{
 }>()
 
 const options = [
-  { value: 'O', label: '괜찮음', emoji: 'O' },
+  { value: 'X', label: '별로임', emoji: 'X' },
   { value: 'M', label: '상관없음', emoji: '-' },
-  { value: 'X', label: '별로임', emoji: 'X' }
+  { value: 'O', label: '괜찮음', emoji: 'O' },
 ]
 
 function selectOption(itemId: string, value: string) {
   emit('update:modelValue', {
     ...props.modelValue,
-    [itemId]: value
+    [itemId]: value,
   })
 }
 
@@ -44,14 +43,12 @@ function getSelectedValue(itemId: string) {
   <div class="three-choice-question">
     <p class="instruction">각 근무 환경에 대한 선호도를 선택해주세요.</p>
     <div class="items-list">
-      <div
-        v-for="item in items"
-        :key="item.item_id"
-        class="item-row"
-      >
+      <div v-for="item in items" :key="item.item_id" class="item-row">
         <div class="item-info">
           <span class="item-name">{{ item.item_name || item.item_id }}</span>
-          <span v-if="item.item_definition" class="item-definition">{{ item.item_definition }}</span>
+          <span v-if="item.item_definition" class="item-definition">{{
+            item.item_definition
+          }}</span>
         </div>
         <div class="options">
           <button
@@ -61,7 +58,7 @@ function getSelectedValue(itemId: string) {
             class="option-btn"
             :class="[
               option.value.toLowerCase(),
-              { selected: getSelectedValue(item.item_id) === option.value }
+              { selected: getSelectedValue(item.item_id) === option.value },
             ]"
             @click="selectOption(item.item_id, option.value)"
           >
