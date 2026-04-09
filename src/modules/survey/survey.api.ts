@@ -35,4 +35,4 @@ export const fetchSurveyForm = () => req.get<SurveyFormResponse>(`/api/survey/fo
 // }
 
 export const submitSurveyResponse = (data: SurveySubmitRequest) =>
-  req.post<SurveySubmitResponse>(`/api/survey/response`, { data })
+  req.post<SurveySubmitResponse>(`/api/survey/response`, data)
