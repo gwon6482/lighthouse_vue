@@ -2,6 +2,7 @@
   <div class="home">
     <h1 class="title">라이트하우스 관리자 페이지</h1>
     <HomeButtonContainer :menus="menus" />
+    <h1>홈</h1>
   </div>
 </template>
 
