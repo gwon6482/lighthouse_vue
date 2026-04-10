@@ -43,8 +43,8 @@ const emit = defineEmits<{
 
 // 스케일 타입에 따른 옵션 생성
 const options = [
-  { value: 'O', label: 'O', colorClass: 'btn-O' },
   { value: 'X', label: 'X', colorClass: 'btn-X' },
+  { value: 'O', label: 'O', colorClass: 'btn-O' },
 ]
 
 function selectOption(value: string) {

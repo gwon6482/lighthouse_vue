@@ -35,12 +35,11 @@ const answers = reactive<SurveyAnswers>({
 const currentPageIndex = ref(0)
 
 export function useSurvey() {
-
   // 모든 페이지 목록 생성
   const allPages = computed<PageInfo[]>(() => {
     if (!surveyData.value) return []
 
-    const pages:PageInfo[] = []
+    const pages: PageInfo[] = []
 
     for (const part of surveyData.value.survey) {
       const partName = part.survey_part

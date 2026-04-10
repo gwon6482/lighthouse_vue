@@ -1,10 +1,10 @@
 /* ScaleQuestion2 */
 .scale-question-2 {
-  padding: 32px 0;
+  padding: 2rem 0;
   border-bottom: 1px solid #eee;
 
   &:first-child {
-    padding-top: 10px;
+    padding-top: 0.625rem;
   }
 
   &:last-child {
@@ -13,34 +13,50 @@
 
   .question-text {
     text-align: center;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     color: #333;
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.25rem;
+      margin-bottom: 1.375rem;
+    }
   }
 
   .question-num {
     font-weight: 600;
     color: #666;
-    margin-right: 4px;
+    margin-right: 0.25rem;
   }
 
   .options {
     display: flex;
-    gap: 50px;
+    gap: 3.125rem;
     justify-content: center;
     align-items: center;
+
+    @media (min-width: 768px) {
+      gap: 3.75rem;
+    }
   }
 
   .option-btn {
-    width: 90px;
-    height: 120px;
-    border-radius: 10px;
+    width: 7.5rem;
+    height: 3.75rem;
+    border-radius: 0.625rem;
     border: 2px solid;
     background: #fff;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     transition: all 0.2s ease;
-    font-size: 30px;
+    font-size: 1.875rem;
+
+    @media (min-width: 768px) {
+      width: 9rem;
+      height: 4.5rem;
+      font-size: 2.25rem;
+    }
 
     &:hover {
       border-color: #999;
@@ -48,33 +64,33 @@
       color: #999;
     }
 
-    &.selected {
-      background: var(--btn-color);
-      border-color: var(--btn-color);
-      color: #fff;
+    &.btn-O {
+      color: #1fb66a;
+      --btn-color: #1fb66a;
+      border-color: rgba(31, 182, 106, 0.5);
     }
 
-    &.btn-O {
+    &.btn-X {
       color: #ff6b57;
       --btn-color: #ff6b57;
       border-color: rgba(255, 107, 87, 0.4);
     }
 
-    &.btn-X {
-      color: #1fb66a;
-      --btn-color: #1fb66a;
-      border-color: rgba(31, 182, 106, 0.5);
+    &.selected {
+      background: var(--btn-color);
+      border-color: var(--btn-color);
+      color: #fff;
     }
   }
 }
 
 /* ScaleQuestion5 */
 .scale-question-5 {
-  padding: 32px 0;
+  padding: 2rem 0;
   border-bottom: 1px solid #eee;
 
   &:first-child {
-    padding-top: 10px;
+    padding-top: 0.625rem;
   }
 
   &:last-child {
@@ -83,39 +99,53 @@
 
   .question-text {
     text-align: center;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     color: #333;
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.25rem;
+      margin-bottom: 1.375rem;
+    }
   }
 
   .question-num {
     font-weight: 600;
     color: #666;
-    margin-right: 4px;
+    margin-right: 0.25rem;
   }
 
   .options {
     display: flex;
-    gap: 28px;
+    gap: 1.75rem;
     justify-content: center;
     align-items: center;
 
-    @media (max-width: 480px) {
-      .option-btn {
-        padding: 10px 4px;
-      }
+    // @media (max-width: 480px) {
+    //   .option-btn {
+    //     padding: 0.625rem 0.25rem;
+    //   }
+    // }
+
+    @media (min-width: 768px) {
+      gap: 2rem;
     }
   }
 
   .option-btn {
-    width: 30px;
-    height: 30px;
+    width: 1.875rem;
+    height: 1.875rem;
     border-radius: 999px;
     border: 2px solid;
     background: #fff;
     cursor: pointer;
     transition: all 0.2s ease;
+
+    @media (min-width: 768px) {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
 
     &:hover {
       border-color: #999;
@@ -128,21 +158,30 @@
       color: #fff;
     }
 
-    // 5점 척도 개별 버튼 색상
     &.btn-bad {
       --btn-color: #ff6b57;
       border-color: rgba(255, 107, 87, 0.4);
       color: #ff6b57;
-      width: 44px;
-      height: 44px;
+      width: 2.75rem;
+      height: 2.75rem;
+
+      @media (min-width: 768px) {
+        width: 3.25rem;
+        height: 3.25rem;
+      }
     }
 
     &.btn-bad2 {
       --btn-color: #ff9a8b;
       border-color: rgba(255, 107, 87, 0.25);
       color: #ff9a8b;
-      width: 37px;
-      height: 37px;
+      width: 2.3125rem;
+      height: 2.3125rem;
+
+      @media (min-width: 768px) {
+        width: 2.75rem;
+        height: 2.75rem;
+      }
     }
 
     &.btn-mid {
@@ -155,16 +194,26 @@
       --btn-color: #5dba8a;
       border-color: rgba(31, 182, 106, 0.35);
       color: #5dba8a;
-      width: 37px;
-      height: 37px;
+      width: 2.3125rem;
+      height: 2.3125rem;
+
+      @media (min-width: 768px) {
+        width: 2.75rem;
+        height: 2.75rem;
+      }
     }
 
     &.btn-good {
       --btn-color: #1fb66a;
       border-color: rgba(31, 182, 106, 0.5);
       color: #1fb66a;
-      width: 44px;
-      height: 44px;
+      width: 2.75rem;
+      height: 2.75rem;
+
+      @media (min-width: 768px) {
+        width: 3.25rem;
+        height: 3.25rem;
+      }
     }
 
     &.btn-bad,
@@ -183,11 +232,11 @@
 
 /* ScaleQuestion10 */
 .scale-question-10 {
-  padding: 32px 0;
+  padding: 2rem 0;
   border-bottom: 1px solid #eee;
 
   &:first-child {
-    padding-top: 10px;
+    padding-top: 0.625rem;
   }
 
   &:last-child {
@@ -196,33 +245,43 @@
 
   .question-text {
     text-align: center;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     color: #333;
-    margin-bottom: 18px;
+    margin-bottom: 1.125rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.25rem;
+      margin-bottom: 1.375rem;
+    }
   }
 
   .question-num {
     font-weight: 600;
     color: #666;
-    margin-right: 4px;
+    margin-right: 0.25rem;
   }
 
   .options {
     display: grid;
-    grid-template-columns: repeat(5, 55px);
-    gap: 10px;
+    grid-template-columns: repeat(5, 3.4375rem);
+    gap: 0.625rem;
     justify-content: center;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(5, 4rem);
+      gap: 0.75rem;
+    }
   }
 
   .option-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 12px;
+    width: 3.4375rem;
+    height: 3.4375rem;
+    border-radius: 0.75rem;
     border: 1.5px solid #ccc;
     background: #fff;
     color: #000;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -230,6 +289,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (min-width: 768px) {
+      width: 4rem;
+      height: 4rem;
+      font-size: 1.375rem;
+    }
 
     &:hover {
       border-color: #999;
@@ -245,22 +310,30 @@
   }
 }
 
-
 /* MultiSelectQuestion */
 .multi-select-question {
-  padding: 16px 0;
+  padding: 1rem 0;
 
   .instruction {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     color: #333;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.125rem;
+      margin-bottom: 1.25rem;
+    }
   }
 
   .items-grid {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
+
+    @media (min-width: 768px) {
+      gap: 0.625rem;
+    }
   }
 
   .item-btn {
@@ -268,13 +341,17 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    padding: 14px 16px;
+    padding: 0.875rem 1rem;
     border: 2px solid #e0e0e0;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     background: #fff;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
+
+    @media (min-width: 768px) {
+      padding: 1rem 1.25rem;
+    }
 
     &:hover {
       border-color: #999;
@@ -288,50 +365,81 @@
   }
 
   .item-name {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: #333;
+
+    @media (min-width: 768px) {
+      font-size: 1.125rem;
+    }
   }
 
   .item-text {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: #666;
-    margin-top: 4px;
+    margin-top: 0.25rem;
     line-height: 1.4;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
   }
 
   .selected-count {
-    margin-top: 16px;
-    font-size: 14px;
+    margin-top: 1rem;
+    font-size: 0.875rem;
     color: #666;
     text-align: right;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
   }
 }
 
 /* PriorityQuestion */
 .priority-question {
-  padding: 16px 0;
+  padding: 1rem 0;
 
   .instruction {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     color: #333;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.125rem;
+      margin-bottom: 1.25rem;
+    }
   }
 
   .priority-display {
     display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+
+    @media (min-width: 768px) {
+      gap: 0.625rem;
+      margin-bottom: 1.5rem;
+    }
+
+    &:has(.priority-slot.filled) {
+      flex-direction: column;
+    }
   }
 
   .priority-slot {
     flex: 1;
-    padding: 12px;
+    min-width: 0;
+    padding: 0.75rem;
     border: 2px dashed #e0e0e0;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     text-align: center;
     background: #fafafa;
+
+    @media (min-width: 768px) {
+      padding: 0.875rem;
+    }
 
     &.filled {
       border-style: solid;
@@ -342,29 +450,38 @@
 
   .slot-label {
     display: block;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #999;
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
+
+    @media (min-width: 768px) {
+      font-size: 0.875rem;
+    }
   }
 
   .slot-value {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: #333;
     font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
   }
 
   .items-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
+
+    @media (min-width: 768px) {
+      gap: 0.625rem;
+    }
   }
 
   .item-card {
     border: 2px solid #e0e0e0;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     background: #fff;
     overflow: hidden;
     transition: all 0.2s ease;
@@ -378,164 +495,237 @@
   .item-main {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 16px;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
     cursor: pointer;
+
+    @media (min-width: 768px) {
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+    }
   }
 
   .priority-badge {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     background: #333;
     color: #fff;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     flex-shrink: 0;
+
+    @media (min-width: 768px) {
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.875rem;
+    }
   }
 
   .item-text {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #333;
     line-height: 1.4;
     flex: 1;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
   }
 
   .expand-btn {
-    margin: 0 16px 12px;
-    padding: 6px 12px;
+    margin: 0 1rem 0.75rem;
+    padding: 0.375rem 0.75rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     background: #fff;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #666;
     cursor: pointer;
+
+    @media (min-width: 768px) {
+      margin: 0 1.25rem 0.875rem;
+      padding: 0.5rem 0.875rem;
+      font-size: 0.875rem;
+    }
   }
 
   .item-definition {
-    padding: 12px 16px;
+    padding: 0.75rem 1rem;
     background: #f5f5f5;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: #666;
     line-height: 1.5;
     border-top: 1px solid #eee;
+
+    @media (min-width: 768px) {
+      padding: 0.875rem 1.25rem;
+      font-size: 1rem;
+    }
   }
 }
 
 /* ThreeChoiceQuestion */
 .three-choice-question {
-  padding: 16px 0;
+  padding: 1rem 0;
 
   .instruction {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     color: #333;
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.125rem;
+      margin-bottom: 1.25rem;
+    }
   }
 
   .items-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-  }
+    gap: 0.75rem;
 
-  .item-row {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    border: 1px solid #e8e8e8;
-    border-radius: 10px;
-    background: #fff;
+    @media (min-width: 768px) {
+      gap: 0.875rem;
+    }
 
-    @media (min-width: 600px) {
+    .item-row {
+      display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: space-between;
-    }
-  }
+      gap: 0.625rem;
+      padding: 0.875rem;
+      border: 1px solid #e8e8e8;
+      border-radius: 0.625rem;
+      background: #fff;
 
-  .item-info {
-    flex: 1;
-  }
+      @media (max-width: 450px) {
+        flex-direction: column;
+      }
 
-  .item-name {
-    display: block;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
-  }
+      @media (min-width: 768px) {
+        gap: 0.75rem;
+        padding: 1rem;
+      }
 
-  .item-definition {
-    display: block;
-    font-size: 13px;
-    color: #666;
-    margin-top: 2px;
-  }
+      .item-info {
+        flex: 1;
 
-  .options {
-    display: flex;
-    gap: 6px;
-    flex-shrink: 0;
-  }
+        @media (max-width: 450px) {
+          text-align: center;
+        }
 
-  .option-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 8px 14px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 60px;
+        .item-name {
+          display: block;
+          font-size: 0.9375rem;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 0.25rem;
 
-    &:hover {
-      background: #f5f5f5;
-    }
+          @media (min-width: 768px) {
+            font-size: 1.125rem;
+          }
+        }
 
-    &.selected {
-      &.o {
-        border-color: #4caf50;
-        background: #e8f5e9;
+        .item-definition {
+          display: block;
+          font-size: 0.8125rem;
+          color: #666;
 
-        .option-emoji {
-          color: #4caf50;
+          @media (max-width: 450px) {
+            padding: 0 2.5rem 0;
+          }
+
+          @media (min-width: 768px) {
+            font-size: 1rem;
+          }
         }
       }
 
-      &.m {
-        border-color: #ff9800;
-        background: #fff3e0;
+      .options {
+        display: flex;
+        gap: 0.375rem;
+        flex-shrink: 0;
+        align-self: center;
 
-        .option-emoji {
-          color: #ff9800;
+        @media (min-width: 768px) {
+          gap: 0.5rem;
         }
-      }
 
-      &.x {
-        border-color: #f44336;
-        background: #ffebee;
+        .option-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.125rem;
+          padding: 0.5rem 0.875rem;
+          border: 2px solid #e0e0e0;
+          border-radius: 0.5rem;
+          background: #fff;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          min-width: 3.75rem;
 
-        .option-emoji {
-          color: #f44336;
+          @media (min-width: 768px) {
+            padding: 0.625rem 1rem;
+            min-width: 4.5rem;
+          }
+
+          &:hover {
+            background: #f5f5f5;
+          }
+
+          &.selected {
+            &.o {
+              border-color: #1fb66a;
+              background: #e8f5e9;
+
+              .option-emoji {
+                color: #1fb66a;
+              }
+            }
+
+            &.m {
+              border-color: #ff9800;
+              background: #fff3e0;
+
+              .option-emoji {
+                color: #ff9800;
+              }
+            }
+
+            &.x {
+              border-color: #ff6b57;
+              background: #ffebee;
+
+              .option-emoji {
+                color: #ff6b57;
+              }
+            }
+          }
+
+          .option-emoji {
+            font-size: 1rem;
+            font-weight: 700;
+
+            @media (min-width: 768px) {
+              font-size: 1.25rem;
+            }
+          }
+
+          .option-label {
+            font-size: 0.6875rem;
+            color: #666;
+
+            @media (min-width: 768px) {
+              font-size: 0.8125rem;
+            }
+          }
         }
       }
     }
-  }
-
-  .option-emoji {
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  .option-label {
-    font-size: 11px;
-    color: #666;
   }
 }
