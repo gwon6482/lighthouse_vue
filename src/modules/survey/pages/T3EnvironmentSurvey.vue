@@ -27,7 +27,7 @@
         </div>
         <div class="level-desc">
           <div class="desc-label">레벨 {{ answers[i] }}</div>
-          <div class="desc-text">{{ part.levels[(answers[i] ?? 3) - 1] }}</div>
+          <div class="desc-text">{{ part.levels[answers[i] - 1] }}</div>
         </div>
       </div>
     </div>
@@ -108,3 +108,90 @@ const parts = [
 
 const answers = ref([3, 3, 3, 3, 3, 3])
 </script>
+
+<style scoped>
+.survey-wrap {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+.survey-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 2rem;
+}
+
+.parts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.part-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+}
+
+.part-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+}
+
+.part-question {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.slider-wrap {
+  width: 100%;
+  margin: 1.25rem 0;
+}
+
+.slider-wrap input[type='range'] {
+  width: 100%;
+  display: block;
+  margin: 0;
+}
+
+.tick-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 1rem;
+}
+
+.tick-row span {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  width: 20px;
+  text-align: center;
+}
+
+.level-desc {
+  padding: 0.75rem 1rem;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-tertiary);
+}
+
+.desc-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: 3px;
+}
+
+.desc-text {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+}
+</style>

@@ -569,161 +569,85 @@
 }
 
 /* ThreeChoiceQuestion */
-.three-choice-question {
-  padding: 1rem 0;
+.survey-wrap {
+  // max-width: 420px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
 
-  .instruction {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 1rem;
-
-    @media (min-width: 768px) {
-      font-size: 1rem;
-      margin-bottom: 1.125rem;
-    }
+  .survey-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 2rem;
   }
 
-  .items-list {
+  .parts-container {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 
-    @media (min-width: 768px) {
-      gap: 0.8125rem;
-    }
+    .part-card {
+      background: var(--color-background-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-lg);
+      padding: 1.25rem;
 
-    .item-row {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.625rem;
-      padding: 0.875rem;
-      border: 1px solid #e8e8e8;
-      border-radius: 0.625rem;
-      background: #fff;
-
-      @media (max-width: 450px) {
-        flex-direction: column;
+      .part-label {
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        margin-bottom: 6px;
       }
 
-      @media (min-width: 768px) {
-        gap: 0.6875rem;
-        padding: 0.9375rem;
+      .part-question {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--color-text-primary);
+        margin-bottom: 0;
+        line-height: 1.5;
       }
 
-      .item-info {
-        flex: 1;
+      .slider-wrap {
+        width: 100%;
+        margin: 1.25rem 0;
 
-        @media (max-width: 450px) {
+        input[type='range'] {
+          width: 100%;
+          display: block;
+          margin: 0;
+        }
+      }
+
+      .tick-row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 1rem;
+
+        span {
+          font-size: 11px;
+          color: var(--color-text-tertiary);
+          width: 20px;
           text-align: center;
         }
-
-        .item-name {
-          display: block;
-          font-size: 0.9375rem;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 0.25rem;
-
-          @media (min-width: 768px) {
-            font-size: 1rem;
-          }
-        }
-
-        .item-definition {
-          display: block;
-          font-size: 0.8125rem;
-          color: #666;
-
-          @media (max-width: 450px) {
-            padding: 0 2.5rem 0;
-          }
-
-          @media (min-width: 768px) {
-            font-size: 0.9375rem;
-          }
-        }
       }
 
-      .options {
-        display: flex;
-        gap: 0.375rem;
-        flex-shrink: 0;
-        align-self: center;
+      .level-desc {
+        padding: 0.75rem 1rem;
+        background: var(--color-background-secondary);
+        border-radius: var(--border-radius-md);
+        border: 0.5px solid var(--color-border-tertiary);
 
-        @media (min-width: 768px) {
-          gap: 0.4375rem;
+        .desc-label {
+          font-size: 11px;
+          color: var(--color-text-secondary);
+          margin-bottom: 3px;
         }
 
-        .option-btn {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.125rem;
-          padding: 0.5rem 0.875rem;
-          border: 2px solid #e0e0e0;
-          border-radius: 0.5rem;
-          background: #fff;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          min-width: 3.75rem;
-
-          @media (min-width: 768px) {
-            padding: 0.5625rem 0.9375rem;
-            min-width: 4.0625rem;
-          }
-
-          &:hover {
-            background: #f5f5f5;
-          }
-
-          &.selected {
-            &.o {
-              border-color: #1fb66a;
-              background: #e8f5e9;
-
-              .option-emoji {
-                color: #1fb66a;
-              }
-            }
-
-            &.m {
-              border-color: #ff9800;
-              background: #fff3e0;
-
-              .option-emoji {
-                color: #ff9800;
-              }
-            }
-
-            &.x {
-              border-color: #ff6b57;
-              background: #ffebee;
-
-              .option-emoji {
-                color: #ff6b57;
-              }
-            }
-          }
-
-          .option-emoji {
-            font-size: 1rem;
-            font-weight: 700;
-
-            @media (min-width: 768px) {
-              font-size: 1.125rem;
-            }
-          }
-
-          .option-label {
-            font-size: 0.6875rem;
-            color: #666;
-
-            @media (min-width: 768px) {
-              font-size: 0.75rem;
-            }
-          }
+        .desc-text {
+          font-size: 14px;
+          color: var(--color-text-primary);
+          line-height: 1.6;
         }
       }
     }

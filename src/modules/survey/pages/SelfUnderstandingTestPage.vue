@@ -69,7 +69,7 @@
 
         <!-- T3: 3지선다 -->
         <template v-else-if="currentPage.type === 'threeChoice' && currentPage.items">
-          <ThreeChoiceQuestion :items="currentPage.items" v-model="answers.T3" />
+          <ThreeChoiceQuestion />
         </template>
       </main>
 

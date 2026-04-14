@@ -265,8 +265,12 @@ export function useSurvey() {
     }
   }
 
+  // 컴포넌트 마운트 시 설문지 로드
+  // surveyData가 이미 있으면 loadSurvey() 스킵하도록 가드 추가 (기존 첫 로드 동작은 그대로). if문은 마지막 페이지 이동용 임시라 삭제해도 됨.
   onMounted(() => {
-    loadSurvey()
+    if (!surveyData.value) {
+      loadSurvey()
+    }
   })
 
   return {
