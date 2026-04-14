@@ -7,7 +7,7 @@ export default [
   {
     path: '/self-understanding',
     name: 'Self Understanding',
-    component: () => import('./pages/SelfUnderstandingPage.vue'),
+    component: () => import('./pages/SelfUnderstandingIntroPage.vue'),
   },
   {
     path: '/self-understanding/select',
