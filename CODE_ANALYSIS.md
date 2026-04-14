@@ -14,7 +14,7 @@ src/
 │   ├── styles.scss         # 전역 스타일
 │   └── modules/survey/     # 설문 모듈 스타일
 │       ├── Home.scss
-│       ├── SelfUnderstanding.scss
+│       ├── SelfUnderstandingIntro.scss
 │       └── SelfUnderstandingTest.scss
 ├── components/             # 공통 컴포넌트
 ├── modules/                # 기능별 모듈 (도메인 기반 구조)
@@ -50,7 +50,7 @@ src/
 | 파일                            | 설명                   |
 | ------------------------------- | ---------------------- |
 | `HomePage.vue`                  | 설문 홈 페이지         |
-| `SelfUnderstandingPage.vue`     | 자기이해 페이지        |
+| `SelfUnderstandingIntroPage.vue` | 자기이해 페이지        |
 | `SelfUnderstandingTestPage.vue` | 자기이해 테스트 페이지 |
 
 #### 컴포넌트 구성

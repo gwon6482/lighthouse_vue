@@ -1,0 +1,1341 @@
+/* ─── Google Fonts / Pretendard ─────────────────────────── */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* ─── 전체 페이지 ───────────────────────────────────────── */
+.lh-page {
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  background: #FAFAF8;
+  color: #1a1a1a;
+  margin: 0 auto;
+
+  /* ─── 컬러 유틸 ─────────────────────────────────────────── */
+  .y { color: #FFD100; }
+  .s { color: #5BB8F5; }
+
+  /* ─── NAV ───────────────────────────────────────────────── */
+  .m-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid #EEEEE8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    @media (min-width: 768px) {
+      padding: 0.875rem 1.5rem;
+    }
+
+    .nav-logo {
+      height: 1.8125rem;
+
+      @media (min-width: 768px) {
+        height: 2.125rem;
+      }
+    }
+
+    .m-nav-btn {
+      background: #FFD100;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.875rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      font-family: 'Pretendard', sans-serif;
+      cursor: pointer;
+
+      @media (min-width: 768px) {
+        padding: 0.625rem 1rem;
+        font-size: 0.9375rem;
+      }
+    }
+  }
+
+  /* ─── HERO ──────────────────────────────────────────────── */
+  .m-hero {
+    background: #fff;
+    padding: 2.25rem 1.25rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #EEEEE8;
+
+    @media (min-width: 768px) {
+      padding: 2.75rem 1.5rem 2.5rem;
+    }
+
+    .m-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3125rem;
+      background: #FFF8CC;
+      border: 1px solid #FFE566;
+      border-radius: 100px;
+      padding: 0.3125rem 0.75rem;
+      font-size: 0.75rem;
+      color: #997A00;
+      font-weight: 600;
+      margin-bottom: 1.125rem;
+
+      @media (min-width: 768px) {
+        padding: 0.375rem 0.875rem;
+        font-size: 0.875rem;
+        margin-bottom: 1.375rem;
+      }
+
+      .m-badge-dot {
+        display: inline-block;
+        width: 0.3125rem;
+        height: 0.3125rem;
+        border-radius: 50%;
+        background: #FFD100;
+      }
+    }
+
+    .m-hero-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 0.75rem;
+      color: #1a1a1a;
+
+      @media (min-width: 768px) {
+        font-size: 2.125rem;
+        margin-bottom: 0.875rem;
+      }
+    }
+
+    .m-hero-sub {
+      font-size: 0.875rem;
+      color: #888;
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+
+      @media (min-width: 768px) {
+        font-size: 1rem;
+        margin-bottom: 1.75rem;
+      }
+    }
+
+    .m-cta {
+      background: #FFD100;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 1rem 0;
+      font-size: 1rem;
+      font-weight: 800;
+      width: 100%;
+      cursor: pointer;
+      letter-spacing: -0.3px;
+      font-family: 'Pretendard', sans-serif;
+
+      @media (min-width: 768px) {
+        padding: 1.25rem 0;
+        font-size: 1.125rem;
+      }
+    }
+
+    .m-hint {
+      margin-top: 0.625rem;
+      font-size: 0.75rem;
+      color: #bbb;
+
+      @media (min-width: 768px) {
+        font-size: 0.875rem;
+      }
+    }
+
+    .m-trust {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid #F0F0E8;
+
+      .m-trust-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1875rem;
+
+        .m-trust-num {
+          font-size: 1.0625rem;
+          font-weight: 800;
+          color: #1a1a1a;
+          letter-spacing: -0.5px;
+
+          @media (min-width: 768px) {
+            font-size: 1.25rem;
+          }
+        }
+
+        .m-trust-label {
+          font-size: 0.625rem;
+          color: #bbb;
+
+          @media (min-width: 768px) {
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      .m-trust-div {
+        width: 1px;
+        height: 1.375rem;
+        background: #E8E8E0;
+      }
+    }
+  }
+
+  /* ─── SECTION COMMONS ───────────────────────────────────── */
+  .m-sec {
+    padding: 2.25rem 1.25rem;
+
+    @media (min-width: 768px) {
+      padding: 2.75rem 1.5rem;
+    }
+
+    &.gray {
+      background: #F7F7F2;
+      border-top: 1px solid #EEEEE8;
+      border-bottom: 1px solid #EEEEE8;
+    }
+    &.dark { background: #1a1a1a; }
+    &.yellow { background: #FFD100; }
+    &.white { background: #fff; }
+  }
+
+  .m-lbl {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.625rem;
+    display: block;
+
+    @media (min-width: 768px) {
+      font-size: 0.8125rem;
+    }
+
+    &.y { color: #C9A200; }
+    &.s { color: #2E8FCC; }
+    &.w { color: rgba(255, 255, 255, 0.5); }
+  }
+
+  .m-ttl {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.7px;
+    margin-bottom: 0.375rem;
+    color: #1a1a1a;
+
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+    }
+
+    &.w { color: #fff; }
+  }
+
+  .m-sub {
+    font-size: 0.8125rem;
+    color: #999;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
+
+    &.w { color: rgba(255, 255, 255, 0.4); }
+  }
+
+  /* ─── PAIN ──────────────────────────────────────────────── */
+  .pain-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5625rem;
+
+    .pain-card {
+      background: #fff;
+      border: 1px solid #EEEEE8;
+      border-radius: 0.75rem;
+      padding: 0.875rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6875rem;
+
+      @media (min-width: 768px) {
+        padding: 1rem 1.25rem;
+      }
+
+      .pain-icon {
+        font-size: 1.125rem;
+        flex-shrink: 0;
+        margin-top: 1px;
+
+        @media (min-width: 768px) {
+          font-size: 1.375rem;
+        }
+      }
+
+      .pain-text {
+        font-size: 0.8125rem;
+        color: #666;
+        line-height: 1.5;
+
+        @media (min-width: 768px) {
+          font-size: 1rem;
+        }
+
+        :deep(strong) {
+          color: #1a1a1a;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  /* ─── STEPS ─────────────────────────────────────────────── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+
+    .step {
+      display: flex;
+      gap: 0.875rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid #F0F0E8;
+
+      &:last-child { border-bottom: none; }
+
+      .step-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .step-num {
+          width: 1.875rem;
+          height: 1.875rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.8125rem;
+          font-weight: 800;
+          flex-shrink: 0;
+
+          @media (min-width: 768px) {
+            width: 2.25rem;
+            height: 2.25rem;
+            font-size: 0.9375rem;
+          }
+
+          &.y { background: #FFF8CC; color: #997A00; }
+          &.s { background: #E8F4FE; color: #2E8FCC; }
+        }
+
+        .step-line {
+          width: 1px;
+          flex: 1;
+          background: #F0F0E8;
+          margin-top: 0.375rem;
+        }
+      }
+
+      .step-title {
+        font-size: 0.875rem;
+        font-weight: 800;
+        margin-bottom: 0.1875rem;
+        letter-spacing: -0.3px;
+        color: #1a1a1a;
+        padding-top: 0.25rem;
+
+        @media (min-width: 768px) {
+          font-size: 1.0625rem;
+        }
+      }
+
+      .step-desc {
+        font-size: 0.75rem;
+        color: #999;
+        line-height: 1.5;
+
+        @media (min-width: 768px) {
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+
+  /* ─── TEST CARDS ────────────────────────────────────────── */
+  .test-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
+    .test-card {
+      background: #fff;
+      border: 1.5px solid #EEEEE8;
+      border-radius: 0.875rem;
+      padding: 1rem;
+
+      @media (min-width: 768px) {
+        padding: 1.25rem;
+      }
+
+      &.cy { border-color: #FFD100; }
+      &.cs { border-color: #5BB8F5; }
+
+      .test-head {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        margin-bottom: 0.5rem;
+
+        .test-icon {
+          width: 2.125rem;
+          height: 2.125rem;
+          border-radius: 0.5625rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.0625rem;
+          flex-shrink: 0;
+
+          @media (min-width: 768px) {
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 1.25rem;
+          }
+
+          &.iy { background: #FFF8CC; }
+          &.is { background: #E8F4FE; }
+          &.ip { background: #F0EEFF; }
+        }
+
+        .test-card-title {
+          font-size: 0.875rem;
+          font-weight: 800;
+          color: #1a1a1a;
+          margin-bottom: 0.125rem;
+
+          @media (min-width: 768px) {
+            font-size: 1.0625rem;
+          }
+        }
+
+        .test-card-q {
+          font-size: 0.6875rem;
+          color: #bbb;
+          font-weight: 500;
+
+          @media (min-width: 768px) {
+            font-size: 0.8125rem;
+          }
+        }
+      }
+
+      .test-card-desc {
+        font-size: 0.75rem;
+        color: #777;
+        line-height: 1.5;
+
+        @media (min-width: 768px) {
+          font-size: 0.875rem;
+        }
+      }
+
+      .badge-pill {
+        display: inline-block;
+        font-size: 0.625rem;
+        font-weight: 700;
+        padding: 0.1875rem 0.5625rem;
+        border-radius: 100px;
+        margin-top: 0.5625rem;
+
+        @media (min-width: 768px) {
+          font-size: 0.75rem;
+        }
+
+        &.y { background: #FFF8CC; color: #997A00; }
+        &.s { background: #E8F4FE; color: #2E8FCC; }
+        &.p { background: #F0EEFF; color: #6B5FCC; }
+      }
+    }
+  }
+
+  /* ─── 결과 미리보기 ─────────────────────────────────────── */
+  .result-section {
+    background: #fff;
+    padding: 2.25rem 1.25rem;
+
+    @media (min-width: 768px) {
+      padding: 2.75rem 1.5rem;
+    }
+
+    .result-preview-card {
+      border-radius: 1.125rem;
+      overflow: hidden;
+      border: 1.5px solid #EEEEE8;
+
+      .rp-hero {
+        background: #1a1a1a;
+        padding: 1.375rem 1.125rem 1.125rem;
+        text-align: center;
+
+        @media (min-width: 768px) {
+          padding: 1.625rem 1.375rem 1.375rem;
+        }
+
+        .rp-type-label {
+          font-size: 0.625rem;
+          font-weight: 700;
+          color: rgba(255, 255, 255, 0.35);
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          margin-bottom: 0.5rem;
+
+          @media (min-width: 768px) {
+            font-size: 0.75rem;
+          }
+        }
+
+        .rp-type-name {
+          font-size: 1.375rem;
+          font-weight: 900;
+          color: #FFD100;
+          letter-spacing: -0.8px;
+          line-height: 1.2;
+          margin-bottom: 0.3125rem;
+
+          @media (min-width: 768px) {
+            font-size: 1.625rem;
+          }
+        }
+
+        .rp-type-sub {
+          font-size: 0.75rem;
+          color: rgba(255, 255, 255, 0.45);
+          line-height: 1.5;
+          margin-bottom: 0.875rem;
+
+          @media (min-width: 768px) {
+            font-size: 0.875rem;
+          }
+        }
+
+        .rp-tags {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 0.3125rem;
+
+          .rptag {
+            padding: 0.25rem 0.625rem;
+            border-radius: 100px;
+            font-size: 0.625rem;
+            font-weight: 700;
+
+            @media (min-width: 768px) {
+              font-size: 0.75rem;
+            }
+
+            &.y {
+              background: rgba(255, 209, 0, 0.15);
+              color: #FFD100;
+              border: 1px solid rgba(255, 209, 0, 0.3);
+            }
+            &.s {
+              background: rgba(91, 184, 245, 0.15);
+              color: #5BB8F5;
+              border: 1px solid rgba(91, 184, 245, 0.3);
+            }
+            &.w {
+              background: rgba(255, 255, 255, 0.07);
+              color: rgba(255, 255, 255, 0.5);
+              border: 1px solid rgba(255, 255, 255, 0.12);
+            }
+          }
+        }
+      }
+
+      .rp-body {
+        background: #fff;
+        padding: 1.25rem 1.125rem;
+
+        @media (min-width: 768px) {
+          padding: 1.5rem 1.375rem;
+        }
+
+        .rp-sec-title {
+          font-size: 0.625rem;
+          font-weight: 700;
+          color: #bbb;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 0.75rem;
+          display: block;
+
+          @media (min-width: 768px) {
+            font-size: 0.75rem;
+          }
+        }
+
+        /* 성격 바 */
+        .trait-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5625rem;
+          margin-bottom: 1.25rem;
+
+          .trait-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .trait-name {
+              font-size: 0.6875rem;
+              font-weight: 600;
+              color: #555;
+              min-width: 4.125rem;
+              flex-shrink: 0;
+
+              @media (min-width: 768px) {
+                font-size: 0.8125rem;
+                min-width: 5rem;
+              }
+            }
+
+            .trait-bar-wrap {
+              flex: 1;
+              height: 0.375rem;
+              background: #F0F0E8;
+              border-radius: 100px;
+              overflow: hidden;
+
+              .trait-bar {
+                height: 100%;
+                border-radius: 100px;
+                transition: width 0.6s ease;
+
+                &.hi { background: #FFD100; }
+                &.mi { background: #5BB8F5; }
+                &.lo { background: #D8D8D0; }
+              }
+            }
+
+            .trait-val {
+              font-size: 0.625rem;
+              font-weight: 700;
+              min-width: 1.375rem;
+              text-align: right;
+
+              @media (min-width: 768px) {
+                font-size: 0.75rem;
+              }
+
+              &.hi { color: #C9A200; }
+              &.mi { color: #2E8FCC; }
+              &.lo { color: #bbb; }
+            }
+
+            .trait-cmp {
+              font-size: 0.5625rem;
+              font-weight: 700;
+              padding: 0.125rem 0.3125rem;
+              border-radius: 100px;
+              flex-shrink: 0;
+
+              @media (min-width: 768px) {
+                font-size: 0.6875rem;
+              }
+
+              &.up { background: #FFF8CC; color: #997A00; }
+              &.eq { background: #F0F0F0; color: #aaa; }
+              &.dn { background: #E8F4FE; color: #2E8FCC; }
+            }
+          }
+        }
+
+        /* 좋아하는 일 */
+        .like-card {
+          background: #FAFAF8;
+          border: 1px solid #EEEEE8;
+          border-radius: 0.75rem;
+          padding: 0.875rem;
+          margin-bottom: 1.125rem;
+
+          @media (min-width: 768px) {
+            padding: 1rem;
+          }
+
+          .like-text {
+            font-size: 0.8125rem;
+            color: #1a1a1a;
+            line-height: 1.8;
+            font-weight: 500;
+
+            @media (min-width: 768px) {
+              font-size: 1rem;
+            }
+
+            .chip {
+              display: inline-block;
+              padding: 1px 0.4375rem;
+              border-radius: 0.375rem;
+              font-weight: 700;
+              font-size: 0.75rem;
+              margin: 0 1px;
+
+              @media (min-width: 768px) {
+                font-size: 0.875rem;
+              }
+
+              &.chip-y { background: #FFF8CC; color: #997A00; }
+              &.chip-s { background: #E8F4FE; color: #2E8FCC; }
+              &.chip-p { background: #F0EEFF; color: #6B5FCC; }
+            }
+          }
+        }
+
+        /* 업무환경 */
+        .env-mini-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4375rem;
+          margin-bottom: 1.125rem;
+
+          .env-mini {
+            border-radius: 0.625rem;
+            padding: 0.6875rem 0.8125rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5625rem;
+
+            @media (min-width: 768px) {
+              padding: 0.875rem 1rem;
+            }
+
+            &.good { background: #EEFAF4; border: 1px solid #C8F0DC; }
+            &.bad  { background: #FEF1F1; border: 1px solid #FACACA; }
+            &.ok   { background: #F7F7F2; border: 1px solid #E0E0D8; }
+
+            .env-mini-badge {
+              font-size: 0.5625rem;
+              font-weight: 700;
+              padding: 0.125rem 0.4375rem;
+              border-radius: 100px;
+              margin-bottom: 0.25rem;
+              display: inline-block;
+
+              @media (min-width: 768px) {
+                font-size: 0.6875rem;
+              }
+
+              &.good { background: #C8F0DC; color: #0F7A42; }
+              &.bad  { background: #FDD8D8; color: #A32020; }
+              &.ok   { background: #E0E0D8; color: #666; }
+            }
+
+            .env-mini-text {
+              font-size: 0.75rem;
+              color: #444;
+              line-height: 1.45;
+              font-weight: 500;
+
+              @media (min-width: 768px) {
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+
+        /* 추천 진로 */
+        .rec-row {
+          display: flex;
+          gap: 0.5rem;
+
+          .rec-card {
+            flex: 1;
+            border-radius: 0.75rem;
+            padding: 0.875rem 0.75rem;
+            border: 1.5px solid #EEEEE8;
+            background: #fff;
+
+            @media (min-width: 768px) {
+              padding: 1rem 0.875rem;
+            }
+
+            &.field { border-color: #FFD100; background: #FFFDF0; }
+            &.job   { border-color: #5BB8F5; background: #F5FBFF; }
+
+            .rec-card-label {
+              font-size: 0.5625rem;
+              font-weight: 700;
+              letter-spacing: 1.5px;
+              text-transform: uppercase;
+              margin-bottom: 0.5rem;
+              display: block;
+
+              @media (min-width: 768px) {
+                font-size: 0.6875rem;
+              }
+
+              &.y { color: #C9A200; }
+              &.s { color: #2E8FCC; }
+            }
+
+            .rec-icon {
+              font-size: 1.25rem;
+              margin-bottom: 0.375rem;
+
+              @media (min-width: 768px) {
+                font-size: 1.5rem;
+              }
+            }
+
+            .rec-name {
+              font-size: 0.8125rem;
+              font-weight: 900;
+              color: #1a1a1a;
+              letter-spacing: -0.3px;
+              margin-bottom: 0.25rem;
+              line-height: 1.25;
+
+              @media (min-width: 768px) {
+                font-size: 1rem;
+              }
+            }
+
+            .rec-desc {
+              font-size: 0.625rem;
+              color: #aaa;
+              line-height: 1.4;
+              margin-bottom: 0.5rem;
+
+              @media (min-width: 768px) {
+                font-size: 0.75rem;
+              }
+            }
+
+            .rec-fit {
+              display: flex;
+              align-items: center;
+              gap: 0.3125rem;
+
+              .rec-fit-bar {
+                flex: 1;
+                height: 3px;
+                background: #F0F0E8;
+                border-radius: 100px;
+                overflow: hidden;
+
+                .rec-fit-fill {
+                  height: 100%;
+                  border-radius: 100px;
+
+                  &.y { background: #FFD100; }
+                  &.s { background: #5BB8F5; }
+                }
+              }
+
+              .rec-fit-pct {
+                font-size: 0.625rem;
+                font-weight: 800;
+
+                @media (min-width: 768px) {
+                  font-size: 0.75rem;
+                }
+
+                &.y { color: #C9A200; }
+                &.s { color: #2E8FCC; }
+              }
+            }
+          }
+        }
+
+        .lock-row {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: #F7F7F2;
+          border: 1px solid #EEEEE8;
+          border-radius: 0.625rem;
+          padding: 0.75rem 0.875rem;
+          margin-top: 0.875rem;
+
+          @media (min-width: 768px) {
+            padding: 0.875rem 1rem;
+          }
+
+          .lock-text {
+            font-size: 0.75rem;
+            color: #888;
+            line-height: 1.4;
+
+            @media (min-width: 768px) {
+              font-size: 0.875rem;
+            }
+
+            strong {
+              color: #1a1a1a;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* ─── 기능 (이용 가능) ──────────────────────────────────── */
+  .fgroup {
+    margin-bottom: 1.25rem;
+
+    &:last-child { margin-bottom: 0; }
+
+    .fgroup-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.6875rem;
+
+      .fgroup-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.5625rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+
+        @media (min-width: 768px) {
+          width: 2.375rem;
+          height: 2.375rem;
+          font-size: 1.25rem;
+        }
+
+        &.iy { background: #FFF8CC; }
+        &.is { background: #E8F4FE; }
+        &.ig { background: #EAFAF0; }
+        &.ip { background: #F0EEFF; }
+      }
+
+      .fgroup-name {
+        font-size: 0.875rem;
+        font-weight: 800;
+        color: #1a1a1a;
+
+        @media (min-width: 768px) {
+          font-size: 1.0625rem;
+        }
+      }
+
+      .live-badge {
+        font-size: 0.625rem;
+        font-weight: 700;
+        padding: 0.1875rem 0.5rem;
+        border-radius: 100px;
+        background: #E8F9EF;
+        color: #1A7A42;
+        margin-left: 0.125rem;
+
+        @media (min-width: 768px) {
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    .fitem-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4375rem;
+      padding-left: 2.5rem;
+
+      @media (min-width: 768px) {
+        padding-left: 3rem;
+      }
+
+      .fitem {
+        background: #fff;
+        border: 1px solid #EEEEE8;
+        border-radius: 0.625rem;
+        padding: 0.6875rem 0.875rem;
+
+        @media (min-width: 768px) {
+          padding: 0.875rem 1rem;
+        }
+
+        .fitem-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.1875rem;
+
+          .fitem-title {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: #1a1a1a;
+
+            @media (min-width: 768px) {
+              font-size: 1rem;
+            }
+          }
+
+          .fitem-tag-live {
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 0.125rem 0.4375rem;
+            border-radius: 100px;
+            background: #E8F9EF;
+            color: #1A7A42;
+
+            @media (min-width: 768px) {
+              font-size: 0.75rem;
+            }
+          }
+        }
+
+        .fitem-desc {
+          font-size: 0.6875rem;
+          color: #aaa;
+          line-height: 1.4;
+
+          @media (min-width: 768px) {
+            font-size: 0.8125rem;
+          }
+        }
+      }
+    }
+  }
+
+  /* ─── 출시 예정 ─────────────────────────────────────────── */
+  .soon-section {
+    background: #F3F3FF;
+    border-top: 1px solid #D8DEFF;
+    border-bottom: 1px solid #D8DEFF;
+    padding: 2.25rem 1.25rem;
+
+    @media (min-width: 768px) {
+      padding: 2.75rem 1.5rem;
+    }
+
+    .soon-header-banner {
+      background: #4B5FCC;
+      border-radius: 0.875rem;
+      padding: 1.125rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      @media (min-width: 768px) {
+        padding: 1.375rem 1.25rem;
+      }
+
+      .soon-banner-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+
+        @media (min-width: 768px) {
+          font-size: 1.75rem;
+        }
+      }
+
+      .soon-banner-title {
+        font-size: 0.9375rem;
+        font-weight: 900;
+        color: #fff;
+        letter-spacing: -0.3px;
+        margin-bottom: 0.1875rem;
+
+        @media (min-width: 768px) {
+          font-size: 1.125rem;
+        }
+      }
+
+      .soon-banner-sub {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.4;
+
+        @media (min-width: 768px) {
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    .soon-fgroup {
+      margin-bottom: 1.25rem;
+
+      &:last-child { margin-bottom: 0; }
+
+      .soon-fgroup-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.6875rem;
+
+        .soon-fgroup-icon {
+          width: 2rem;
+          height: 2rem;
+          border-radius: 0.5625rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          flex-shrink: 0;
+          background: #EEF0FF;
+
+          @media (min-width: 768px) {
+            width: 2.375rem;
+            height: 2.375rem;
+            font-size: 1.25rem;
+          }
+        }
+
+        .soon-fgroup-name {
+          font-size: 0.875rem;
+          font-weight: 800;
+          color: #2B2F6B;
+
+          @media (min-width: 768px) {
+            font-size: 1.0625rem;
+          }
+        }
+
+        .soon-badge {
+          font-size: 0.625rem;
+          font-weight: 700;
+          padding: 0.1875rem 0.5rem;
+          border-radius: 100px;
+          background: #DDE2FF;
+          color: #3B48CC;
+          margin-left: 0.125rem;
+
+          @media (min-width: 768px) {
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      .soon-fitem-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4375rem;
+        padding-left: 2.5rem;
+
+        @media (min-width: 768px) {
+          padding-left: 3rem;
+        }
+
+        .soon-fitem {
+          background: #fff;
+          border: 1.5px dashed #C0C8F8;
+          border-radius: 0.625rem;
+          padding: 0.6875rem 0.875rem;
+
+          @media (min-width: 768px) {
+            padding: 0.875rem 1rem;
+          }
+
+          .soon-fitem-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.1875rem;
+
+            .soon-fitem-title {
+              font-size: 0.8125rem;
+              font-weight: 700;
+              color: #4B5FCC;
+
+              @media (min-width: 768px) {
+                font-size: 1rem;
+              }
+            }
+
+            .soon-fitem-tag {
+              font-size: 0.625rem;
+              font-weight: 700;
+              padding: 0.125rem 0.4375rem;
+              border-radius: 100px;
+              background: #DDE2FF;
+              color: #3B48CC;
+
+              @media (min-width: 768px) {
+                font-size: 0.75rem;
+              }
+            }
+          }
+
+          .soon-fitem-desc {
+            font-size: 0.6875rem;
+            color: #8890CC;
+            line-height: 1.4;
+
+            @media (min-width: 768px) {
+              font-size: 0.8125rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* ─── STATS ─────────────────────────────────────────────── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5625rem;
+
+    .stat-card {
+      border-radius: 0.75rem;
+      padding: 1rem 0.875rem;
+
+      @media (min-width: 768px) {
+        padding: 1.25rem 1rem;
+      }
+
+      &.cy { background: rgba(255, 209, 0, 0.08); border: 1px solid rgba(255, 209, 0, 0.22); }
+      &.cs { background: rgba(91, 184, 245, 0.08); border: 1px solid rgba(91, 184, 245, 0.22); }
+
+      .stat-num {
+        font-size: 1.375rem;
+        font-weight: 900;
+        letter-spacing: -0.8px;
+        margin-bottom: 0.25rem;
+
+        @media (min-width: 768px) {
+          font-size: 1.625rem;
+        }
+
+        &.y { color: #FFD100; }
+        &.s { color: #5BB8F5; }
+      }
+
+      .stat-label {
+        font-size: 0.6875rem;
+        color: rgba(255, 255, 255, 0.4);
+        line-height: 1.4;
+
+        @media (min-width: 768px) {
+          font-size: 0.8125rem;
+        }
+      }
+    }
+  }
+
+  /* ─── FINAL CTA ─────────────────────────────────────────── */
+  .final-sky {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+    background: rgba(91, 184, 245, 0.18);
+    border-radius: 100px;
+    padding: 0.3125rem 0.75rem;
+    font-size: 0.6875rem;
+    color: #1a6FA0;
+    font-weight: 600;
+    margin-bottom: 1rem;
+
+    @media (min-width: 768px) {
+      font-size: 0.8125rem;
+    }
+  }
+
+  .final-title {
+    font-size: 1.375rem;
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -0.8px;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.625rem;
+    }
+  }
+
+  .final-sub {
+    font-size: 0.8125rem;
+    color: rgba(26, 26, 26, 0.5);
+    line-height: 1.6;
+    margin-bottom: 1.375rem;
+
+    @media (min-width: 768px) {
+      font-size: 1rem;
+    }
+  }
+
+  .final-cta {
+    background: #1a1a1a;
+    color: #FFD100;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem 0;
+    font-size: 0.9375rem;
+    font-weight: 800;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+
+    @media (min-width: 768px) {
+      padding: 1.25rem 0;
+      font-size: 1.125rem;
+    }
+  }
+
+  .final-login {
+    font-size: 0.75rem;
+    color: rgba(26, 26, 26, 0.4);
+
+    @media (min-width: 768px) {
+      font-size: 0.875rem;
+    }
+
+    a {
+      color: rgba(26, 26, 26, 0.6);
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  }
+
+  /* ─── FOOTER ────────────────────────────────────────────── */
+  .m-footer {
+    background: #1a1a1a;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      padding: 1.5rem;
+    }
+
+    .footer-logo {
+      height: 1.625rem;
+      filter: brightness(0) invert(1);
+
+      @media (min-width: 768px) {
+        height: 1.875rem;
+      }
+    }
+
+    .m-footer-copy {
+      font-size: 0.6875rem;
+      color: rgba(255, 255, 255, 0.22);
+
+      @media (min-width: 768px) {
+        font-size: 0.8125rem;
+      }
+    }
+  }
+}
