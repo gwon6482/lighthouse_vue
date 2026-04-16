@@ -67,9 +67,14 @@
           <PriorityQuestion :items="currentPage.items" v-model="answers.T23" />
         </template>
 
-        <!-- T3: 3지선다 -->
-        <template v-else-if="currentPage.type === 'threeChoice' && currentPage.items">
-          <ThreeChoiceQuestion />
+        <!-- T3: 업무환경 슬라이더 -->
+        <template v-else-if="currentPage.type === 'threeChoice'">
+          <ThreeChoiceQuestion v-model="answers.T3" />
+        </template>
+
+        <!-- 파트 인트로 -->
+        <template v-else-if="currentPage.type === 'partIntro' && currentPage.introData">
+          <SurveyPartIntro :intro-data="currentPage.introData" />
         </template>
       </main>
 
@@ -124,6 +129,7 @@ import SurveyNavBtnPrev from '../components/page/su-test-page/SurveyNavBtnPrev.v
 import SurveyNavCurrentPage from '../components/page/su-test-page/SurveyNavCurrentPage.vue'
 import ScaleQuestion2 from '../components/page/su-test-page/su-questions/ScaleQuestion2.vue'
 import ScaleQuestion10 from '../components/page/su-test-page/su-questions/ScaleQuestion10.vue'
+import SurveyPartIntro from '../components/page/su-test-page/SurveyPartIntro.vue'
 
 const router = useRouter()
 const {
@@ -185,8 +191,7 @@ async function handleSubmit() {
     downloadResponse(surveyId.value, respondentId)
 
     await submitSurvey(respondentId)
-    alert('설문이 제출되었습니다!')
-    router.push('/self-understanding')
+    router.push('/self-understanding/complete')
   } catch {
     // 에러는 useSurvey에서 처리됨
   }

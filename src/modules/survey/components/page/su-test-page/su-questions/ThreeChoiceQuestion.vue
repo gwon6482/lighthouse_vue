@@ -15,7 +15,8 @@
             min="1"
             max="5"
             step="1"
-            v-model.number="answers[i]"
+            :value="modelValue[keys[i]]"
+            @input="handleInput(i, ($event.target as HTMLInputElement).valueAsNumber)"
           />
         </div>
         <div class="tick-row">
@@ -26,8 +27,8 @@
           <span>5</span>
         </div>
         <div class="level-desc">
-          <div class="desc-label">레벨 {{ answers[i] }}</div>
-          <div class="desc-text">{{ part.levels[(answers[i] ?? 3) - 1] }}</div>
+          <div class="desc-label">레벨 {{ modelValue[keys[i]] }}</div>
+          <div class="desc-text">{{ part.levels[modelValue[keys[i]] - 1] }}</div>
         </div>
       </div>
     </div>
@@ -35,7 +36,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import type { T3Answers } from '../../../types/survey'
+
+const props = defineProps<{ modelValue: T3Answers }>()
+const emit = defineEmits<{ 'update:modelValue': [value: T3Answers] }>()
+
+const keys: (keyof T3Answers)[] = ['T3_PHY', 'T3_PEO', 'T3_COM', 'T3_RES', 'T3_STR', 'T3_FLX']
+
+function handleInput(index: number, value: number) {
+  emit('update:modelValue', { ...props.modelValue, [keys[index]]: value })
+}
 
 const parts = [
   {
@@ -105,6 +115,4 @@ const parts = [
     ],
   },
 ]
-
-const answers = ref([3, 3, 3, 3, 3, 3])
 </script>

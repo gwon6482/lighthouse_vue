@@ -5,6 +5,17 @@ export interface SurveyFormResponse {
   survey: SurveyPart[]
 }
 
+// 파트 인트로 데이터 타입
+export interface PartIntroData {
+  partLabel: string        // 예: '파트 1'
+  title: string            // 예: '성격 & 기질'
+  description: string      // 한 줄 부제
+  emoji: string
+  questionCount: string    // 예: '43문항', '총 107문항', '6개 항목'
+  estimatedMinutes?: number // T3는 undefined (시간 표시 없음)
+  highlights: string[]     // 핵심 안내 문구 목록
+}
+
 // 페이지 정보 타입
 export interface PageInfo {
   part: string
@@ -12,7 +23,8 @@ export interface PageInfo {
   pageNumber: number
   questions?: SurveyQuestion[]
   items?: SurveyItem[]
-  type: 'scale' | 'multiSelect' | 'priority' | 'threeChoice'
+  type: 'scale' | 'multiSelect' | 'priority' | 'threeChoice' | 'partIntro'
+  introData?: PartIntroData
 }
 
 // 설문 타입 정의
@@ -63,6 +75,15 @@ export interface ThreeChoiceItem {
 
 
 
+export interface T3Answers {
+  T3_PHY: number  // 근무환경 강도
+  T3_PEO: number  // 대인접촉 강도
+  T3_COM: number  // 커뮤니케이션 강도
+  T3_RES: number  // 책임·권한 강도
+  T3_STR: number  // 스트레스 강도
+  T3_FLX: number  // 업무 유동성
+}
+
 export interface SurveyAnswers {
   T1: Record<string, string>
   T21: Record<string, string>
@@ -73,7 +94,7 @@ export interface SurveyAnswers {
     priority_3: string
     no_priority: string[]
   }
-  T3: Record<string, string>
+  T3: T3Answers
 }
 
 // Survey API 타입 정의

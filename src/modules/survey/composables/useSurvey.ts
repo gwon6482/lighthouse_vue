@@ -13,7 +13,7 @@
  */
 import { ref, computed, reactive, onMounted } from 'vue'
 import { fetchSurveyForm, submitSurveyResponse } from '../survey.api'
-import type { SurveyFormResponse, SurveyAnswers, SurveyQuestion, PageInfo } from '../types/survey'
+import type { SurveyFormResponse, SurveyAnswers, T3Answers, SurveyQuestion, PageInfo, PartIntroData } from '../types/survey'
 
 // 모듈 레벨에서 상태 정의 (모든 인스턴스가 공유)
 const surveyId = ref<string>('')
@@ -28,7 +28,7 @@ const answers = reactive<SurveyAnswers>({
   T21: {},
   T22: { checked: [] },
   T23: { priority_1: '', priority_2: '', priority_3: '', no_priority: [] },
-  T3: {},
+  T3: { T3_PHY: 3, T3_PEO: 3, T3_COM: 3, T3_RES: 3, T3_STR: 3, T3_FLX: 3 },
 })
 
 // 현재 페이지 인덱스
@@ -41,8 +41,62 @@ export function useSurvey() {
 
     const pages: PageInfo[] = []
 
+    // 파트별 인트로 데이터 (하드코딩, SURVEY_FLOW_UPDATE.md 참고)
+    // 문항 수: T1=43, T21=61, T22=33, T23=13, T3=6개 항목
+    const partIntros: Record<string, PartIntroData> = {
+      T1: {
+        partLabel: '파트 1',
+        title: '성격 & 기질',
+        description: '적성을 파악하는 데 가장 중요한 요소',
+        emoji: '🧠',
+        questionCount: '43문항',
+        estimatedMinutes: 5,
+        highlights: [
+          '외향성 · 기발함 · 성실성 · 우호성 · 자극추구 · 위험회피 · 사회적민감성 · 자율성 · 연대감, 9가지 요소를 측정해',
+          '단순한 진로 추천을 넘어 스스로를 이해하는 중요한 지표가 돼',
+          '정답은 없어. 지금의 나 그대로 솔직하게 답해줘',
+        ],
+      },
+      T21: {
+        partLabel: '파트 2',
+        title: '좋아하는 일',
+        description: '라이트하우스 검사의 핵심',
+        emoji: '✨',
+        questionCount: '총 107문항',  // T21(61) + T22(33) + T23(13)
+        estimatedMinutes: 5,
+        highlights: [
+          '좋아하는 일 = 흥미있는 분야에서 잘하는 것(재능)을 하며, 가치있는 것(가치관)을 쫓는 것',
+          '재능 · 흥미 · 가치관 3개 파트로 나눠서 검사해',
+          '재능 검사는 다중지능검사를 베이스로 제작됐어. 조금 걸리지만 분명히 도움이 될 거야',
+        ],
+      },
+      T3: {
+        partLabel: '파트 3',
+        title: '업무 환경',
+        description: '나의 진로 리스크를 미리 파악하는 검사',
+        emoji: '🌿',
+        questionCount: '6개 항목',
+        // estimatedMinutes 없음 — T3는 예상 시간 미표시
+        highlights: [
+          '좋아하는 일을 해도 직업 환경의 리스크를 미리 파악 못 하면 적응하지 못하는 경우가 생겨',
+          '라이트하우스는 이 검사를 통해 너의 진로 리스크를 먼저 파악하고, 진로 추천에 반영해',
+        ],
+      },
+    }
+
     for (const part of surveyData.value.survey) {
       const partName = part.survey_part
+
+      // T1, T21, T3 파트 시작 전 인트로 페이지 삽입
+      if (partIntros[partName]) {
+        pages.push({
+          part: partName,
+          pageKey: 'intro',
+          pageNumber: 0,
+          type: 'partIntro',
+          introData: partIntros[partName],
+        })
+      }
 
       if (partName === 'T1' || partName === 'T21') {
         // 페이지별 질문
@@ -125,7 +179,8 @@ export function useSurvey() {
     const page = currentPage.value
     if (!page) return null
 
-    const partPages = allPages.value.filter((p) => p.part === page.part)
+    // partIntro 페이지는 카운트에서 제외 (헤더 진행 표시가 0/N 이 되는 것 방지)
+    const partPages = allPages.value.filter((p) => p.part === page.part && p.type !== 'partIntro')
     const currentIndexInPart = partPages.findIndex((p) => p.pageKey === page.pageKey)
 
     return {
@@ -184,8 +239,8 @@ export function useSurvey() {
     answers.T23 = priorities
   }
 
-  function setThreeChoiceAnswer(itemId: string, value: 'O' | 'M' | 'X') {
-    answers.T3[itemId] = value
+  function setT3Answers(value: T3Answers) {
+    Object.assign(answers.T3, value)
   }
 
   // 페이지 이동
@@ -221,8 +276,12 @@ export function useSurvey() {
       return answers.T23.priority_1 && answers.T23.priority_2 && answers.T23.priority_3
     }
 
-    if (page.type === 'threeChoice' && page.items) {
-      return page.items.every((item) => answers.T3[item.item_id])
+    if (page.type === 'threeChoice') {
+      return true // 슬라이더는 항상 유효한 값(1~5)을 가짐
+    }
+
+    if (page.type === 'partIntro') {
+      return true // 인트로 페이지는 답변 없이 다음으로 이동 가능
     }
 
     return false
@@ -301,7 +360,7 @@ export function useSurvey() {
     setScaleAnswer,
     setMultiSelectAnswer,
     setPriorityAnswer,
-    setThreeChoiceAnswer,
+    setT3Answers,
     goToNextPage,
     goToPrevPage,
     submitSurvey,

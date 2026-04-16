@@ -1,7 +1,7 @@
 <!-- <template>
   <div class="self-understanding">
     <h1 class="title">자기이해 테스트</h1>
-    <RouterLink class="start-button" to="/self-understanding/select"> 시작하기 </RouterLink>
+    <RouterLink class="start-button" to="/self-understanding/guide"> 시작하기 </RouterLink>
   </div>
 </template> -->
 
@@ -11,7 +11,7 @@
     <!-- NAV -->
     <nav class="m-nav">
       <img src="/Symbol_Logo.svg" alt="LightHouse" class="nav-logo" />
-      <RouterLink class="m-nav-btn" to="/self-understanding/select"> 검사 시작 → </RouterLink>
+      <RouterLink class="m-nav-btn" to="/self-understanding/guide"> 검사 시작 → </RouterLink>
     </nav>
 
     <!-- HERO -->
@@ -23,7 +23,7 @@
         <span class="s">진로를 찾아봐</span>
       </h1>
       <p class="m-hero-sub">나를 제대로 알면, 진로가 보여.<br>LightHouse가 나만의 방향을 밝혀줄게.</p>
-      <RouterLink class="m-cta" to="/self-understanding/select"> 무료로 검사 시작하기 → </RouterLink>
+      <RouterLink class="m-cta" to="/self-understanding/guide"> 무료로 검사 시작하기 → </RouterLink>
       <p class="m-hint">회원가입 없이 바로 시작 · 약 5분 소요</p>
       <div class="m-trust">
         <div class="m-trust-item">
@@ -259,7 +259,7 @@
       <div class="final-sky">💙 무료로 시작할 수 있어</div>
       <h2 class="final-title">지금, 나를 찾는<br>5분을 써봐</h2>
       <p class="final-sub">회원가입 없이 바로 시작.<br>결과 저장 시 더 많은 기능 이용 가능.</p>
-      <RouterLink class="final-cta" to="/self-understanding/select"> 무료로 검사 시작하기 → </RouterLink>
+      <RouterLink class="final-cta" to="/self-understanding/guide"> 무료로 검사 시작하기 → </RouterLink>
       <p class="final-login" style="margin-top:12px;">
         이미 계정이 있어? <a @click="onLoginClick">로그인하기</a>
       </p>

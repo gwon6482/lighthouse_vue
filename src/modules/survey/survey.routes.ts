@@ -10,6 +10,12 @@ export default [
     component: () => import('./pages/SelfUnderstandingIntroPage.vue'),
   },
   {
+    // 검사 전체 안내 페이지 (SURVEY_FLOW_UPDATE.md 참고)
+    path: '/self-understanding/guide',
+    name: 'Self Understanding Guide',
+    component: () => import('./pages/SelfUnderstandingGuidePage.vue'),
+  },
+  {
     path: '/self-understanding/select',
     name: 'Self Understanding Select',
     component: () => import('./pages/SelfUnderstandingSelectPage.vue'),
@@ -18,5 +24,11 @@ export default [
     path: '/self-understanding/test',
     name: 'Self Understanding Test',
     component: () => import('./pages/SelfUnderstandingTestPage.vue'),
+  },
+  {
+    // 검사 완료 페이지 (SURVEY_FLOW_UPDATE.md 참고)
+    path: '/self-understanding/complete',
+    name: 'Self Understanding Complete',
+    component: () => import('./pages/SelfUnderstandingCompletePage.vue'),
   },
 ]
