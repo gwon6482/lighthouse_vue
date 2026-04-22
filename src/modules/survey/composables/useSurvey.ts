@@ -308,6 +308,7 @@ export function useSurvey() {
       const { data } = await submitSurveyResponse({
         survey_id: surveyId.value,
         respondent_id: respondentId,
+        answer_type: `type_${scaleType.value}` as 'type_2' | 'type_5' | 'type_10',
         answers,
       })
 

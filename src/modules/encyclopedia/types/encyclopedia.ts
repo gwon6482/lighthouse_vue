@@ -2,8 +2,9 @@
 // 공통 타입
 // ────────────────────────────────────────────────────────────────────────────
 
-/** 순위 항목 (이름 + 점수) */
+/** 순위 항목 — DB는 code만 저장, API 응답 시 name join */
 export interface RankItem {
+  code: string
   name: string
   score: number
 }

@@ -101,6 +101,7 @@ export interface SurveyAnswers {
 export interface SurveySubmitRequest {
   survey_id: string
   respondent_id: string
+  answer_type: 'type_2' | 'type_5' | 'type_10'
   answers: SurveyAnswers
 }
 
