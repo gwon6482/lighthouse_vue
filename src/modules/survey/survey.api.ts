@@ -1,5 +1,5 @@
 import { req } from '@/shared/api'
-import type { SurveyFormResponse, SurveySubmitRequest, SurveySubmitResponse } from './types/survey'
+import type { SurveyFormResponse, SurveySubmitRequest, SurveySubmitResponse, SurveyAnalysisResponse } from './types/survey'
 
 /**
  * surveyApi 서비스
@@ -36,3 +36,6 @@ export const fetchSurveyForm = () => req.get<SurveyFormResponse>(`/api/survey/fo
 
 export const submitSurveyResponse = (data: SurveySubmitRequest) =>
   req.post<SurveySubmitResponse>(`/api/survey/response`, data)
+
+export const fetchSurveyAnalysis = (surveyId: string) =>
+  req.get<SurveyAnalysisResponse>(`/api/survey/analysis/${surveyId}`)

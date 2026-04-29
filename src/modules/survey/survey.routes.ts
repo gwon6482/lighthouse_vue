@@ -31,4 +31,9 @@ export default [
     name: 'Self Understanding Complete',
     component: () => import('./pages/SelfUnderstandingCompletePage.vue'),
   },
+  {
+    path: '/self-understanding/result/:survey_id',
+    name: 'Self Understanding Result',
+    component: () => import('./pages/SelfUnderstandingResultPage.vue'),
+  },
 ]

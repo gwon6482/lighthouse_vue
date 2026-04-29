@@ -39,6 +39,8 @@ export interface SurveyItem {
   item_name?: string
   item_text?: string
   item_definition?: string
+  item_question?: string
+  levels?: { level: number; description: string }[]
 }
 
 export interface SurveyPart {
@@ -116,5 +118,71 @@ export interface SurveySubmitResponse {
   error?: {
     message: string
     code: string
+  }
+}
+
+// ─── 분석 결과 타입 ───────────────────────────────────────────
+
+export interface T1ResultData {
+  type_code: string
+  base_type: string
+  base_name: string
+  modifier_type: 'TOP2' | 'BOTTOM1'
+  modifier_element: string
+  modifier: string
+  full_name: string
+  description: string
+  group_scores: Record<string, number>
+  percentiles: Record<string, number>
+}
+
+export interface GroupScore {
+  code: string
+  name: string
+  score: number | null
+  average: number | null
+  top_percent: number | null
+}
+
+export interface InterestItem {
+  field_id: string
+  name: string
+  definition: string
+}
+
+export interface InterestCategory {
+  name: string
+  items: InterestItem[]
+}
+
+export interface ValueItem {
+  code: string
+  name: string
+}
+
+export interface EnvironmentPart {
+  code: string
+  name: string
+  level: number
+  average: number | null
+  top_percent: number | null
+  level_description: string | null
+}
+
+export interface SurveyAnalysisResponse {
+  success: boolean
+  survey_id: string
+  answer_type: string
+  analysis: {
+    personality_type: T1ResultData | null
+    personality: { top3: GroupScore[]; all: GroupScore[] }
+    talent: { top3: GroupScore[]; all: GroupScore[] }
+    interest: { total: number; by_category: Record<string, InterestCategory> }
+    values: {
+      priority_1: ValueItem | null
+      priority_2: ValueItem | null
+      priority_3: ValueItem | null
+    }
+    environment: { parts: EnvironmentPart[] }
   }
 }

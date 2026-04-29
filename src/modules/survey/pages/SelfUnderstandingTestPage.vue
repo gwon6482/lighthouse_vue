@@ -69,7 +69,7 @@
 
         <!-- T3: 업무환경 슬라이더 -->
         <template v-else-if="currentPage.type === 'threeChoice'">
-          <ThreeChoiceQuestion v-model="answers.T3" />
+          <ThreeChoiceQuestion v-model="answers.T3" :items="currentPage.items ?? []" />
         </template>
 
         <!-- 파트 인트로 -->
