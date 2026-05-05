@@ -142,6 +142,19 @@
     &.mi { color: #2E8FCC; }
   }
 
+  /* ─── 공통: 한 줄 설명 ──────────────────────────────────── */
+  .item-def {
+    display: block;
+    font-size: 0.6875rem;
+    color: #999;
+    line-height: 1.45;
+    margin-top: 0.125rem;
+
+    @media (min-width: 768px) {
+      font-size: 0.8125rem;
+    }
+  }
+
   /* ─── 관심 분야 ──────────────────────────────────────────── */
   .interest-categories {
     display: flex;
@@ -157,6 +170,30 @@
 
     @media (min-width: 768px) {
       padding: 1rem 1.25rem;
+    }
+  }
+
+  .interest-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .interest-item-row {
+    padding: 0.375rem 0;
+    border-bottom: 1px solid #F0F0E8;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  .interest-item-name {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+
+    @media (min-width: 768px) {
+      font-size: 0.9375rem;
     }
   }
 
@@ -200,9 +237,14 @@
     gap: 0.5rem;
   }
 
+  .value-text {
+    flex: 1;
+    min-width: 0;
+  }
+
   .value-card {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.875rem;
     border-radius: 0.875rem;
     padding: 0.875rem 1rem;
@@ -239,6 +281,7 @@
     border-radius: 100px;
     white-space: nowrap;
     flex-shrink: 0;
+    margin-top: 0.125rem;
   }
 
   .value-name {
@@ -327,6 +370,88 @@
     @media (min-width: 768px) {
       font-size: 0.875rem;
     }
+  }
+
+  /* ─── 성격 바 차트 (섹션2) ──────────────────────────────── */
+  .trait-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5625rem;
+  }
+
+  .trait-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .trait-name {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #555;
+    min-width: 4.125rem;
+    flex-shrink: 0;
+
+    @media (min-width: 768px) {
+      font-size: 0.8125rem;
+      min-width: 5rem;
+    }
+  }
+
+  .trait-bar-wrap {
+    flex: 1;
+    height: 0.375rem;
+    background: #F0F0E8;
+    border-radius: 100px;
+    overflow: hidden;
+
+    .trait-bar {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.6s ease;
+
+      &.hi { background: #FFD100; }
+      &.mi { background: #5BB8F5; }
+      &.lo { background: #D8D8D0; }
+    }
+  }
+
+  .trait-val {
+    font-size: 0.625rem;
+    font-weight: 700;
+    min-width: 1.375rem;
+    text-align: right;
+
+    @media (min-width: 768px) {
+      font-size: 0.75rem;
+    }
+
+    &.hi { color: #C9A200; }
+    &.mi { color: #2E8FCC; }
+    &.lo { color: #bbb; }
+  }
+
+  .trait-cmp {
+    font-size: 0.5625rem;
+    font-weight: 700;
+    padding: 0.125rem 0.3125rem;
+    border-radius: 100px;
+    flex-shrink: 0;
+
+    @media (min-width: 768px) {
+      font-size: 0.6875rem;
+    }
+
+    &.up { background: #FFF8CC; color: #997A00; }
+    &.eq { background: #F0F0F0; color: #aaa; }
+    &.dn { background: #E8F4FE; color: #2E8FCC; }
+  }
+
+  /* ─── 업무환경 래퍼 ──────────────────────────────────────── */
+  .env-mini-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
   }
 
   .result-empty {

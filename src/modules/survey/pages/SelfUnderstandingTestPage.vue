@@ -154,42 +154,10 @@ const {
   submitSurvey,
 } = useSurvey()
 
-// 응답을 JSON 파일로 다운로드
-function downloadResponse(surveyId: string, respondentId: string) {
-  const responseData = {
-    survey_id: surveyId,
-    respondent_id: respondentId,
-    completed_at: new Date().toISOString(),
-    is_completed: true,
-    answers: {
-      T1: answers.T1,
-      T21: answers.T21,
-      T22: answers.T22,
-      T23: answers.T23,
-      T3: answers.T3,
-    },
-  }
-
-  const blob = new Blob([JSON.stringify(responseData, null, 2)], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `survey_${surveyId}_${Date.now()}.json`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
-
 // 응답제출
 async function handleSubmit() {
   try {
-    // 임시 respondent_id (실제로는 로그인 정보 등에서 가져와야 함)
     const respondentId = `user_${Date.now()}`
-
-    // 로컬에 응답 파일 다운로드 (테스트용)
-    downloadResponse(surveyId.value, respondentId)
-
     await submitSurvey(respondentId)
     router.push('/self-understanding/complete')
   } catch {

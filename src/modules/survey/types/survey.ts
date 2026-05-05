@@ -139,6 +139,7 @@ export interface T1ResultData {
 export interface GroupScore {
   code: string
   name: string
+  definition?: string | null
   score: number | null
   average: number | null
   top_percent: number | null
@@ -158,6 +159,7 @@ export interface InterestCategory {
 export interface ValueItem {
   code: string
   name: string
+  definition?: string | null
 }
 
 export interface EnvironmentPart {

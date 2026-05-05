@@ -80,6 +80,7 @@
             <span class="talent-rank">{{ idx + 1 }}</span>
             <div class="talent-info">
               <span class="talent-name">{{ item.name }}</span>
+              <span v-if="item.definition" class="item-def">{{ item.definition }}</span>
               <div class="trait-bar-wrap talent-bar-wrap">
                 <div
                   class="trait-bar"
@@ -103,12 +104,15 @@
             class="interest-cat"
           >
             <span class="interest-cat-name">{{ cat.name }}</span>
-            <div class="interest-tags">
-              <span
+            <div class="interest-item-list">
+              <div
                 v-for="item in cat.items"
                 :key="item.field_id"
-                class="interest-tag"
-              >{{ item.name }}</span>
+                class="interest-item-row"
+              >
+                <span class="interest-item-name">{{ item.name }}</span>
+                <span v-if="item.definition" class="item-def">{{ item.definition }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -117,16 +121,22 @@
         <!-- T23 가치관 -->
         <p class="result-sub-label" style="margin-top: 1.5rem;">💎 나의 가치관</p>
         <div class="values-list">
-          <div
+          <template
             v-for="(prio, idx) in [analysis.values.priority_1, analysis.values.priority_2, analysis.values.priority_3]"
             :key="idx"
-            v-if="prio"
-            class="value-card"
-            :class="`prio-${idx + 1}`"
           >
-            <span class="value-rank">{{ idx + 1 }}순위</span>
-            <span class="value-name">{{ prio.name }}</span>
-          </div>
+            <div
+              v-if="prio"
+              class="value-card"
+              :class="`prio-${idx + 1}`"
+            >
+              <span class="value-rank">{{ idx + 1 }}순위</span>
+              <div class="value-text">
+                <span class="value-name">{{ prio.name }}</span>
+                <span v-if="prio.definition" class="item-def">{{ prio.definition }}</span>
+              </div>
+            </div>
+          </template>
         </div>
       </section>
 
