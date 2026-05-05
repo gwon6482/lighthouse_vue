@@ -159,6 +159,7 @@ async function handleSubmit() {
   try {
     const respondentId = `user_${Date.now()}`
     await submitSurvey(respondentId)
+    sessionStorage.setItem('lh_survey_id', surveyId.value)
     router.push('/self-understanding/complete')
   } catch {
     // 에러는 useSurvey에서 처리됨
