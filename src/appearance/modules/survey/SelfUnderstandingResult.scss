@@ -1,5 +1,19 @@
 .result-page {
 
+  /* ─── T1 유형 이미지 (카드 내부) ───────────────────────── */
+  .rp-type-img {
+    width: auto;
+    max-width: 55%;
+    max-height: 14rem;
+    display: block;
+    margin: 1rem auto 0.75rem;
+    object-fit: contain;
+
+    @media (min-width: 768px) {
+      max-height: 17rem;
+    }
+  }
+
   /* ─── 로딩 / 에러 ────────────────────────────────────────── */
   .result-loading {
     display: flex;
@@ -383,6 +397,41 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    &.dim {
+      opacity: 0.4;
+    }
+
+    &.top {
+      .trait-name {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        min-width: 5rem;
+
+        @media (min-width: 768px) {
+          font-size: 0.9375rem;
+          min-width: 5.75rem;
+        }
+      }
+
+      .trait-bar-wrap {
+        height: 0.5625rem;
+
+        @media (min-width: 768px) {
+          height: 0.6875rem;
+        }
+      }
+
+      .trait-val {
+        font-size: 0.75rem;
+        min-width: 1.625rem;
+
+        @media (min-width: 768px) {
+          font-size: 0.875rem;
+        }
+      }
+    }
   }
 
   .trait-name {

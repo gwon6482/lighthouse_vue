@@ -21,11 +21,16 @@
           <div class="rp-hero">
             <p class="rp-type-label">나의 성격 유형</p>
             <h1 class="rp-type-name">{{ analysis.personality_type?.full_name ?? '알 수 없음' }}</h1>
+            <img
+              v-if="t1ImgSrc"
+              :src="t1ImgSrc"
+              :alt="analysis.personality_type?.full_name ?? ''"
+              class="rp-type-img"
+            />
             <p class="rp-type-sub">{{ analysis.personality_type?.description }}</p>
             <div class="rp-tags" v-if="analysis.personality_type">
               <span class="rptag y">{{ analysis.personality_type.base_name }}</span>
               <span class="rptag s">{{ analysis.personality_type.modifier }}</span>
-              <span class="rptag w">{{ analysis.personality_type.type_code }}</span>
             </div>
           </div>
         </div>
@@ -41,6 +46,7 @@
             v-for="(item, idx) in analysis.personality.all"
             :key="item.code"
             class="trait-row"
+            :class="idx >= 3 ? 'dim' : 'top'"
           >
             <span class="trait-name">{{ item.name }}</span>
             <div class="trait-bar-wrap">
@@ -55,7 +61,7 @@
               :class="idx === 0 ? 'hi' : idx < 3 ? 'mi' : 'lo'"
             >{{ Math.round((item.score ?? 0) * 100) }}</span>
             <span
-              v-if="item.top_percent !== null"
+              v-if="idx < 3 && item.top_percent !== null"
               class="trait-cmp"
               :class="(item.top_percent ?? 100) <= 30 ? 'up' : (item.top_percent ?? 100) <= 60 ? 'eq' : 'dn'"
             >상위 {{ item.top_percent }}%</span>
@@ -189,10 +195,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchSurveyAnalysis } from '../survey.api'
 import type { SurveyAnalysisResponse } from '../types/survey'
+
+const T1_IMG_MAP: Record<string, string> = {
+  A: '/T1_img/A-Photoroom.png',
+  C: '/T1_img/C-Photoroom.png',
+  E: '/T1_img/E-Photoroom.png',
+  G: '/T1_img/G-Photoroom.png',
+  I: '/T1_img/I-Photoroom.png',
+  R: '/T1_img/R-Photoroom.png',
+  S: '/T1_img/S-Photoroom.png',
+  T: '/T1_img/T-Photoroom.png',
+  U: '/T1_img/U-Photoroom.png',
+}
 
 const route = useRoute()
 const surveyId = route.params.survey_id as string
@@ -200,6 +218,11 @@ const surveyId = route.params.survey_id as string
 const isLoading = ref(true)
 const error = ref(false)
 const analysis = ref<SurveyAnalysisResponse['analysis'] | null>(null)
+
+const t1ImgSrc = computed(() => {
+  const baseType = analysis.value?.personality_type?.base_type
+  return baseType ? (T1_IMG_MAP[baseType] ?? null) : null
+})
 
 async function load() {
   isLoading.value = true
