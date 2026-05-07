@@ -30,9 +30,9 @@ export const searchJobs = (query: string) =>
 export const fetchRecommendedJobs = () =>
   req.get<JobRecommendResponse>(`/api/job/recommend`)
 
-/** 직업 후기 조회 GET /api/job/:jobCode/review */
+/** 직업 후기 목록 조회 GET /api/job/:jobCode/reviews */
 export const fetchJobReviews = (jobCode: string) =>
-  req.get<JobReviewResponse>(`/api/job/${jobCode}/review`)
+  req.get<JobReviewResponse>(`/api/job/${jobCode}/reviews`)
 
 /** 직업 준비과정 조회 GET /api/job/:jobCode/preparation */
 export const fetchJobPreparations = (jobCode: string) =>

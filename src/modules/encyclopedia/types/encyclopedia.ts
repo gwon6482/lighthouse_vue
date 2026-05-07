@@ -87,20 +87,34 @@ export interface JobRecommendResponse {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// 후기 (추후 API 연동 시 스펙에 맞게 수정)
+// 후기
 // ────────────────────────────────────────────────────────────────────────────
 
+export type T1GroupCode = 'E' | 'C' | 'S' | 'A' | 'I' | 'R' | 'G' | 'U' | 'T'
+
 export interface JobReview {
-  reviewId: string
-  author: string
-  content: string
+  _id: string
+  jobCode: string
+  summary: string
+  satisfaction: number        // 0~100
+  pros: string
+  cons: string
+  recommendation: string
+  personalityTags: T1GroupCode[]
+  status: 'pending' | 'approved' | 'rejected'
+  submittedBy: 'user' | 'admin'
+  submitterEmail: string
+  adminNote: string
   createdAt: string
+  updatedAt: string
 }
 
 export interface JobReviewResponse {
   success: boolean
+  count: number
   data: JobReview[]
 }
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // 준비과정 (추후 API 연동 시 스펙에 맞게 수정)
