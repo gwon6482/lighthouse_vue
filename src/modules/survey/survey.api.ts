@@ -1,5 +1,5 @@
 import { req } from '@/shared/api'
-import type { SurveyFormResponse, SurveySubmitRequest, SurveySubmitResponse, SurveyAnalysisResponse } from './types/survey'
+import type { SurveyFormResponse, SurveySubmitRequest, SurveySubmitResponse, SurveyAnalysisResponse, T2RecommendResponse } from './types/survey'
 
 /**
  * surveyApi 서비스
@@ -39,3 +39,6 @@ export const submitSurveyResponse = (data: SurveySubmitRequest) =>
 
 export const fetchSurveyAnalysis = (surveyId: string) =>
   req.get<SurveyAnalysisResponse>(`/api/survey/analysis/${surveyId}`)
+
+export const fetchT2Recommend = (surveyId: string) =>
+  req.get<T2RecommendResponse>(`/api/job/recommend-t2/${surveyId}`)

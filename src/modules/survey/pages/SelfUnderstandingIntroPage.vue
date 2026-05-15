@@ -269,19 +269,83 @@
     <footer class="m-footer">
       <img src="/Symbol.svg" alt="LightHouse" class="footer-logo" />
       <span class="m-footer-copy">© 2025 LightHouse</span>
+      <button class="dev-skip-btn" @click="devSkipToT3">⚡ DEV: T3 skip</button>
     </footer>
 
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useSurvey } from '../composables/useSurvey'
+
 // -------------------------------------------------------
 // Props / Emits
 // -------------------------------------------------------
 const emit = defineEmits(['start', 'login'])
+const router = useRouter()
+
+const {
+  surveyData,
+  currentPageIndex,
+  allPages,
+  loadSurvey,
+  setScaleType,
+  setScaleAnswer,
+  setMultiSelectAnswer,
+  setPriorityAnswer,
+} = useSurvey()
 
 function onLoginClick() {
   emit('login')
+}
+
+function randItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  return [...arr].sort(() => Math.random() - 0.5)
+}
+
+async function devSkipToT3() {
+  if (!surveyData.value) {
+    await loadSurvey()
+  }
+  if (!surveyData.value) return
+
+  setScaleType(5)
+
+  const scaleChoices = ['A', 'B', 'C', 'D', 'E']
+  for (const page of allPages.value) {
+    if ((page.part === 'T1' || page.part === 'T21') && page.questions) {
+      for (const q of page.questions) {
+        setScaleAnswer(page.part as 'T1' | 'T21', q.question_id, randItem(scaleChoices))
+      }
+    }
+  }
+
+  const t22Page = allPages.value.find((p) => p.type === 'multiSelect')
+  if (t22Page?.items) {
+    const count = Math.max(1, Math.floor(Math.random() * t22Page.items.length) + 1)
+    setMultiSelectAnswer(shuffle(t22Page.items).slice(0, count).map((i) => i.item_id))
+  }
+
+  const t23Page = allPages.value.find((p) => p.type === 'priority')
+  if (t23Page?.items && t23Page.items.length >= 3) {
+    const shuffled = shuffle(t23Page.items.map((i) => i.item_id))
+    setPriorityAnswer({
+      priority_1: shuffled[0],
+      priority_2: shuffled[1],
+      priority_3: shuffled[2],
+      no_priority: shuffled.slice(3),
+    })
+  }
+
+  const t3Index = allPages.value.findIndex((p) => p.type === 'threeChoice')
+  if (t3Index !== -1) currentPageIndex.value = t3Index
+
+  router.push('/self-understanding/test')
 }
 
 // -------------------------------------------------------
@@ -404,3 +468,23 @@ const stats = [
   { num: '1:1',   label: '맞춤 프로젝트 설계', bg: 'cs', color: 's' },
 ]
 </script>
+
+<style scoped>
+.dev-skip-btn {
+  display: block;
+  margin: 8px auto 0;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #999;
+  background: transparent;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.dev-skip-btn:hover {
+  opacity: 1;
+  color: #e65c00;
+  border-color: #e65c00;
+}
+</style>

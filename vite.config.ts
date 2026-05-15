@@ -64,7 +64,7 @@ export default defineConfig({
       '/api': {
         // 로컬: 'http://localhost:4000'
         // 서버: 'http://218.155.36.75:3000'
-        target: 'http://localhost:4000',
+        target: 'http://218.155.36.75:3000',
         changeOrigin: true,
       },
     },

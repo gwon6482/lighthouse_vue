@@ -26,9 +26,9 @@ export const fetchJob = (jobCode: string) =>
 export const searchJobs = (query: string) =>
   req.get<JobSearchResponse>(`/api/job/search`, { params: { name: query } })
 
-/** 추천 진로 조회 GET /api/job/recommend */
-export const fetchRecommendedJobs = () =>
-  req.get<JobRecommendResponse>(`/api/job/recommend`)
+/** 추천 진로 조회 GET /api/job/recommend/:survey_id */
+export const fetchRecommendedJobs = (surveyId: string) =>
+  req.get<JobRecommendResponse>(`/api/job/recommend/${surveyId}`)
 
 /** 직업 후기 목록 조회 GET /api/job/:jobCode/reviews */
 export const fetchJobReviews = (jobCode: string) =>

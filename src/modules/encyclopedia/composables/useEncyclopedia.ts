@@ -61,11 +61,16 @@ export function useEncyclopedia() {
   // ── 홈 화면 ──────────────────────────────────────────────────────────────
 
   /** 추천 진로 목록 로드 */
-  async function loadRecommendedJobs() {
+  async function loadRecommendedJobs(surveyId?: string) {
+    const id = surveyId ?? sessionStorage.getItem('lh_survey_id') ?? ''
+    if (!id) {
+      error.value = '검사 결과가 없습니다. 자기이해 검사를 먼저 완료해주세요.'
+      return
+    }
     isLoading.value = true
     error.value = null
     try {
-      const { data, status } = await fetchRecommendedJobs()
+      const { data, status } = await fetchRecommendedJobs(id)
       if (status === 200) {
         recommendedJobs.value = data.data
       } else {
