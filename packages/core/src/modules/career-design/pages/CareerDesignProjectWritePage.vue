@@ -147,89 +147,52 @@
         />
       </div>
 
-      <!-- 주차별 커리큘럼 -->
+      <!-- 프로젝트 기간 -->
       <div class="cd-proj-write__section">
-        <div class="cd-proj-write__curr-header">
-          <h3 class="cd-proj-write__label">주차별 커리큘럼 <span class="cd-proj-write__optional">선택</span></h3>
-          <button class="cd-proj-write__week-add-btn" @click="addWeek">+ 주차 추가</button>
+        <h3 class="cd-proj-write__label">프로젝트 기간</h3>
+        <p class="cd-proj-write__sub-label">몇 주차 계획으로 만들까요?</p>
+        <div class="cd-proj-write__stepper">
+          <button
+            class="cd-proj-write__step-btn"
+            :disabled="weeks <= MIN_WEEKS"
+            @click="setWeeks(weeks - 1)"
+          >−</button>
+          <span class="cd-proj-write__step-value">{{ weeks }}<em>주</em></span>
+          <button
+            class="cd-proj-write__step-btn"
+            :disabled="weeks >= MAX_WEEKS"
+            @click="setWeeks(weeks + 1)"
+          >+</button>
         </div>
-
-        <p v-if="!draftProject.curriculum?.length" class="cd-proj-write__curr-empty">
-          주차별 학습 내용을 추가해보세요
-        </p>
-
-        <div v-else class="cd-proj-write__weeks">
-          <div
-            v-for="(week, wi) in draftProject.curriculum"
-            :key="wi"
-            class="cd-proj-write__week-card"
-          >
-            <!-- 주차 헤더 -->
-            <div class="cd-proj-write__week-head">
-              <span class="cd-proj-write__week-num">{{ week.week }}주차</span>
-              <input
-                v-model="week.title"
-                class="cd-proj-write__week-title"
-                placeholder="주차 제목 입력..."
-              />
-              <button class="cd-proj-write__week-del" @click="deleteWeek(wi)">✕</button>
-            </div>
-
-            <!-- 항목 목록 -->
-            <ol v-if="week.items.length" class="cd-proj-write__week-items">
-              <li
-                v-for="(item, ii) in week.items"
-                :key="ii"
-                class="cd-proj-write__week-item"
-              >
-                <span class="cd-proj-write__week-item-text">{{ item }}</span>
-                <button class="cd-proj-write__item-del" @click="deleteItem(wi, ii)">✕</button>
-              </li>
-            </ol>
-
-            <!-- 항목 추가 input -->
-            <div class="cd-proj-write__item-add">
-              <input
-                v-model="weekItemInputs[wi]"
-                class="cd-proj-write__item-input"
-                placeholder="항목 입력 후 Enter"
-                @keyup.enter="addItem(wi)"
-              />
-              <button
-                class="cd-proj-write__item-btn"
-                :style="{ color: currentColor }"
-                @click="addItem(wi)"
-              >추가</button>
-            </div>
-          </div>
+        <div class="cd-proj-write__tip">
+          💡 다음 화면에서 {{ weeks }}개 주차의 커리큘럼을 채워요. 기간은 언제든 다시 바꿀 수 있어요
         </div>
       </div>
     </div>
 
     <!-- 하단 버튼 -->
     <div class="cd-proj-write__footer">
-      <button class="cd-proj-write__cta" @click="addProject">추가하기</button>
+      <button class="cd-proj-write__cta" @click="goNext">다음</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, nextTick, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { safeBack } from '@/shared/utils/navigation'
 import { useUnsavedGuard } from '@/shared/composables/useUnsavedGuard'
 import { useCareerDesign } from '../composables/useCareerDesign'
+import { MIN_WEEKS, MAX_WEEKS, DEFAULT_WEEKS, clampWeeks } from '../composables/useProjectCurriculum'
 import CdYellowHeader from '../components/CdYellowHeader.vue'
 import type { DayOfWeek, Priority, ProjectCategory } from '../types/career-design'
 
 const router = useRouter()
-const { draftPlan, draftProject, editingProjectId, syncAddProject, syncUpdateProject } = useCareerDesign()
-
-const weekItemInputs = ref<string[]>([])
+const { draftPlan, draftProject } = useCareerDesign()
 
 onMounted(() => {
   window.scrollTo(0, 0)
-  weekItemInputs.value = (draftProject.curriculum ?? []).map(() => '')
+  // 서버는 weeks 를 저장하지 않는다(curriculum 만 왕복) → 수정 진입 시 커리큘럼 길이에서 되살린다.
+  draftProject.weeks = clampWeeks(draftProject.weeks ?? draftProject.curriculum?.length ?? DEFAULT_WEEKS)
 })
 
 // 미저장 이탈 가드 (R2)
@@ -253,6 +216,17 @@ const currentColor = computed(() => categoryColorMap[draftProject.category ?? 'k
 
 const allDays: DayOfWeek[] = ['월', '화', '수', '목', '금', '토', '일']
 
+const weeks = computed(() => draftProject.weeks ?? DEFAULT_WEEKS)
+
+function setWeeks(n: number) {
+  const next = clampWeeks(n)
+  // 기간을 줄이면 잘려나가는 뒤쪽 주차의 작성 내용이 사라진다 → 실제로 채운 게 있을 때만 확인.
+  const dropped = (draftProject.curriculum ?? []).slice(next).filter(w => w.items.length > 0).length
+  if (dropped > 0 && !confirm(`${next + 1}주차부터 작성한 내용 ${dropped}개가 삭제돼요.\n계속할까요?`)) return
+  if (dropped > 0) draftProject.curriculum = (draftProject.curriculum ?? []).slice(0, next)
+  draftProject.weeks = next
+}
+
 const priorities: { value: Priority; icon: string; label: string }[] = [
   { value: 'high', icon: '🔥', label: '높음' },
   { value: 'normal', icon: '⭐', label: '보통' },
@@ -266,66 +240,10 @@ function toggleDay(day: DayOfWeek) {
   else draftProject.days.push(day)
 }
 
-async function addWeek() {
-  if (!draftProject.curriculum) draftProject.curriculum = []
-  draftProject.curriculum.push({ week: draftProject.curriculum.length + 1, title: '', items: [] })
-  weekItemInputs.value.push('')
-  await nextTick()
-  const titleInputs = document.querySelectorAll<HTMLInputElement>('.cd-proj-write__week-title')
-  titleInputs[titleInputs.length - 1]?.focus()
-}
-
-function deleteWeek(wi: number) {
-  draftProject.curriculum?.splice(wi, 1)
-  weekItemInputs.value.splice(wi, 1)
-  draftProject.curriculum?.forEach((w, i) => { w.week = i + 1 })
-}
-
-function addItem(wi: number) {
-  const text = weekItemInputs.value[wi]?.trim()
-  const week = draftProject.curriculum?.[wi]
-  if (!text || !week) return
-  week.items.push(text)
-  weekItemInputs.value[wi] = ''
-}
-
-function deleteItem(wi: number, ii: number) {
-  draftProject.curriculum?.[wi]?.items.splice(ii, 1)
-}
-
-async function addProject() {
+function goNext() {
   if (!draftProject.name) return
-
-  const projectData = {
-    category: draftProject.category ?? 'knowledge',
-    name: draftProject.name ?? '',
-    goal: draftProject.goal ?? '',
-    days: [...(draftProject.days ?? [])],
-    duration: draftProject.duration ?? 60,
-    priority: draftProject.priority ?? 'normal',
-    notification: draftProject.notification ?? false,
-    missedNotification: draftProject.missedNotification ?? true,
-    notificationTime: draftProject.notificationTime ?? '09:00',
-    memo: draftProject.memo ?? '',
-    curriculum: (draftProject.curriculum ?? []).map(w => ({ ...w, items: [...w.items] })),
-  }
-
-  if (editingProjectId.value) {
-    const idx = draftPlan.projects.findIndex(p => p.id === editingProjectId.value)
-    const target = idx >= 0 ? draftPlan.projects[idx] : undefined
-    if (target) {
-      Object.assign(target, projectData)
-      await syncUpdateProject(target)
-    }
-    editingProjectId.value = null
-  } else {
-    const newProject = { id: `draft-${Date.now()}`, ...projectData }
-    draftPlan.projects.push(newProject)
-    await syncAddProject(newProject)
-  }
-
   bypass()
-  safeBack(router, '/career-design/plan/projects')
+  router.push('/career-design/project/curriculum')
 }
 </script>
 
@@ -597,175 +515,52 @@ async function addProject() {
     &:focus { border-color: var(--cat-color); }
   }
 
-  /* 커리큘럼 */
-  &__curr-header {
+  /* 프로젝트 기간 스테퍼 */
+  &__stepper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
-
-    .cd-proj-write__label { margin-bottom: 0; }
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
   }
 
-  &__optional {
-    font-size: 12px;
-    font-weight: 400;
-    color: #aaa;
-    margin-left: 6px;
-  }
-
-  &__week-add-btn {
-    background: none;
+  &__step-btn {
+    width: 40px;
+    height: 40px;
     border: 1.5px solid var(--cat-color);
-    border-radius: 8px;
-    padding: 5px 12px;
-    font-size: 13px;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 22px;
     font-weight: 600;
+    line-height: 1;
     color: var(--cat-color);
     cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.12s;
+    flex-shrink: 0;
+    transition: background 0.12s, opacity 0.12s;
 
-    &:hover { background: color-mix(in srgb, var(--cat-color) 8%, transparent); }
+    &:hover:not(:disabled) { background: color-mix(in srgb, var(--cat-color) 8%, transparent); }
+
+    &:disabled {
+      border-color: #eee;
+      color: #ddd;
+      cursor: default;
+    }
   }
 
-  &__curr-empty {
-    font-size: 13px;
-    color: #bbb;
-    text-align: center;
-    padding: 20px 0 8px;
-  }
-
-  &__weeks {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &__week-card {
-    border: 1.5px solid #eee;
-    border-left: 3px solid var(--cat-color);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &__week-head {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-  }
-
-  &__week-num {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--cat-color);
-    white-space: nowrap;
-    background: color-mix(in srgb, var(--cat-color) 10%, white);
-    padding: 2px 8px;
-    border-radius: 20px;
-  }
-
-  &__week-title {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 15px;
+  &__step-value {
+    font-size: 24px;
     font-weight: 700;
     color: #222;
-    padding: 0;
-    background: transparent;
 
-    &::placeholder { color: #ccc; font-weight: 400; }
-  }
-
-  &__week-del {
-    background: none;
-    border: none;
-    font-size: 14px;
-    color: #ddd;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 4px;
-    flex-shrink: 0;
-
-    &:hover { background: #FFE8E8; color: #FF5555; }
-  }
-
-  &__week-items {
-    list-style: decimal;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin: 0;
-
-    ::marker { color: var(--cat-color); font-weight: 600; }
-  }
-
-  &__week-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    font-size: 14px;
-    color: #444;
-    line-height: 1.5;
-    padding: 2px 0;
-  }
-
-  &__week-item-text {
-    flex: 1;
-  }
-
-  &__item-del {
-    background: none;
-    border: none;
-    font-size: 11px;
-    color: #ddd;
-    cursor: pointer;
-    padding: 0 2px;
-    flex-shrink: 0;
-    line-height: 1;
-
-    &:hover { color: #FF5555; }
-  }
-
-  &__item-add {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1.5px dashed #ddd;
-    border-radius: 8px;
-    padding: 8px 12px;
-    transition: border-color 0.15s;
-
-    &:focus-within { border-color: var(--cat-color); }
-  }
-
-  &__item-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 13px;
-    color: #333;
-
-    &::placeholder { color: #ccc; }
-  }
-
-  &__item-btn {
-    background: none;
-    border: none;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 0;
-    white-space: nowrap;
-
-    &:hover { text-decoration: underline; }
+    em {
+      font-size: 15px;
+      font-weight: 600;
+      font-style: normal;
+      color: #888;
+      margin-left: 3px;
+    }
   }
 
   &__footer {

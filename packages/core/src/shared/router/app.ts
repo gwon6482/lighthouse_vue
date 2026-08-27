@@ -29,7 +29,7 @@ const router = makeRouter([
 // 루트('/') 진입 시 인증·진로계획 상태로 보낸다.
 //   1) 최초/로그아웃(토큰 없음)        → /onboarding (온보딩 애니메이션 → 로그인)
 //   2) 자동로그인 + 진로계획 전(plan 無) → /main/before
-//   3) 자동로그인 + 진로계획 후(plan 有) → /main
+//   3) 자동로그인 + 진로계획 후(plan 有) → /career-achievement (설계 후 메인 = 진로달성)
 router.beforeEach(async (to) => {
   const auth = useAuthStore()
 
@@ -54,7 +54,7 @@ router.beforeEach(async (to) => {
   // 진로계획 보유 여부로 메인 분기
   const achievement = useAchievementStore()
   await achievement.loadActivePlan()
-  return achievement.hasActivePlan ? '/main' : '/main/before'
+  return achievement.hasActivePlan ? '/career-achievement' : '/main/before'
 })
 
 export { resetViewportZoom } from './createRouter'

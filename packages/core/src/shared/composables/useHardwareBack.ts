@@ -9,7 +9,8 @@ import { App as CapacitorApp } from '@capacitor/app'
 // 대체한다. 정책:
 //   - 루트/홈이 아니고 뒤로 갈 히스토리가 있으면 → router.back() (로그아웃/이탈 등 라우터 가드 그대로 적용)
 //   - 루트/홈이거나 뒤로 갈 곳이 없으면 → "한 번 더 누르면 종료" (실수 종료 방지)
-const ROOT_PATHS = ['/', '/main', '/onboarding']
+// 정확일치로만 판정한다(하위경로는 일반 화면). 설계 전/후 메인이 각각 루트 취급.
+const ROOT_PATHS = ['/', '/career-achievement', '/main/before', '/onboarding']
 const EXIT_WINDOW_MS = 2000
 
 export function useHardwareBack() {
