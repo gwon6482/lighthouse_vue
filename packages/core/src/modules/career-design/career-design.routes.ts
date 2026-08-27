@@ -30,6 +30,11 @@ export default [
     component: () => import('./pages/CareerDesignProjectWritePage.vue'),
   },
   {
+    path: '/career-design/project/curriculum',
+    name: 'Career Design Project Curriculum',
+    component: () => import('./pages/CareerDesignProjectCurriculumPage.vue'),
+  },
+  {
     path: '/career-design/project/:id',
     name: 'Career Design Project Detail',
     component: () => import('./pages/CareerDesignProjectDetailPage.vue'),
