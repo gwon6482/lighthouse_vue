@@ -46,7 +46,8 @@ export interface Routine {
   memo: string
 }
 
-// 타임라인 슬롯 — week 는 프로젝트의 **시작 주차**(1-based, startDate 부터 7일 블록).
+// 타임라인 슬롯 — week 는 프로젝트의 **시작 주차**(1-based).
+// 주차 경계는 월요일~일요일 달력 주이고, startDate 가 속한 주가 1주차다(usePlanTimeline 이 정본).
 // 점유 구간은 저장하지 않고 project.weeks 에서 파생한다(usePlanTimeline 참조).
 export interface TimelineSlot {
   week: number
