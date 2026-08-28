@@ -32,8 +32,24 @@ export function syncCurriculumLength(
     next.push({
       week: i + 1,
       title: existing?.title?.trim() ? existing.title : defaultWeekTitle(projectName, i + 1),
+      description: existing?.description ?? '',
       items: [...(existing?.items ?? [])],
     })
   }
   return next
+}
+
+
+// 그 주차의 체크 단위 목록.
+// 신규 데이터는 설명 1건이므로 항상 길이 1(또는 0). 구 데이터(items)는 그대로 여러 개.
+// 진로달성의 주차 체크리스트·분할 진행바가 이걸 기준으로 돈다.
+export function weekEntriesOf(cw: Pick<WeekCurriculum, 'description' | 'items'> | undefined): string[] {
+  const d = cw?.description?.trim()
+  if (d) return [d]
+  return [...(cw?.items ?? [])].filter(t => t.trim())
+}
+
+// 그 주차에 사용자가 실제로 채운 설명. 없으면 ''.
+export function weekDescriptionOf(cw: Pick<WeekCurriculum, 'description' | 'items'> | undefined): string {
+  return weekEntriesOf(cw).join('\n')
 }

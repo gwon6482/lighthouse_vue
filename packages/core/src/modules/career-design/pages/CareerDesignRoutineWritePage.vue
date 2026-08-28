@@ -2,7 +2,7 @@
   <div class="cd-rt-write">
     <CdYellowHeader
       :title="editingRoutineId ? '루틴 수정' : '새로운 루틴 추가'"
-      subtitle="진로계획 동안 꾸준히 반복할 루틴이에요"
+      subtitle="정해진 요일마다 반복할 일이에요"
       back-to="/career-design/plan/routines"
     />
 
@@ -13,7 +13,7 @@
         <input
           v-model="draftRoutine.name"
           class="cd-rt-write__input"
-          placeholder="예: 영어 단어 10개 외우기"
+          placeholder="예: 매일 30분 코딩, 아침 스트레칭"
         />
       </div>
 

@@ -9,7 +9,7 @@
 
     <div class="cd-proj-curr__body">
       <p class="cd-proj-curr__guide">
-        주차 제목은 기본값이 채워져 있어요. 원하는 내용으로 바꾸고, 세부 항목을 추가해보세요
+        주차 제목은 기본값이 채워져 있어요. 원하는 내용으로 바꾸고 그 주에 할 일을 적어보세요
       </p>
 
       <div class="cd-proj-curr__weeks">
@@ -28,32 +28,13 @@
             />
           </div>
 
-          <!-- 항목 목록 -->
-          <ol v-if="week.items.length" class="cd-proj-curr__week-items">
-            <li
-              v-for="(item, ii) in week.items"
-              :key="ii"
-              class="cd-proj-curr__week-item"
-            >
-              <span class="cd-proj-curr__week-item-text">{{ item }}</span>
-              <button class="cd-proj-curr__item-del" @click="deleteItem(wi, ii)">✕</button>
-            </li>
-          </ol>
-
-          <!-- 항목 추가 input -->
-          <div class="cd-proj-curr__item-add">
-            <input
-              v-model="weekItemInputs[wi]"
-              class="cd-proj-curr__item-input"
-              placeholder="항목 입력 후 Enter"
-              @keyup.enter="addItem(wi)"
-            />
-            <button
-              class="cd-proj-curr__item-btn"
-              :style="{ color: currentColor }"
-              @click="addItem(wi)"
-            >추가</button>
-          </div>
+          <!-- 그 주차의 설명 -->
+          <textarea
+            v-model="week.description"
+            class="cd-proj-curr__week-desc"
+            placeholder="이 주차에 무엇을 할지 적어보세요"
+            rows="2"
+          />
         </div>
       </div>
     </div>
@@ -93,7 +74,6 @@ const currentColor = computed(() => categoryColorMap[draftProject.category ?? 'k
 // 로컬 ref 에 들고 있으면 기간을 고치러 1단계에 다녀오는 사이 입력이 날아가고,
 // useCareerDesign 의 draft 자동저장(R3)에도 실리지 않는다.
 const curriculum = computed<WeekCurriculum[]>(() => draftProject.curriculum ?? [])
-const weekItemInputs = ref<string[]>([])
 const saving = ref(false)
 let saved = false
 let baseline = ''
@@ -110,7 +90,6 @@ onMounted(() => {
     draftProject.weeks ?? DEFAULT_WEEKS,
     draftProject.name,
   )
-  weekItemInputs.value = curriculum.value.map(() => '')
   baseline = JSON.stringify(draftProject.curriculum)
 })
 
@@ -121,18 +100,6 @@ onBeforeRouteLeave((to) => {
   return confirm('작성 중인 커리큘럼이 저장되지 않았어요.\n정말 나가시겠어요?')
 })
 
-function addItem(wi: number) {
-  const text = weekItemInputs.value[wi]?.trim()
-  const week = curriculum.value[wi]
-  if (!text || !week) return
-  week.items.push(text)
-  weekItemInputs.value[wi] = ''
-}
-
-function deleteItem(wi: number, ii: number) {
-  curriculum.value[wi]?.items.splice(ii, 1)
-}
-
 async function saveProject() {
   if (saving.value) return
   saving.value = true
@@ -141,7 +108,8 @@ async function saveProject() {
   const finalCurriculum = curriculum.value.map((w: WeekCurriculum) => ({
     week: w.week,
     title: w.title.trim() || defaultWeekTitle(draftProject.name ?? '', w.week),
-    items: [...w.items],
+    description: w.description?.trim() ?? '',
+    items: [...(w.items ?? [])],   // 구 데이터 보존
   }))
   draftProject.curriculum = finalCurriculum
 
@@ -222,7 +190,7 @@ async function saveProject() {
 
   &__week-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 10px;
   }
 
@@ -236,93 +204,44 @@ async function saveProject() {
     border-radius: 20px;
   }
 
+  /* 제목은 기본값이 채워져 나오는 데다 아래 설명란만 테두리가 있어서,
+     투명하게 두면 정적 헤딩으로 읽힌다. 옅은 배경을 깔아 입력란임을 드러낸다. */
   &__week-title {
     flex: 1;
     min-width: 0;
-    border: none;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
     outline: none;
     font-size: 15px;
     font-weight: 700;
     color: #222;
-    padding: 0;
-    background: transparent;
+    padding: 8px 10px;
+    background: #F4F4F5;
+    transition: background 0.15s, border-color 0.15s;
 
-    &::placeholder { color: #ccc; font-weight: 400; }
+    &::placeholder { color: #bbb; font-weight: 400; }
+
+    &:focus {
+      background: #fff;
+      border-color: var(--cat-color);
+    }
   }
 
-  &__week-items {
-    list-style: decimal;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin: 0;
-
-    ::marker { color: var(--cat-color); font-weight: 600; }
-  }
-
-  &__week-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    font-size: 14px;
-    color: #444;
-    line-height: 1.5;
-    padding: 2px 0;
-  }
-
-  &__week-item-text {
-    flex: 1;
-  }
-
-  &__item-del {
-    background: none;
-    border: none;
-    font-size: 11px;
-    color: #ddd;
-    cursor: pointer;
-    padding: 0 2px;
-    flex-shrink: 0;
-    line-height: 1;
-
-    &:hover { color: #FF5555; }
-  }
-
-  &__item-add {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: 1.5px dashed #ddd;
+  &__week-desc {
+    width: 100%;
+    border: 1.5px solid #eee;
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #444;
+    outline: none;
+    resize: none;
+    font-family: inherit;
     transition: border-color 0.15s;
 
-    &:focus-within { border-color: var(--cat-color); }
-  }
-
-  &__item-input {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 13px;
-    color: #333;
-
     &::placeholder { color: #ccc; }
-  }
-
-  &__item-btn {
-    background: none;
-    border: none;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 0;
-    white-space: nowrap;
-
-    &:hover { text-decoration: underline; }
+    &:focus { border-color: var(--cat-color); }
   }
 
   &__footer {

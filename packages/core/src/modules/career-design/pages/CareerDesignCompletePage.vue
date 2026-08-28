@@ -68,7 +68,7 @@
         </div>
 
         <p class="cd-complete__hint">
-          {{ selectedProject ? `"${selectedProject.name}" 선택됨 — 아래 월을 탭해서 배치` : '칩을 탭해서 선택하세요' }}
+          {{ hintText }}
         </p>
       </div>
 
@@ -83,73 +83,78 @@
           진로계획 세우기에서 목표 기간을 먼저 설정해주세요
         </div>
 
+        <template v-else-if="!totalWeeks">
+          <div class="cd-complete__timeline-empty">
+            목표 기간이 올바르지 않아요. 시작일과 목표일을 다시 확인해주세요
+          </div>
+        </template>
+
         <template v-else>
-          <!-- 시작/종료 날짜 범위 표시 -->
+          <!-- 시작/종료 범위 -->
           <div class="cd-complete__tl-range">
             <div class="cd-complete__tl-range-item">
               <span class="cd-complete__tl-dot cd-complete__tl-dot--start" />
-              <span class="cd-complete__tl-range-label">{{ startMonthStr }}</span>
+              <span class="cd-complete__tl-range-label">{{ monthWeekLabel(draftPlan.startDate, 1) }}</span>
             </div>
             <div class="cd-complete__tl-range-bar" />
             <div class="cd-complete__tl-range-item">
-              <span class="cd-complete__tl-range-label">{{ endMonthStr || '목표일 미설정' }}</span>
+              <span class="cd-complete__tl-range-label">{{ monthWeekLabel(draftPlan.startDate, totalWeeks) }} · 총 {{ totalWeeks }}주</span>
               <span class="cd-complete__tl-dot cd-complete__tl-dot--end" />
             </div>
           </div>
 
-          <div class="cd-complete__slots">
-            <!-- 슬롯 없을 때: 시작월 초기 탭존 -->
+          <div class="cd-complete__weeks">
+            <template v-for="w in weekRows" :key="w.week">
+            <div v-if="w.monthHeader" class="cd-complete__month-sep">{{ w.monthHeader }}</div>
             <div
-              v-if="draftTimeline.length === 0"
-              class="cd-complete__slot"
-              :class="{ 'cd-complete__slot--active': !!selectedProject }"
-              @click="addToSlot('__initial__')"
+              class="cd-complete__week"
+              :class="{
+                'cd-complete__week--target': !!selectedProject && w.canPlace,
+                'cd-complete__week--blocked': !!selectedProject && !w.canPlace,
+              }"
+              @click="placeAtWeek(w.week)"
             >
-              <div class="cd-complete__slot-head">
-                <span class="cd-complete__slot-badge">{{ startMonthStr }}</span>
-                <div class="cd-complete__slot-line" />
+              <div class="cd-complete__week-head">
+                <span class="cd-complete__week-num">{{ w.label }}</span>
+                <span class="cd-complete__week-date">{{ w.dateLabel }}</span>
               </div>
-              <div class="cd-complete__slot-placeholder">
-                {{ selectedProject ? '탭해서 추가' : '위에서 프로젝트를 선택하세요' }}
+
+              <div class="cd-complete__week-body">
+                <p v-if="!w.bars.length" class="cd-complete__week-empty">
+                  {{ selectedProject
+                    ? (w.canPlace ? '탭해서 여기부터 시작' : '기간이 모자라요')
+                    : '비어 있음' }}
+                </p>
+
+                <div
+                  v-for="bar in w.bars"
+                  :key="bar.project.id"
+                  class="cd-complete__bar"
+                  :class="[`cd-complete__bar--${bar.pos}`]"
+                  :style="barStyle(bar)"
+                  @click.stop="openProjectPopup(bar.project)"
+                >
+                  <div class="cd-complete__bar-main">
+                    <span class="cd-complete__bar-name">{{ bar.project.name }}</span>
+                    <span v-if="bar.pos === 'start' || bar.pos === 'only'" class="cd-complete__bar-span">
+                      {{ projectWeeks(bar.project) }}주
+                    </span>
+                    <button
+                      v-if="bar.pos === 'start' || bar.pos === 'only'"
+                      class="cd-complete__bar-del"
+                      @click.stop="removeProject(bar.project.id)"
+                    >✕</button>
+                  </div>
+
+                  <!-- 그 주차의 커리큘럼 — 사용자가 채웠을 때만 -->
+                  <div v-if="bar.detail" class="cd-complete__bar-detail">
+                    <span class="cd-complete__bar-wk">{{ bar.curriculumWeek }}주차</span>
+                    <span class="cd-complete__bar-text">{{ bar.detail.text }}</span>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <!-- 동적 생성 슬롯 -->
-            <template v-else>
-              <div
-                v-for="slot in draftTimeline"
-                :key="slot.month"
-                class="cd-complete__slot"
-                :class="{ 'cd-complete__slot--active': !!selectedProject }"
-                @click="addToSlot(slot.month)"
-              >
-                <div class="cd-complete__slot-head">
-                  <span class="cd-complete__slot-badge">{{ slot.month }}</span>
-                  <div class="cd-complete__slot-line" />
-                </div>
-                <div class="cd-complete__slot-body">
-                  <div v-if="!slot.projects.length" class="cd-complete__slot-placeholder">
-                    {{ selectedProject ? '탭해서 추가' : '비어 있음' }}
-                  </div>
-                  <div
-                    v-for="project in slot.projects"
-                    :key="project.id"
-                    class="cd-complete__slot-item"
-                    :style="{ borderLeftColor: categoryColorMap[project.category] }"
-                    @click.stop="openProjectPopup(project)"
-                  >
-                    <span class="cd-complete__slot-item-name">{{ project.name }}</span>
-                    <span class="cd-complete__slot-item-cat" :style="{ color: categoryColorMap[project.category] }">
-                      {{ categoryLabel(project.category) }}
-                    </span>
-                    <button class="cd-complete__slot-item-del" @click.stop="removeFromSlot(slot.month, project.id)">✕</button>
-                  </div>
-                </div>
-              </div>
             </template>
-
-            <!-- 다음 달 추가 버튼 -->
-            <button class="cd-complete__add-month" @click="addNextMonth">＋</button>
           </div>
         </template>
       </div>
@@ -221,8 +226,13 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCareerDesign } from '../composables/useCareerDesign'
+import { weekDescriptionOf } from '../composables/useProjectCurriculum'
 import CdYellowHeader from '../components/CdYellowHeader.vue'
 import type { Project, ProjectCategory } from '../types/career-design'
+import {
+  planWeekCount, weekRangeLabel, projectWeeks, projectEndWeek, fitsInPlan,
+  weekDateRange, monthWeekOf, monthWeekLabel, weeksInMonth, parseDateKey, resolveProject,
+} from '../composables/usePlanTimeline'
 
 const router = useRouter()
 const { draftPlan, draftTimeline, syncTimeline } = useCareerDesign()
@@ -275,56 +285,75 @@ function chipStyle(project: Project) {
   }
 }
 
-// ── 타임라인 슬롯 (composable 공유 상태) ─────────────
-type TimelineSlot = { month: string; projects: Project[] }
+// ── 주차 타임라인 ─────────────────────────────────
+// 슬롯은 시작주만 들고, 점유 구간은 project.weeks 에서 파생한다.
+const totalWeeks = computed(() => planWeekCount(draftPlan.startDate, draftPlan.endDate))
 
-function formatMonthStr(date: Date): string {
-  return `${date.getFullYear()}년 ${date.getMonth() + 1}월`
+type BarPos = 'only' | 'start' | 'middle' | 'end'
+interface WeekRow {
+  week: number
+  label: string          // "8월 1주차"
+  dateLabel: string      // "8.3 ~ 8.9"
+  monthHeader: string    // 달이 바뀌는 첫 행에만 "8월 (5주)" — 아니면 ''
+  bars: WeekBar[]
+  canPlace: boolean
 }
 
-function parseMonthStr(monthStr: string): Date {
-  const match = monthStr.match(/(\d+)년 (\d+)월/)
-  if (!match) return new Date()
-  return new Date(parseInt(match[1]!), parseInt(match[2]!) - 1, 1)
+interface BarDetail { text: string }
+interface WeekBar {
+  project: Project
+  pos: BarPos
+  curriculumWeek: number
+  detail: BarDetail | null   // 사용자가 그 주차 설명을 채웠을 때만
 }
 
-const startMonthStr = computed(() => {
-  if (!draftPlan.startDate) return ''
-  return formatMonthStr(new Date(draftPlan.startDate))
-})
+// 그 주차의 설명. 기본 제목("프로젝트명 - n주차")은 바로 옆 프로젝트명과 겹쳐 정보가 없으므로
+// 제목은 쓰지 않고, 사용자가 직접 적은 설명 텍스트만 보여준다.
+// (구 데이터는 items 를 줄바꿈으로 합쳐 설명처럼 취급 — weekDescriptionOf 참조)
+function barDetailOf(project: Project, curriculumWeek: number): BarDetail | null {
+  const text = weekDescriptionOf(project.curriculum?.[curriculumWeek - 1]).replace(/\s*\n\s*/g, ' · ')
+  return text ? { text } : null
+}
 
-const endMonthStr = computed(() => {
-  if (!draftPlan.endDate) return ''
-  return formatMonthStr(new Date(draftPlan.endDate))
-})
+const weekRows = computed<WeekRow[]>(() => {
+  const rows: WeekRow[] = []
+  const sel = selectedProject.value
+  let prevMonth = -1
+  for (let week = 1; week <= totalWeeks.value; week++) {
+    const bars: WeekBar[] = []
+    for (const slot of draftTimeline.value) {
+      for (const raw of slot.projects) {
+        const p = resolveProject(raw, draftPlan.projects)
+        const endWeek = projectEndWeek(slot.week, p)
+        if (week < slot.week || week > endWeek) continue
+        const isStart = week === slot.week
+        const isEnd   = week === endWeek
+        const curriculumWeek = week - slot.week + 1
+        bars.push({
+          project: p,
+          pos: isStart && isEnd ? 'only' : isStart ? 'start' : isEnd ? 'end' : 'middle',
+          curriculumWeek,
+          detail: barDetailOf(p, curriculumWeek),
+        })
+      }
+    }
+    // 주는 월요일이 속한 달에 귀속된다 → 달이 바뀌는 첫 행에만 월 헤더를 붙인다.
+    const range = weekDateRange(draftPlan.startDate, week)
+    const mw = range ? monthWeekOf(parseDateKey(range.start)!) : null
+    const isNewMonth = !!mw && mw.month !== prevMonth
+    if (mw) prevMonth = mw.month
 
-function normalizeSlots() {
-  const slots = [...draftTimeline.value].sort(
-    (a, b) => parseMonthStr(a.month).getTime() - parseMonthStr(b.month).getTime()
-  )
-
-  // 마지막으로 채워진 슬롯의 인덱스
-  let lastFilledIdx = -1
-  for (let i = slots.length - 1; i >= 0; i--) {
-    if (slots[i]!.projects.length > 0) { lastFilledIdx = i; break }
+    rows.push({
+      week,
+      label: mw ? `${mw.month}월 ${mw.week}주차` : `${week}주차`,
+      dateLabel: weekRangeLabel(draftPlan.startDate, week),
+      monthHeader: isNewMonth && mw ? `${mw.month}월 · ${weeksInMonth(mw.year, mw.month)}주` : '',
+      bars,
+      canPlace: !!sel && fitsInPlan(week, sel, totalWeeks.value),
+    })
   }
-
-  if (lastFilledIdx === -1) {
-    draftTimeline.value = []
-    return
-  }
-
-  // 마지막 채워진 슬롯까지는 빈 슬롯 포함 전부 유지
-  const kept = slots.slice(0, lastFilledIdx + 1)
-
-  // 그 다음 달 빈 슬롯 하나만 추가
-  const last = kept[kept.length - 1]!
-  const nextDate = parseMonthStr(last.month)
-  nextDate.setMonth(nextDate.getMonth() + 1)
-  kept.push({ month: formatMonthStr(nextDate), projects: [] })
-
-  draftTimeline.value = kept
-}
+  return rows
+})
 
 // ── 배치 상태 ─────────────────────────────────────
 const placedProjectIds = computed(() =>
@@ -357,59 +386,51 @@ function selectProject(project: Project) {
   selectedProject.value = selectedProject.value?.id === project.id ? null : project
 }
 
+const hintText = computed(() => {
+  const sel = selectedProject.value
+  if (!sel) return '칩을 탭해서 선택하세요'
+  const n = projectWeeks(sel)
+  return `"${sel.name}"(${n}주) 선택됨 — 시작할 주차를 탭하세요`
+})
+
 // ── 프로젝트 상세 팝업 ────────────────────────────
 const popupProject = ref<Project | null>(null)
 const openProjectPopup  = (p: Project) => { popupProject.value = p }
 const closeProjectPopup = () => { popupProject.value = null }
 
-function addToSlot(month: string) {
+function placeAtWeek(week: number) {
   const project = selectedProject.value
   if (!project) return
+  // 계획 기간을 넘어가면 배치하지 않는다(막고 안내).
+  if (!fitsInPlan(week, project, totalWeeks.value)) return
 
-  const targetMonth = month === '__initial__' ? startMonthStr.value : month
+  // 이미 배치돼 있으면 옮기는 것 — 기존 시작주에서 뺀다.
+  removeProject(project.id)
 
-  // 기존 슬롯에서 제거 (이동)
-  draftTimeline.value.forEach(s => {
-    const idx = s.projects.findIndex(p => p.id === project.id)
-    if (idx >= 0) s.projects.splice(idx, 1)
-  })
-
-  // 대상 슬롯 찾기 또는 생성
-  let slot = draftTimeline.value.find(s => s.month === targetMonth)
+  let slot = draftTimeline.value.find(s => s.week === week)
   if (!slot) {
-    slot = { month: targetMonth, projects: [] }
+    slot = { week, projects: [] }
     draftTimeline.value.push(slot)
+    draftTimeline.value.sort((a, b) => a.week - b.week)
   }
-
-  if (!slot.projects.find(p => p.id === project.id)) {
-    slot.projects.push(project)
-  }
-
-  normalizeSlots()
+  slot.projects.push(project)
   selectedProject.value = null
 }
 
-function removeFromSlot(month: string, projectId: string) {
-  const slot = draftTimeline.value.find(s => s.month === month)
-  if (!slot) return
-  const idx = slot.projects.findIndex(p => p.id === projectId)
-  if (idx >= 0) slot.projects.splice(idx, 1)
-  normalizeSlots()
+function removeProject(projectId: string) {
+  for (const slot of draftTimeline.value) {
+    const idx = slot.projects.findIndex(p => p.id === projectId)
+    if (idx >= 0) slot.projects.splice(idx, 1)
+  }
+  draftTimeline.value = draftTimeline.value.filter(s => s.projects.length > 0)
 }
 
-function addNextMonth() {
-  if (draftTimeline.value.length === 0) {
-    const next = parseMonthStr(startMonthStr.value)
-    next.setMonth(next.getMonth() + 1)
-    draftTimeline.value = [
-      { month: startMonthStr.value, projects: [] },
-      { month: formatMonthStr(next), projects: [] },
-    ]
-  } else {
-    const last = draftTimeline.value[draftTimeline.value.length - 1]!
-    const next = parseMonthStr(last.month)
-    next.setMonth(next.getMonth() + 1)
-    draftTimeline.value.push({ month: formatMonthStr(next), projects: [] })
+function barStyle(bar: WeekBar) {
+  const color = categoryColorMap[bar.project.category]
+  return {
+    background: `color-mix(in srgb, ${color} 12%, white)`,
+    borderLeftColor: color,
+    color,
   }
 }
 </script>
@@ -634,106 +655,146 @@ function addNextMonth() {
     padding: 20px 0;
   }
 
-  &__slots {
+  /* 주차 타임라인 */
+  &__month-sep {
+    font-size: 13px;
+    font-weight: 700;
+    color: #999;
+    padding: 10px 2px 2px;
+    border-top: 1px solid #f0f0f0;
+
+    &:first-child { border-top: none; padding-top: 0; }
+  }
+
+  &__weeks {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  &__add-month {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    margin: 4px auto 0;
-    border-radius: 50%;
-    border: 1.5px dashed #d0d0d0;
-    background: none;
-    color: #c8c8c8;
-    font-size: 18px;
-    cursor: pointer;
-    transition: border-color 0.15s, color 0.15s;
-
-    &:hover { border-color: #aaa; color: #aaa; }
-  }
-
-  &__slot {
-    border: 1.5px dashed #e0e0e0;
+  &__week {
+    border: 1.5px solid #f0f0f0;
     border-radius: 12px;
     padding: 12px 14px;
-    transition: border-color 0.15s, background 0.15s;
-    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.15s, background 0.15s, opacity 0.15s;
 
-    &--active {
+    &--target {
       border-color: #FFC700;
-      background: #FFFBEC;
+      background: #FFFDF3;
       cursor: pointer;
+    }
 
-      .cd-complete__slot-placeholder { color: #CC9D00; font-weight: 600; }
+    &--blocked {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
   }
 
-  &__slot-head {
+  &__week-head {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    align-items: baseline;
+    gap: 8px;
   }
 
-  &__slot-badge {
-    background: #FFC700;
-    color: #222;
-    font-size: 12px;
+  &__week-num {
+    font-size: 13px;
     font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
+    color: #333;
     white-space: nowrap;
   }
 
-  &__slot-line {
-    flex: 1;
-    height: 1px;
-    background: #eee;
+  &__week-date {
+    font-size: 11px;
+    color: #bbb;
   }
 
-  &__slot-body {
+  &__week-body {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
   }
 
-  &__slot-placeholder {
+  &__week-empty {
     font-size: 12px;
     color: #ccc;
-    padding: 6px 0;
-    text-align: center;
+    padding: 2px 0;
   }
 
-  &__slot-item {
+  /* 프로젝트 점유 바 — 시작/중간/끝에 따라 모서리를 달리해 구간처럼 보이게 */
+  &__bar {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 3px solid;
+    padding: 8px 10px;
+    font-size: 13px;
+    cursor: pointer;
+
+    &--only   { border-radius: 8px; }
+    &--start  { border-radius: 8px 8px 0 0; }
+    &--middle { border-radius: 0; }
+    &--end    { border-radius: 0 0 8px 8px; }
+
+    /* 이어지는 주차는 이름을 흐리게 — 시작 주차가 어디인지 눈에 띄게 */
+    &--middle .cd-complete__bar-name,
+    &--end .cd-complete__bar-name { opacity: 0.55; }
+  }
+
+  &__bar-main {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #fff;
-    border: 1px solid #eee;
-    border-left: 3px solid;
-    border-radius: 8px;
-    padding: 8px 12px;
   }
 
-  &__slot-item-name {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 500;
-    color: #222;
-  }
-
-  &__slot-item-cat {
+  /* 그 주차 커리큘럼 — 프로젝트명 아래 한 줄 */
+  &__bar-detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 11px;
-    font-weight: 600;
   }
 
-  &__slot-item-del {
+  &__bar-wk {
+    font-weight: 700;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  &__bar-text {
+    flex: 1;
+    min-width: 0;
+    color: #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__bar-items {
+    font-weight: 600;
+    opacity: 0.6;
+    white-space: nowrap;
+  }
+
+  &__bar-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__bar-span {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: 0.75;
+    white-space: nowrap;
+  }
+
+  &__bar-del {
     background: none;
     border: none;
     font-size: 12px;

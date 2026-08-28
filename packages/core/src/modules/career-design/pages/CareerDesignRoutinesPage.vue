@@ -2,15 +2,19 @@
   <div class="cd-routines">
     <CdYellowHeader
       title="루틴 만들기"
-      :subtitle="`${draftPlan.targetJob || '목표 직업'}을 위한 매일의 루틴을 추가해 보세요`"
+      subtitle="정해진 요일마다 반복할 일을 정해보세요"
       back-to="/career-design/complete"
     />
 
     <div class="cd-routines__body">
       <div class="cd-routines__section">
         <p class="cd-routines__intro">
-          루틴은 진로계획이 끝날 때까지 꾸준히 반복하는 규칙이에요.
+          루틴은 진로계획이 끝날 때까지 정해진 주기로 반복하는 일이에요.
         </p>
+        <div class="cd-routines__tip">
+          💡 '매일 30분 코딩'처럼 프로젝트와 이어져도 좋고,
+          '아침 스트레칭'처럼 상관없는 좋은 습관이어도 괜찮아요
+        </div>
 
         <div class="cd-routines__list">
           <div
@@ -117,6 +121,16 @@ function goNext() {
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+
+  &__tip {
+    background: #EEF4FF;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #4A6FA5;
+    line-height: 1.6;
+    margin-bottom: 16px;
   }
 
   &__intro {

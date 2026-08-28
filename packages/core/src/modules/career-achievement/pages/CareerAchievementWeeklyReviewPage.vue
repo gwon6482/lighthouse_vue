@@ -488,7 +488,7 @@ onMounted(async () => {
     if (draftPlan.planId && currentRange.value) {
       currentSchedule.value = await ensureWeekSchedule(
         draftPlan.planId,
-        { projects: draftPlan.projects, routines: draftPlan.routines },
+        { startDate: draftPlan.startDate, endDate: draftPlan.endDate, projects: draftPlan.projects, routines: draftPlan.routines },
         draftTimeline.value,
         currentRange.value.weekStart,
         currentRange.value.weekEnd,
