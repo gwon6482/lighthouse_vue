@@ -83,6 +83,11 @@ interface SamplePosting {
   preferred: string[]     // 우대사항
 }
 
+// ⚠️ 아래 마감일은 **하드코딩 더미**라 시간이 지나면 저절로 '마감'으로 바뀐다.
+// 2026-09-09 점검 시 6건 중 3건(07-18 / 07-25 / 09-05)이 이미 지나 있었다 → 미래로 갱신.
+// 근본 해결은 워크넷 채용 API 연동(로드맵 1번)이고, 그 전까지는 주기적으로 여기를 봐야 한다.
+// 마지막 갱신: 2026-09-09
+//
 // 예술·디자인·방송관리자(013601): 문화·예술·방송 기관 운영 관리직 채용
 const SAMPLE_POSTINGS_BY_JOB: Record<string, SamplePosting[]> = {
   '013601': [
@@ -91,7 +96,7 @@ const SAMPLE_POSTINGS_BY_JOB: Record<string, SamplePosting[]> = {
       companyName: '국립현대미술관',
       position: '전시운영팀 관리자 (공연·전시 기획)',
       employmentType: '정규직',
-      deadline: '2026-07-18',
+      deadline: '2026-10-24',
       duties: [
         '전시 기획·운영 총괄 및 일정 관리',
         '전시 예산 수립과 집행 관리',
@@ -113,7 +118,7 @@ const SAMPLE_POSTINGS_BY_JOB: Record<string, SamplePosting[]> = {
       companyName: 'CJ ENM',
       position: '방송제작 운영 매니저',
       employmentType: '정규직',
-      deadline: '2026-07-25',
+      deadline: '2026-11-07',
       duties: [
         '방송 콘텐츠 제작 일정·예산 운영',
         '제작팀 리소스 배분 및 조율',
@@ -161,7 +166,7 @@ const SAMPLE_POSTINGS_BY_JOB: Record<string, SamplePosting[]> = {
       companyName: '제일기획',
       position: '디지털 광고기획 AE (경력)',
       employmentType: '정규직',
-      deadline: '2026-09-05',
+      deadline: '2026-10-17',
       duties: [
         '광고주 대상 통합 캠페인 기획·제안',
         '매체 전략 수립 및 집행 예산 관리',

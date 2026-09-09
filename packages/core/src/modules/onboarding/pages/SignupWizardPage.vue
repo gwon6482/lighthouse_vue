@@ -249,20 +249,32 @@ async function submit() {
   loading.value = true
   error.value = ''
   try {
+    // 진로 온보딩 답변(Q1~Q3)은 가입 요청에 함께 실어 보낸다.
+    // 2026-09-09 이전에는 localStorage 에만 넣었고 그 키를 읽는 코드가 어디에도 없어
+    // 모든 가입자의 답이 그대로 버려졌다. 이제 서버가 source of truth 다.
+    // 필드명은 API 스키마(User.onboarding)를 따른다 — q1/q2/q3 가 아니다.
     const res = await req.post('/api/auth/register', {
       email: form.email,
       password: form.password,
       name: form.name,
       age: form.age,
       gender: form.gender,
+      onboarding: {
+        status: form.q1,
+        concerns: form.q2,
+        selfAwareness: form.q3,
+      },
     })
     authStore.setAuth(res.data.token, res.data.user)
 
-    // 진로 온보딩 답변은 아직 백엔드 스키마에 없어 로컬 저장 (2차: API 연동)
-    localStorage.setItem(
-      'lh_onboarding_v1',
-      JSON.stringify({ q1: form.q1, q2: form.q2, q3: form.q3, at: new Date().toISOString() }),
-    )
+    // localStorage 는 오프라인 캐시로만 유지한다(다른 화면과 같은 방침).
+    // 저장 실패가 가입 자체를 막으면 안 되므로 삼켜준다.
+    try {
+      localStorage.setItem(
+        'lh_onboarding_v1',
+        JSON.stringify({ q1: form.q1, q2: form.q2, q3: form.q3, at: new Date().toISOString() }),
+      )
+    } catch { /* quota */ }
 
     router.replace('/onboarding/intro')
   } catch (e: any) {
