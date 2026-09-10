@@ -6,7 +6,7 @@
     <!-- 헤더 -->
     <section class="guide-header">
       <p class="guide-eyebrow">검사 안내</p>
-      <h1 class="guide-title">검사 전에<br>이것만 알고 시작해</h1>
+      <h1 class="guide-title">검사 전에<br>이것만 알고 시작해주세요</h1>
       <p class="guide-sub">총 3개 파트 · 약 10분 소요</p>
     </section>
 
@@ -34,7 +34,7 @@
 
     <!-- 팁 -->
     <section class="guide-tips">
-      <p class="guide-tips-title">이렇게 답해줘</p>
+      <p class="guide-tips-title">이렇게 답해주세요</p>
       <ul class="guide-tip-list">
         <li v-for="tip in tips" :key="tip.text" class="guide-tip-item">
           <span class="guide-tip-icon">{{ tip.icon }}</span>
@@ -70,7 +70,7 @@ const parts = [
   {
     label: '파트 1',
     title: '성격 & 기질',
-    desc: '타고난 기질·성격 패턴 9가지 요소 분석. 나를 가장 잘 아는 데이터가 돼.',
+    desc: '타고난 기질·성격 패턴 9가지 요소 분석. 나를 가장 잘 아는 데이터가 돼요.',
     emoji: '🧠',
     questionCount: '43문항',
     minutes: 5,
@@ -79,7 +79,7 @@ const parts = [
   {
     label: '파트 2',
     title: '좋아하는 일',
-    desc: '재능 · 흥미 · 가치관, 3개 파트로 나눠 내가 좋아하는 일을 구체적으로 찾아.',
+    desc: '재능 · 흥미 · 가치관, 3개 파트로 나눠 내가 좋아하는 일을 구체적으로 찾아요.',
     emoji: '✨',
     questionCount: '총 107문항',
     minutes: 5,
@@ -88,7 +88,7 @@ const parts = [
   {
     label: '파트 3',
     title: '업무 환경',
-    desc: '좋아하는 일을 해도 맞지 않는 환경이면 힘들 수 있어. 진로 리스크를 미리 파악해.',
+    desc: '좋아하는 일을 해도 맞지 않는 환경이면 힘들 수 있어요. 진로 리스크를 미리 파악해요.',
     emoji: '🌿',
     questionCount: '6개 항목',
     minutes: null,
@@ -97,8 +97,8 @@ const parts = [
 ]
 
 const tips = [
-  { icon: '💡', text: '정답은 없어. 현재 나의 모습 그대로 솔직하게 답해줘.' },
-  { icon: '⚡', text: '너무 오래 고민하지 말고 첫 느낌으로 골라.' },
-  { icon: '⚠️', text: '중간에 멈추면 처음부터 다시 시작해야 해.' },
+  { icon: '💡', text: '정답은 없어요. 현재 나의 모습 그대로 솔직하게 답해주세요.' },
+  { icon: '⚡', text: '너무 오래 고민하지 말고 첫 느낌으로 골라주세요.' },
+  { icon: '⚠️', text: '중간에 멈추면 처음부터 다시 시작해야 해요.' },
 ]
 </script>

@@ -2,27 +2,47 @@
 @use 'mixins' as *;
 
 .result-page {
-
   /* ─── 성격 유형 히어로 카드 (밝은 배경 오버라이드) */
   .result-section .result-preview-card .rp-hero {
-    background: linear-gradient(160deg, #FFFDF0 0%, #EEF6FE 100%);
+    background: linear-gradient(160deg, #fffdf0 0%, #eef6fe 100%);
 
-    .rp-type-label { color: $color-text-tertiary; }
-    .rp-type-name  { color: $color-text; }
-    .rp-type-sub   { color: $color-text-hover; }
+    .rp-type-label {
+      color: $color-text-tertiary;
+      font-size: $fs-sm;
+    }
+    .rp-type-name {
+      color: $color-text;
+      font-size: $fs-title;
+    }
+    .rp-type-sub {
+      color: $color-text-hover;
+      font-size: $fs-xs;
+    }
 
     .rp-tags .rptag {
-      &.y { background: #FFF3B0; color: #C9A200; border-color: #FFE566; }
-      &.s { background: $color-info-tint; color: $color-info-dark; border-color: #90D0F5; }
-      &.w { background: $color-border; color: $color-text-secondary; border-color: $color-border-strong; }
+      &.y {
+        background: #fff3b0;
+        color: #c9a200;
+        border-color: #ffe566;
+      }
+      &.s {
+        background: $color-info-tint;
+        color: $color-info-dark;
+        border-color: #90d0f5;
+      }
+      &.w {
+        background: $color-border;
+        color: $color-text-secondary;
+        border-color: $color-border-strong;
+      }
     }
   }
 
   /* ─── T1 유형 이미지 */
   .rp-type-img {
-    width: auto;
+    // width: auto;
     max-width: 55%;
-    max-height: 224px;
+    max-height: 150px;
     display: block;
     margin: $space-lg auto 12px;
     object-fit: contain;
@@ -37,7 +57,10 @@
     min-height: 60vh;
     gap: $space-lg;
 
-    p { font-size: $fs-sm; color: $color-text-secondary; }
+    p {
+      font-size: $fs-sm;
+      color: $color-text-secondary;
+    }
   }
 
   .result-loading-spinner {
@@ -50,7 +73,9 @@
   }
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .result-error {
@@ -76,12 +101,30 @@
     }
   }
 
+  /* ─── T21/T22/T23 그룹 */
+  .t2-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .t2-group {
+    display: flex;
+    flex-direction: column;
+  }
+
   /* ─── 재능 Top3 */
   .result-sub-label {
     font-size: $fs-xs;
     font-weight: $fw-semibold;
     color: $color-text-hover;
     margin-bottom: 12px;
+  }
+
+   .result-label {
+    font-size: 1.25rem;
+    font-weight: $fw-semibold;
+    color: #1a1a1a;
+    margin-bottom: 8px;
   }
 
   .talent-list {
@@ -99,42 +142,64 @@
     align-items: center;
     gap: 12px;
 
-    &.top {
+    &.prio-1 {
       border-color: $color-primary;
-      background: #FFFDF0;
+      background: #fffdf0;
+
+      .talent-rank {
+        background: $color-primary;
+        color: $color-text;
+      }
+      .talent-name {
+        color: $color-text;
+        font-weight: $fw-bold;
+      }
+    }
+
+    &.prio-2 {
+      border-color: $color-info-tint;
+
+      .talent-rank {
+        background: $color-info-tint;
+        color: $color-info-dark;
+      }
+    }
+
+    &.prio-3 {
+      .talent-rank {
+        background: $color-border;
+        color: $color-text-secondary;
+      }
     }
   }
 
   .talent-rank {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: $color-border;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $fs-2xs;
-    font-weight: $fw-bold;
-    color: $color-text-secondary;
+    font-size: 11px;
+    font-weight: $fw-semibold;
+    padding: 4px 9px;
+    border-radius: $radius-pill;
+    white-space: nowrap;
     flex-shrink: 0;
-
-    .top & {
-      background: $color-primary;
-      color: $color-text;
-    }
+    background: $color-border;
+    color: $color-text-secondary;
   }
 
-  .talent-info { flex: 1; min-width: 0; }
+  .talent-info {
+    flex: 1;
+    min-width: 0;
+  }
 
   .talent-name {
     display: block;
-    font-size: $fs-xs;
+    font-size: $fs-md;
     font-weight: $fw-semibold;
     color: $color-text;
     margin-bottom: 6px;
   }
 
-  .talent-bar-wrap { margin-bottom: 0; }
+  .talent-bar-wrap {
+    margin-bottom: 0;
+  }
 
   .talent-definition {
     display: block;
@@ -149,8 +214,12 @@
     font-weight: $fw-bold;
     flex-shrink: 0;
 
-    &.hi { color: #C9A200; }
-    &.mi { color: $color-info-dark; }
+    &.hi {
+      color: #c9a200;
+    }
+    &.mi {
+      color: $color-info-dark;
+    }
   }
 
   /* ─── 공통: 한 줄 설명 */
@@ -173,6 +242,10 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    border-radius: 14px;
+    padding: 14px $space-lg;
+    border: 1.5px solid $color-border;
+    background: $color-surface;
   }
 
   .interest-cat-label {
@@ -180,9 +253,15 @@
     font-weight: $fw-semibold;
     letter-spacing: 0.05em;
 
-    &.cat-color-0 { color: #B8900A; }
-    &.cat-color-1 { color: $color-info-dark; }
-    &.cat-color-2 { color: $color-text-secondary; }
+    &.cat-color-0 {
+      color: #b8900a;
+    }
+    &.cat-color-1 {
+      color: $color-info-dark;
+    }
+    &.cat-color-2 {
+      color: $color-text-secondary;
+    }
   }
 
   .interest-tag-row {
@@ -207,7 +286,7 @@
       left: 50%;
       bottom: calc(100% + 7px);
       transform: translateX(-50%);
-      background: #2B2B2B;
+      background: #2b2b2b;
       color: $color-surface;
       font-size: 11px;
       font-weight: $fw-regular;
@@ -222,7 +301,9 @@
       z-index: 100;
     }
 
-    &[data-tooltip]:hover::after { opacity: 1; }
+    &[data-tooltip]:hover::after {
+      opacity: 1;
+    }
   }
 
   .interest-categories {
@@ -248,7 +329,9 @@
     padding: 6px 0;
     border-bottom: 1px solid $color-border;
 
-    &:last-child { border-bottom: none; }
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   .interest-item-name {
@@ -290,7 +373,10 @@
     gap: $space-sm;
   }
 
-  .value-text { flex: 1; min-width: 0; }
+  .value-text {
+    flex: 1;
+    min-width: 0;
+  }
 
   .value-card {
     display: flex;
@@ -303,20 +389,32 @@
 
     &.prio-1 {
       border-color: $color-primary;
-      background: #FFFDF0;
+      background: #fffdf0;
 
-      .value-rank { background: $color-primary; color: $color-text; }
-      .value-name { color: $color-text; font-weight: $fw-bold; }
+      .value-rank {
+        background: $color-primary;
+        color: $color-text;
+      }
+      .value-name {
+        color: $color-text;
+        font-weight: $fw-bold;
+      }
     }
 
     &.prio-2 {
       border-color: $color-info-tint;
 
-      .value-rank { background: $color-info-tint; color: $color-info-dark; }
+      .value-rank {
+        background: $color-info-tint;
+        color: $color-info-dark;
+      }
     }
 
     &.prio-3 {
-      .value-rank { background: $color-border; color: $color-text-secondary; }
+      .value-rank {
+        background: $color-border;
+        color: $color-text-secondary;
+      }
     }
   }
 
@@ -344,7 +442,9 @@
     padding: $space-lg;
     margin-bottom: 10px;
 
-    &:last-child { margin-bottom: 0; }
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .env-result-head {
@@ -382,7 +482,9 @@
     background: $color-border;
     transition: background $transition-slow;
 
-    &.active { background: $color-info; }
+    &.active {
+      background: $color-info;
+    }
   }
 
   .env-result-desc {
@@ -425,8 +527,12 @@
           color: rgba(192, 192, 192, 0.4);
         }
       }
-      > .trait-bar-wrap { opacity: 0.4; }
-      > .trait-val      { opacity: 0.4; }
+      > .trait-bar-wrap {
+        opacity: 0.4;
+      }
+      > .trait-val {
+        opacity: 0.4;
+      }
     }
 
     &.top {
@@ -437,7 +543,9 @@
         min-width: 80px;
       }
 
-      .trait-bar-wrap { height: 9px; }
+      .trait-bar-wrap {
+        height: 9px;
+      }
 
       .trait-val {
         font-size: $fs-2xs;
@@ -478,7 +586,7 @@
       position: absolute;
       left: 0;
       bottom: calc(100% + 7px);
-      background: #2B2B2B;
+      background: #2b2b2b;
       color: $color-surface;
       font-size: 11px;
       font-weight: $fw-regular;
@@ -493,7 +601,9 @@
       z-index: 100;
     }
 
-    &:hover::after { opacity: 1; }
+    &:hover::after {
+      opacity: 1;
+    }
   }
 
   .trait-bar-wrap {
@@ -508,9 +618,15 @@
       border-radius: $radius-pill;
       transition: width 0.6s ease;
 
-      &.hi { background: $color-primary; }
-      &.mi { background: $color-info; }
-      &.lo { background: $color-border-strong; }
+      &.hi {
+        background: $color-primary;
+      }
+      &.mi {
+        background: $color-info;
+      }
+      &.lo {
+        background: $color-border-strong;
+      }
     }
   }
 
@@ -520,9 +636,15 @@
     min-width: 22px;
     text-align: right;
 
-    &.hi { color: #C9A200; }
-    &.mi { color: $color-info-dark; }
-    &.lo { color: $color-text-tertiary; }
+    &.hi {
+      color: #c9a200;
+    }
+    &.mi {
+      color: $color-info-dark;
+    }
+    &.lo {
+      color: $color-text-tertiary;
+    }
   }
 
   .trait-cmp {
@@ -532,9 +654,18 @@
     border-radius: $radius-pill;
     flex-shrink: 0;
 
-    &.up { background: #FFF8CC; color: #997A00; }
-    &.eq { background: $color-border; color: $color-text-tertiary; }
-    &.dn { background: $color-info-tint; color: $color-info-dark; }
+    &.up {
+      background: #fff8cc;
+      color: #997a00;
+    }
+    &.eq {
+      background: $color-border;
+      color: $color-text-tertiary;
+    }
+    &.dn {
+      background: $color-info-tint;
+      color: $color-info-dark;
+    }
   }
 
   /* ─── 업무환경 래퍼 */
@@ -591,7 +722,9 @@
     margin-bottom: 12px;
   }
 
-  .kakao-icon { font-size: 18px; }
+  .kakao-icon {
+    font-size: 18px;
+  }
 
   .btn-soon-badge {
     font-size: 10px;
@@ -615,12 +748,18 @@
     color: $color-text;
     text-align: center;
     cursor: pointer;
-    transition: background $transition-base, transform $transition-fast;
+    transition:
+      background $transition-base,
+      transform $transition-fast;
     margin-bottom: 12px;
     letter-spacing: $ls-tight;
 
-    &:hover  { background: $color-primary-hover; }
-    &:active { transform: scale(0.98); }
+    &:hover {
+      background: $color-primary-hover;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   .btn-mypage-cta {
@@ -635,12 +774,18 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    transition: background $transition-base, transform $transition-fast;
+    transition:
+      background $transition-base,
+      transform $transition-fast;
     margin-bottom: 12px;
     letter-spacing: $ls-tight;
 
-    &:hover  { background: $color-primary-hover; }
-    &:active { transform: scale(0.98); }
+    &:hover {
+      background: $color-primary-hover;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   .btn-encyclopedia {
@@ -656,7 +801,9 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    transition: background $transition-base, border-color $transition-base;
+    transition:
+      background $transition-base,
+      border-color $transition-base;
 
     &:hover {
       background: rgba(255, 255, 255, 0.06);
@@ -681,10 +828,16 @@
     font-family: inherit;
     letter-spacing: $ls-tight;
     cursor: pointer;
-    transition: background $transition-base, transform $transition-fast;
+    transition:
+      background $transition-base,
+      transform $transition-fast;
 
-    &:hover  { background: $color-primary-hover; }
-    &:active { transform: scale(0.98); }
+    &:hover {
+      background: $color-primary-hover;
+    }
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   /* ─── 업무환경 안내 블록 */
@@ -693,9 +846,18 @@
     padding: $space-lg 18px;
     margin-top: $space-lg;
 
-    &--rec     { background: #F0FBF4; border: 1px solid #A8E6B8; }
-    &--non     { background: #FFF4F4; border: 1px solid #F5B8B8; }
-    &--neutral { background: $color-surface-page; border: 1px solid $color-border-strong; }
+    &--rec {
+      background: #f0fbf4;
+      border: 1px solid #a8e6b8;
+    }
+    &--non {
+      background: #fff4f4;
+      border: 1px solid #f5b8b8;
+    }
+    &--neutral {
+      background: $color-surface-page;
+      border: 1px solid $color-border-strong;
+    }
   }
 
   .env-block-header {
@@ -705,7 +867,10 @@
     margin: 0 0 10px;
   }
 
-  .env-block-icon { font-size: $fs-base; line-height: 1; }
+  .env-block-icon {
+    font-size: $fs-base;
+    line-height: 1;
+  }
 
   .env-block-title {
     font-size: 14.4px;
@@ -736,7 +901,11 @@
     gap: $space-sm;
   }
 
-  .env-we-icon { font-size: 17.6px; flex-shrink: 0; line-height: 1.5; }
+  .env-we-icon {
+    font-size: 17.6px;
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
 
   .env-we-info {
     display: flex;
@@ -777,7 +946,9 @@
     flex-direction: column;
     gap: 6.4px;
     cursor: pointer;
-    transition: box-shadow $transition-base, border-color $transition-base;
+    transition:
+      box-shadow $transition-base,
+      border-color $transition-base;
 
     &:active {
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -803,7 +974,7 @@
     flex-shrink: 0;
     font-size: $fs-2xs;
     font-weight: $fw-semibold;
-    color: #3D7FE8;
+    color: #3d7fe8;
   }
 
   .t2rec-class {
@@ -828,9 +999,21 @@
     vertical-align: middle;
     border: 1px solid transparent;
 
-    &--interest { background: #E8F6F6; color: #2E8585; border-color: #B8E0E0; }
-    &--talent   { background: $color-info-tint; color: #3D7FE8; border-color: #B8CFFF; }
-    &--value    { background: #F3EEFF; color: #7C50CC; border-color: #CEB8F5; }
+    &--interest {
+      background: #e8f6f6;
+      color: #2e8585;
+      border-color: #b8e0e0;
+    }
+    &--talent {
+      background: $color-info-tint;
+      color: #3d7fe8;
+      border-color: #b8cfff;
+    }
+    &--value {
+      background: #f3eeff;
+      color: #7c50cc;
+      border-color: #ceb8f5;
+    }
   }
 
   .t2rec-meta {
@@ -851,15 +1034,24 @@
     flex-shrink: 0;
     width: 220px;
     height: 160px;
-    background: linear-gradient(90deg, $color-border 25%, $color-surface-page 50%, $color-border 75%);
+    background: linear-gradient(
+      90deg,
+      $color-border 25%,
+      $color-surface-page 50%,
+      $color-border 75%
+    );
     background-size: 200% 100%;
     animation: t2rec-shimmer 1.4s infinite;
     border-radius: $radius-lg;
   }
 
   @keyframes t2rec-shimmer {
-    0%   { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 
   .t2rec-message {
@@ -887,7 +1079,9 @@
     border-radius: $space-lg;
     padding: $space-lg $space-lg 14px;
     cursor: pointer;
-    transition: box-shadow $transition-base, transform $transition-fast;
+    transition:
+      box-shadow $transition-base,
+      transform $transition-fast;
 
     &:active {
       transform: scale(0.99);
@@ -907,10 +1101,24 @@
     font-weight: $fw-black;
     margin-top: 2px;
 
-    &--1 { background: #FFF0B0; color: #8A6200; box-shadow: 0 1px 4px rgba(200, 150, 0, 0.25); }
-    &--2 { background: $color-border; color: $color-text-hover; }
-    &--3 { background: #F5DEC8; color: #8A4A00; }
-    &--4, &--5 { background: $color-surface-page; color: $color-text-secondary; }
+    &--1 {
+      background: #fff0b0;
+      color: #8a6200;
+      box-shadow: 0 1px 4px rgba(200, 150, 0, 0.25);
+    }
+    &--2 {
+      background: $color-border;
+      color: $color-text-hover;
+    }
+    &--3 {
+      background: #f5dec8;
+      color: #8a4a00;
+    }
+    &--4,
+    &--5 {
+      background: $color-surface-page;
+      color: $color-text-secondary;
+    }
   }
 
   .comp-body {
@@ -940,7 +1148,7 @@
     font-size: $fs-2xs;
     font-weight: $fw-bold;
     color: $color-surface;
-    background: #3D7FE8;
+    background: #3d7fe8;
     border-radius: 20px;
     padding: 2px $space-sm;
     letter-spacing: -0.01em;
@@ -973,9 +1181,18 @@
     padding: 2px 6px;
     text-align: left;
 
-    &--t1 { background: #FFF0E6; color: #C85A00; }
-    &--t2 { background: $color-info-tint; color: #3D7FE8; }
-    &--t3 { background: #E6F6F4; color: #2E8888; }
+    &--t1 {
+      background: #fff0e6;
+      color: #c85a00;
+    }
+    &--t2 {
+      background: $color-info-tint;
+      color: #3d7fe8;
+    }
+    &--t3 {
+      background: #e6f6f4;
+      color: #2e8888;
+    }
   }
 
   .comp-bar-track {
@@ -990,9 +1207,15 @@
     height: 100%;
     border-radius: 4px;
 
-    &--t1 { background: linear-gradient(90deg, #FFCA8A, #FF5A20); }
-    &--t2 { background: linear-gradient(90deg, #80BAFF, #2C6EE8); }
-    &--t3 { background: linear-gradient(90deg, #6EDDD0, #219E92); }
+    &--t1 {
+      background: linear-gradient(90deg, #ffca8a, #ff5a20);
+    }
+    &--t2 {
+      background: linear-gradient(90deg, #80baff, #2c6ee8);
+    }
+    &--t3 {
+      background: linear-gradient(90deg, #6eddd0, #219e92);
+    }
   }
 
   .comp-bar-val {
@@ -1000,14 +1223,20 @@
     font-weight: $fw-semibold;
     text-align: right;
 
-    &--t1 { color: #D06020; }
-    &--t2 { color: #3D7FE8; }
-    &--t3 { color: #2E9090; }
+    &--t1 {
+      color: #d06020;
+    }
+    &--t2 {
+      color: #3d7fe8;
+    }
+    &--t3 {
+      color: #2e9090;
+    }
   }
 
   /* ─── 좋아하는 일 카드 */
   .like-card {
-    background: $color-surface-alt;
+    background: #fff;
     border: 1px solid $color-border;
     border-radius: $radius-md;
     padding: 14px;
@@ -1027,11 +1256,20 @@
     border-radius: $radius-sm;
     font-weight: $fw-semibold;
     font-size: $fs-2xs;
-    margin: 0 1px;
+    margin: 2px 2px;
 
-    &--y { background: #FFF8CC; color: #997A00; }
-    &--s { background: $color-info-tint; color: $color-info-dark; }
-    &--p { background: #F0EEFF; color: #6B5FCC; }
+    &--y {
+      background: #fff8cc;
+      color: #997a00;
+    }
+    &--s {
+      background: $color-info-tint;
+      color: $color-info-dark;
+    }
+    &--p {
+      background: #f0eeff;
+      color: #6b5fcc;
+    }
   }
 
   .comp-meta {
