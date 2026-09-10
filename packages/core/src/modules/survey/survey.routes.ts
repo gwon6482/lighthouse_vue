@@ -4,11 +4,11 @@ export default [
     name: 'Home',
     component: () => import('./pages/HomePage.vue'),
   },
+  // 설계 후 메인은 진로달성(`/career-achievement`)이 담당한다. 과거 `/main`은 플레이스홀더였고
+  // 2026-08-07 제거 — 다만 PWA start_url·북마크·기존 히스토리가 남아있을 수 있어 리다이렉트로 존치.
   {
     path: '/main',
-    name: 'Main',
-    component: () => import('./pages/MainPage.vue'),
-    meta: { showBottomNav: true, mainState: 'after' },
+    redirect: '/career-achievement',
   },
   {
     path: '/main/before',

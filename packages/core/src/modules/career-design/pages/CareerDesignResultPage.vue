@@ -65,7 +65,7 @@
         <div v-else class="cd-result__timeline">
           <div
             v-for="(slot, si) in filledSlots"
-            :key="slot.month"
+            :key="slot.week"
             class="cd-result__month"
           >
             <!-- 월 라벨 + 세로선 -->
@@ -75,11 +75,11 @@
             </div>
 
             <div class="cd-result__month-right">
-              <span class="cd-result__month-badge">{{ slot.month }}</span>
+              <span class="cd-result__month-badge">{{ monthWeekLabel(draftPlan.startDate, slot.week) }} <em>{{ weekRangeLabel(draftPlan.startDate, slot.week) }}</em></span>
 
               <div class="cd-result__projects">
                 <div
-                  v-for="project in slot.projects"
+                  v-for="project in liveProjects(slot)"
                   :key="project.id"
                   class="cd-result__project"
                   :style="{ borderLeftColor: categoryColorMap[project.category] }"
@@ -200,6 +200,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { req } from '@/shared/api'
 import { useCareerDesign } from '../composables/useCareerDesign'
+import { weekRangeLabel, monthWeekLabel, resolveProject } from '../composables/usePlanTimeline'
 import { useWeeklySchedule } from '@/modules/career-achievement/composables/useWeeklySchedule'
 import { useAuthStore } from '@/shared/stores/auth'
 import CdYellowHeader from '../components/CdYellowHeader.vue'
@@ -272,7 +273,13 @@ const categoryColorMap: Record<ProjectCategory, string> = {
 }
 const categoryLabel = (cat: ProjectCategory) => categories.find(c => c.value === cat)?.label ?? ''
 
-const filledSlots = computed(() => draftTimeline.value.filter(s => s.projects.length > 0))
+const filledSlots = computed(() =>
+  draftTimeline.value.filter(s => s.projects.length > 0).sort((a, b) => a.week - b.week)
+)
+
+// 슬롯은 배치 시점의 복사본을 들고 있어 이후 수정이 반영되지 않는다 → id 로 원본을 집어온다.
+const liveProjects = (slot: { projects: Project[] }) =>
+  slot.projects.map(p => resolveProject(p, draftPlan.projects))
 
 const placedProjectIds = computed(() =>
   new Set(filledSlots.value.flatMap(s => s.projects.map(p => p.id)))

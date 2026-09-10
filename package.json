@@ -14,6 +14,8 @@
     "build:test": "pnpm --filter @lighthouse/test-app build",
     "build:app": "pnpm --filter @lighthouse/prod-app build",
     "build": "pnpm -r build",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint . --fix --cache",
     "type-check": "vue-tsc --build"
   },

@@ -137,31 +137,6 @@
       </Transition>
     </Teleport>
 
-    <!-- 메인 페이지 설계 전 / 설계 후 선택 팝업 -->
-    <Teleport to="body">
-      <Transition name="ach-modal">
-        <div v-if="showMainPageChoice" class="ach-modal" @click.self="showMainPageChoice = false">
-          <div class="ach-modal__sheet">
-            <div class="ach-modal__handle" />
-            <h2 class="ach-modal__title">메인 페이지</h2>
-            <p class="ach-modal__sub">어떤 상태의 메인 페이지로 이동할까요?</p>
-            <div class="ach-modal__btns">
-              <button class="ach-modal__btn ach-modal__btn--before" @click="pickMainPage('before')">
-                <span class="ach-modal__btn-icon">🌱</span>
-                <span class="ach-modal__btn-name">프로젝트 설계 전</span>
-                <span class="ach-modal__btn-desc">아직 진로계획이 없는 사용자의 메인</span>
-              </button>
-              <button class="ach-modal__btn ach-modal__btn--after" @click="pickMainPage('after')">
-                <span class="ach-modal__btn-icon">🚀</span>
-                <span class="ach-modal__btn-name">프로젝트 설계 후</span>
-                <span class="ach-modal__btn-desc">활성 진로계획이 있는 사용자의 메인</span>
-              </button>
-            </div>
-            <button class="ach-modal__cancel" @click="showMainPageChoice = false">취소</button>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
   </div>
 </template>
 
@@ -201,20 +176,14 @@ function pickAchievement(target: 'daily' | 'weekly') {
   router.push(target === 'daily' ? '/career-achievement' : '/career-achievement/weekly-review')
 }
 
-// 메인 페이지는 프로젝트 설계 전/후 중 선택하도록 팝업을 띄움
-const showMainPageChoice = ref(false)
-function pickMainPage(target: 'before' | 'after') {
-  showMainPageChoice.value = false
-  router.push(target === 'before' ? '/main/before' : '/main')
-}
-
 const menus = [
   { name: '온보딩(최초진입)', icon: '🚪', route: '/onboarding' },
   { name: '자기이해', icon: '🔍', route: '/self-understanding' },
   { name: '진로백과', icon: '📚', route: '/career-encyclopedia' },
   { name: '진로설계', icon: '🗺️', route: '/career-design' },
   { name: '진로달성', icon: '🏆', onClick: () => { showAchievementChoice.value = true } },
-  { name: '메인 페이지', icon: '🏠', onClick: () => { showMainPageChoice.value = true } },
+  // 설계 후 메인은 위 '진로달성'이 그 자체이므로, 여기선 설계 전 메인만 노출한다.
+  { name: '메인 페이지(설계 전)', icon: '🏠', route: '/main/before' },
   { name: '자기이해 랜딩페이지', icon: '🌟', route: '/self-understanding/intro' },
 ]
 

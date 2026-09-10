@@ -9,10 +9,15 @@ import { VitePWA } from 'vite-plugin-pwa'
 const coreSrc = fileURLToPath(new URL('../../packages/core/src', import.meta.url))
 const publicDir = fileURLToPath(new URL('../../public', import.meta.url))
 const appearance = fileURLToPath(new URL('../../packages/core/src/appearance', import.meta.url))
+// .env* 는 모노레포 루트에 있다. envDir 을 안 잡으면 Vite 는 이 앱 디렉터리에서만 찾으므로
+// 루트 .env.production 이 무시되고 VITE_API 가 undefined 인 채로 빌드된다.
+// CI 는 워크플로우가 VITE_API 를 직접 주입해서 통과할 뿐이라, 로컬 빌드만 조용히 달랐다.
+const envDir = fileURLToPath(new URL('../../', import.meta.url))
 
 // https://vite.dev/config/
 export default defineConfig({
   publicDir,
+  envDir,
   plugins: [
     vue(),
     vueJsx(),

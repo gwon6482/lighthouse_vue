@@ -3,6 +3,7 @@ import { req } from '@/shared/api'
 import type {
   Project, Routine, DayOfWeek, TimelineSlot,
 } from '@/modules/career-design/types/career-design'
+import { weekOfDate, projectsActiveInWeek, mondayOf } from '@/modules/career-design/composables/usePlanTimeline'
 
 // 한 주의 확정된 일정 1건. BE WeeklySchedule.items 의 1요소.
 export interface WeeklyScheduleItem {
@@ -53,30 +54,19 @@ export function dowOf(d: Date): DayOfWeek {
   return DOW_ARR[d.getDay()]!
 }
 
-// timeline.month 라벨 파싱: "2026년 3월" / "2026.03" / "2026-03" / "2026-03-01" 모두 허용
-function parseMonthLabel(s: string): { year: number; month: number } | null {
-  if (!s) return null
-  const kr = s.match(/(\d+)\s*년\s*(\d+)\s*월/)
-  if (kr) return { year: +kr[1]!, month: +kr[2]! }
-  const dot = s.match(/^(\d+)\.(\d+)/)
-  if (dot) return { year: +dot[1]!, month: +dot[2]! }
-  const dash = s.match(/^(\d+)-(\d+)/)
-  if (dash) return { year: +dash[1]!, month: +dash[2]! }
-  return null
-}
-
-// 진로계획 첫 주 [weekStart, weekEnd] 범위 — 항상 startDate 부터 7일.
-// 모든 주는 7일 블록으로 통일 (subsequent 주차도 +7 일씩 이동).
-// reviewDay 는 더 이상 boundary 가 아니라 "그 주의 리뷰를 하는 요일" annotation 으로 사용.
-// (signature 는 호환을 위해 유지)
+// 진로계획 첫 주 [weekStart, weekEnd] — startDate 가 속한 **달력 주(월~일)**.
+// 2026-08-27 부터 타임라인과 같은 규칙을 쓴다(그 전에는 startDate 부터 7일 블록이었다).
+// 시작일이 수요일이면 weekStart 는 그 주 월요일이라 startDate 보다 이틀 앞선다 —
+// 그 이틀은 계획 시작 전이므로 generateItemsForWeek 이 항목을 만들지 않는다.
+// reviewDay 는 boundary 가 아니라 "그 주의 리뷰를 하는 요일" annotation (signature 는 호환 유지).
 export function computeFirstWeekRange(
   startDate: string, _reviewDay: DayOfWeek,
 ): { weekStart: string; weekEnd: string } | null {
   const sd = parseDateKey(startDate)
   if (!sd) return null
-  const ed = new Date(sd)
-  ed.setDate(ed.getDate() + 6)   // 7일 inclusive
-  return { weekStart: startDate, weekEnd: toDateKey(ed) }
+  const ws = mondayOf(sd)
+  const we = new Date(ws); we.setDate(we.getDate() + 6)
+  return { weekStart: toDateKey(ws), weekEnd: toDateKey(we) }
 }
 
 // 임의 날짜 date 가 속한 주의 [weekStart, weekEnd] 계산.
@@ -109,7 +99,7 @@ export function computeWeekRangeContaining(
 // 마스터 데이터의 Project.days / Routine.days / timeline 을 그대로 곱해서 만든다.
 // Phase 4 의 주간리뷰 단계에서 사용자가 자유롭게 수정 가능.
 export function generateItemsForWeek(
-  plan: { projects: Project[]; routines: Routine[] },
+  plan: { startDate: string; endDate?: string; projects: Project[]; routines: Routine[] },
   timeline: TimelineSlot[],
   weekStart: string,
   weekEnd: string,
@@ -119,44 +109,41 @@ export function generateItemsForWeek(
   const ed = parseDateKey(weekEnd)
   if (!sd || !ed) return out
 
-  // 프로젝트가 처음 배치된 월의 1일 → curriculumWeek 계산용 anchor
-  function firstAnchorFor(projectId: string): Date | null {
-    let best: { year: number; month: number } | null = null
-    for (const slot of timeline) {
-      if (!slot.projects.some(p => p.id === projectId)) continue
-      const parsed = parseMonthLabel(slot.month)
-      if (!parsed) continue
-      if (!best || parsed.year < best.year || (parsed.year === best.year && parsed.month < best.month)) {
-        best = parsed
-      }
+  // 이 주가 계획의 몇 주차인지. 타임라인이 주차 기준이므로 이게 기준점이다.
+  const planWeek = weekOfDate(plan.startDate, sd)
+  if (planWeek === null) return out
+
+  // 프로젝트 id → 타임라인 시작 주차
+  const startWeekOf = new Map<string, number>()
+  for (const slot of timeline) {
+    for (const p of slot.projects) {
+      const prev = startWeekOf.get(p.id)
+      if (prev === undefined || slot.week < prev) startWeekOf.set(p.id, slot.week)
     }
-    return best ? new Date(best.year, best.month - 1, 1) : null
   }
+
+  // 이번 주에 진행 중인 프로젝트만 후보 (시작주 ~ 시작주+기간-1)
+  const activeIds = new Set(projectsActiveInWeek(timeline, planWeek, plan.projects).map(p => p.id))
 
   const cursor = new Date(sd)
   while (cursor.getTime() <= ed.getTime()) {
     const dow     = dowOf(cursor)
     const dateKey = toDateKey(cursor)
-    const curY    = cursor.getFullYear()
-    const curM    = cursor.getMonth() + 1
 
-    // 이번 달에 활성인 프로젝트만 후보
-    const monthSlot = timeline.find(slot => {
-      const p = parseMonthLabel(slot.month)
-      return p && p.year === curY && p.month === curM
-    })
-    const activeIds = new Set(monthSlot?.projects.map(p => p.id) ?? [])
+    // 달력 주는 계획 시작 전·종료 후 날짜를 품을 수 있다(첫 주/마지막 주). 그 날은 건너뛴다.
+    if ((plan.startDate && dateKey < plan.startDate) || (plan.endDate && dateKey > plan.endDate)) {
+      cursor.setDate(cursor.getDate() + 1)
+      continue
+    }
 
     for (const p of plan.projects) {
       if (!activeIds.has(p.id)) continue
       if (!p.days?.includes(dow)) continue
 
-      const anchor = firstAnchorFor(p.id)
-      let curriculumWeek: number | null = null
-      if (anchor) {
-        const days = Math.floor((cursor.getTime() - anchor.getTime()) / 86400000)
-        if (days >= 0) curriculumWeek = Math.floor(days / 7) + 1
-      }
+      // 커리큘럼 n주차 = 계획주차 - 프로젝트 시작주차 + 1.
+      // 주차 모델에서는 배치 자체가 주 단위라 나눗셈 없이 바로 떨어진다.
+      const startWeek = startWeekOf.get(p.id)
+      const curriculumWeek = startWeek === undefined ? null : planWeek - startWeek + 1
 
       out.push({
         id: crypto.randomUUID(),
@@ -260,7 +247,7 @@ export function useWeeklySchedule() {
   // 임의 주의 schedule 이 없으면 디폴트로 자동 생성 (있으면 그대로 반환). idempotent.
   async function ensureWeekSchedule(
     planId: string,
-    plan: { projects: Project[]; routines: Routine[] },
+    plan: { startDate: string; endDate?: string; projects: Project[]; routines: Routine[] },
     timeline: TimelineSlot[],
     weekStart: string,
     weekEnd: string,
@@ -268,7 +255,7 @@ export function useWeeklySchedule() {
     const existing = await fetchScheduleByWeek(planId, weekStart)
     if (existing) return existing
     const items = generateItemsForWeek(
-      { projects: plan.projects, routines: plan.routines },
+      { startDate: plan.startDate, endDate: plan.endDate, projects: plan.projects, routines: plan.routines },
       timeline,
       weekStart,
       weekEnd,
@@ -279,7 +266,7 @@ export function useWeeklySchedule() {
   // 첫 주 schedule 자동 생성 (진로계획 완성 직후 Result 페이지에서 호출).
   async function ensureFirstWeekSchedule(
     planId: string,
-    plan: { startDate: string; reviewDay: DayOfWeek | ''; projects: Project[]; routines: Routine[] },
+    plan: { startDate: string; endDate?: string; reviewDay: DayOfWeek | ''; projects: Project[]; routines: Routine[] },
     timeline: TimelineSlot[],
   ): Promise<WeeklySchedule | null> {
     if (!plan.startDate || !plan.reviewDay) return null

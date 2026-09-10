@@ -153,6 +153,76 @@ const SAMPLE_POSTINGS_BY_JOB: Record<string, SamplePosting[]> = {
       ],
     },
   ],
+
+  // 광고·홍보·마케팅전문가(024101): 광고대행사·인하우스 마케팅·PR 채용
+  '024101': [
+    {
+      id: 'r1',
+      companyName: '제일기획',
+      position: '디지털 광고기획 AE (경력)',
+      employmentType: '정규직',
+      deadline: '2026-09-05',
+      duties: [
+        '광고주 대상 통합 캠페인 기획·제안',
+        '매체 전략 수립 및 집행 예산 관리',
+        '제작팀·매체팀 협업 및 일정 조율',
+      ],
+      requirements: [
+        '광고·마케팅 관련 경력 3년 이상',
+        '경쟁 PT 기획서 작성 경험',
+        '광고주 커뮤니케이션 역량',
+      ],
+      preferred: [
+        '디지털 매체 운영 경험',
+        '데이터 기반 성과 리포팅 가능자',
+        '광고 공모전 수상 경력',
+      ],
+    },
+    {
+      id: 'r2',
+      companyName: '무신사',
+      position: '퍼포먼스 마케터 (그로스)',
+      employmentType: '정규직',
+      deadline: '2026-09-19',
+      duties: [
+        '메타·구글 등 유입 채널 광고 운영',
+        'ROAS·CAC 지표 분석 및 예산 최적화',
+        'A/B 테스트 설계와 소재 개선',
+      ],
+      requirements: [
+        '퍼포먼스 마케팅 경력 2년 이상',
+        'GA4 등 분석 도구 활용 능숙',
+        'SQL 기초 데이터 추출 가능',
+      ],
+      preferred: [
+        '이커머스·앱 서비스 마케팅 경험',
+        '구글 애널리틱스 자격 보유',
+        '자사몰 매출 개선 성과 보유',
+      ],
+    },
+    {
+      id: 'r3',
+      companyName: '당근',
+      position: '브랜드 커뮤니케이션 담당 (PR)',
+      employmentType: '계약직 (정규직 전환형)',
+      deadline: '상시채용',
+      duties: [
+        '보도자료 작성 및 언론 대응',
+        '브랜드 메시지·톤앤매너 관리',
+        '캠페인 콘텐츠 기획과 채널 운영',
+      ],
+      requirements: [
+        '홍보·PR 실무 경력 2년 이상',
+        '보도자료 작성 포트폴리오 보유',
+        '유관 부서 협업 커뮤니케이션 역량',
+      ],
+      preferred: [
+        '언론사 또는 PR 대행사 경험',
+        '위기관리 커뮤니케이션 대응 경험',
+        '컨벤션기획사 자격 보유',
+      ],
+    },
+  ],
 }
 
 const postings = computed<SamplePosting[]>(() => SAMPLE_POSTINGS_BY_JOB[props.jobCode] ?? [])

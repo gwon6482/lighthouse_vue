@@ -95,6 +95,8 @@
 import { ref, computed, onMounted, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCareerDesign } from '@/modules/career-design/composables/useCareerDesign'
+import { projectWeekIndexOn } from '@/modules/career-design/composables/usePlanTimeline'
+import { weekEntriesOf } from '@/modules/career-design/composables/useProjectCurriculum'
 import { useAchievement } from '../composables/useAchievement'
 import { useCurriculumCompletion } from '../composables/useCurriculumCompletion'
 import { useAchievementEntries, type AchievementEntry } from '../composables/useAchievementEntries'
@@ -104,7 +106,7 @@ import type { Project, Routine, ProjectCategory } from '@/modules/career-design/
 const route = useRoute()
 const router = useRouter()
 const { draftPlan, draftTimeline, fetchMyPlans, loadPlanFromApi } = useCareerDesign()
-const { isProjectDone, isRoutineDone, toggleProject, toggleRoutine, parseMonthLabel } = useAchievement()
+const { isProjectDone, isRoutineDone, toggleProject, toggleRoutine } = useAchievement()
 const { isItemDone, toggleItem } = useCurriculumCompletion()
 const { saveEntry, getEntry } = useAchievementEntries()
 
@@ -224,33 +226,20 @@ function resizeToDataUrl(file: File, maxWidth: number): Promise<string> {
 function advanceProjectCurriculum(project: Project, dateKey: string) {
   if (!project.curriculum?.length) return
 
-  // 프로젝트가 timeline에 처음 배치된 월의 1일 (1주차 시작일)
-  let best: { year: number; month: number } | null = null
-  for (const slot of draftTimeline.value) {
-    if (!slot.projects.some((p: { id: string }) => p.id === project.id)) continue
-    const parsed = parseMonthLabel(slot.month)
-    if (!parsed) continue
-    if (!best || parsed.year < best.year || (parsed.year === best.year && parsed.month < best.month)) {
-      best = parsed
-    }
-  }
-  if (!best) return
-  const firstDay = new Date(best.year, best.month - 1, 1)
-  firstDay.setHours(0, 0, 0, 0)
-
   const [y, m, d] = dateKey.split('-').map(Number)
   if (!y || !m || !d) return
   const target = new Date(y, m - 1, d)
-  target.setHours(0, 0, 0, 0)
 
-  const days = Math.floor((target.getTime() - firstDay.getTime()) / (1000 * 60 * 60 * 24))
-  if (days < 0) return
-  const wIdx = Math.floor(days / 7) + 1
+  // 커리큘럼 N주차 = 계획주차 - 타임라인 시작주차 + 1
+  const wIdx = projectWeekIndexOn(draftTimeline.value, draftPlan.startDate, project.id, target)
+  if (wIdx === null) return
+
 
   const cw = project.curriculum.find(c => c.week === wIdx)
-  if (!cw || !cw.items?.length) return
+  const entries = weekEntriesOf(cw)
+  if (!cw || !entries.length) return
 
-  const undoneIdx = cw.items.findIndex((_, k) => !isItemDone(project.id, cw.week, k))
+  const undoneIdx = entries.findIndex((_, k) => !isItemDone(project.id, cw.week, k))
   if (undoneIdx !== -1) toggleItem(project.id, cw.week, undoneIdx)
 }
 

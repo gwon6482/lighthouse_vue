@@ -95,7 +95,7 @@
         <div v-else class="timeline">
           <div
             v-for="(slot, si) in filledSlots"
-            :key="slot.month"
+            :key="slot.week"
             class="timeline__month"
           >
             <div class="timeline__month-left">
@@ -103,10 +103,10 @@
               <div v-if="si < filledSlots.length - 1" class="timeline__month-line" />
             </div>
             <div class="timeline__month-right">
-              <span class="timeline__month-badge">{{ slot.month }}</span>
+              <span class="timeline__month-badge">{{ monthWeekLabel(plan?.startDate ?? "", slot.week) }} <em>{{ weekRangeLabel(plan?.startDate ?? "", slot.week) }}</em></span>
               <div class="timeline__projects">
                 <div
-                  v-for="project in slot.projects"
+                  v-for="project in liveProjects(slot)"
                   :key="project.id"
                   class="timeline__project"
                   :style="{ borderLeftColor: categoryColorMap[project.category] }"
@@ -230,6 +230,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { req } from '@/shared/api'
 import { useCareerDesign } from '../composables/useCareerDesign'
 import type { Project, ProjectCategory, Routine, TimelineSlot, DayOfWeek } from '../types/career-design'
+import { weekRangeLabel, monthWeekLabel, resolveProject } from '../composables/usePlanTimeline'
 
 interface PlanDetail {
   planId: string
@@ -322,8 +323,12 @@ const categoryColorMap: Record<ProjectCategory, string> = {
 const categoryLabel = (cat: ProjectCategory) => categories.find(c => c.value === cat)?.label ?? ''
 
 const filledSlots = computed(() =>
-  (plan.value?.timeline ?? []).filter(s => s.projects.length > 0)
+  (plan.value?.timeline ?? []).filter(s => s.projects.length > 0).sort((a, b) => a.week - b.week)
 )
+
+// 슬롯은 배치 시점의 복사본을 들고 있어 이후 수정이 반영되지 않는다 → id 로 원본을 집어온다.
+const liveProjects = (slot: TimelineSlot) =>
+  slot.projects.map(p => resolveProject(p, plan.value?.projects))
 
 const placedProjectIds = computed(() =>
   new Set(filledSlots.value.flatMap(s => s.projects.map(p => p.id)))

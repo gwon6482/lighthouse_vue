@@ -4,12 +4,7 @@ import { req } from '@/shared/api'
 import { useAchievement } from '@/modules/career-achievement/composables/useAchievement'
 import { useAchievementEntries } from '@/modules/career-achievement/composables/useAchievementEntries'
 import { useCurriculumCompletion } from '@/modules/career-achievement/composables/useCurriculumCompletion'
-import type { Project, Routine, DayOfWeek } from '@/modules/career-design/types/career-design'
-
-interface TimelineSlot {
-  month: string
-  projects: { id: string }[]
-}
+import type { Project, Routine, DayOfWeek, TimelineSlot } from '@/modules/career-design/types/career-design'
 
 interface ActivePlan {
   planId: string

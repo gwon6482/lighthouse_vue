@@ -119,8 +119,8 @@ async function handleLogin() {
   try {
     await authStore.login(email.value, password.value)
     await achievementStore.loadActivePlan()
-    // 활성 진로계획 유무에 따라 설계 전/후 메인으로
-    router.replace(achievementStore.hasActivePlan ? '/main' : '/main/before')
+    // 활성 진로계획 유무에 따라 설계 전/후 메인으로 (설계 후 메인 = 진로달성)
+    router.replace(achievementStore.hasActivePlan ? '/career-achievement' : '/main/before')
   } catch (e: any) {
     error.value = e.response?.data?.error ?? '로그인 중 오류가 발생했어요.'
   } finally {

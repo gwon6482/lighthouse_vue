@@ -94,6 +94,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCareerDesign } from '../composables/useCareerDesign'
+import { DEFAULT_WEEKS } from '../composables/useProjectCurriculum'
 import CdYellowHeader from '../components/CdYellowHeader.vue'
 import type { Project, ProjectCategory } from '../types/career-design'
 
@@ -143,6 +144,8 @@ function editProject(project: Project) {
   Object.assign(draftProject, {
     ...project,
     days: [...project.days],
+    // 서버는 weeks 를 저장하지 않으므로 커리큘럼 길이가 곧 기간이다.
+    weeks: project.curriculum?.length || project.weeks || DEFAULT_WEEKS,
     curriculum: project.curriculum?.map(w => ({ ...w, items: [...w.items] })) ?? [],
   })
   router.push('/career-design/project/new')

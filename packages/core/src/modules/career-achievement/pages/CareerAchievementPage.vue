@@ -132,7 +132,7 @@
 
                   <ul v-if="expandedProjects[bar.project.id]" class="ca__pgoal-items">
                     <li
-                      v-for="(text, idx) in bar.curriculumWeek.items"
+                      v-for="(text, idx) in bar.entries"
                       :key="idx"
                       class="ca__pgoal-item"
                       :class="{ 'ca__pgoal-item--done': isItemDone(bar.project.id, bar.curriculumWeek.week, idx) }"
@@ -237,6 +237,8 @@ import { useRouter } from 'vue-router'
 import AppHeader from '@/shared/components/AppHeader.vue'
 import CelebrationModal from '../components/CelebrationModal.vue'
 import { useCareerDesign } from '@/modules/career-design/composables/useCareerDesign'
+import { projectWeekIndexOn } from '@/modules/career-design/composables/usePlanTimeline'
+import { weekEntriesOf } from '@/modules/career-design/composables/useProjectCurriculum'
 import { useAchievement } from '../composables/useAchievement'
 import { useCurriculumCompletion } from '../composables/useCurriculumCompletion'
 import { useWeeklySchedule, computeWeekRangeContaining } from '../composables/useWeeklySchedule'
@@ -247,7 +249,7 @@ import type { Project, ProjectCategory, Routine, WeekCurriculum, DayOfWeek } fro
 const router = useRouter()
 const { draftPlan, draftTimeline, fetchMyPlans, loadPlanFromApi } = useCareerDesign()
 const {
-  today, todayKey, todayRoutines, todayProjects, dateProjects, parseMonthLabel,
+  today, todayKey, todayRoutines, todayProjects, dateProjects,
   isProjectDone, isRoutineDone, toggleRoutine,
   plannedCount, doneCount, monthProgress, toDateKey,
   weekDates, getDayOfWeek,
@@ -393,9 +395,7 @@ const achievementStreak = computed<number>(() => {
 
 const hasPlan = computed(() => !!draftPlan.planId)
 
-const timelineForCalc = computed(() =>
-  draftTimeline.value.map(s => ({ month: s.month, projects: s.projects.map(p => ({ id: p.id })) }))
-)
+const timelineForCalc = computed(() => draftTimeline.value)
 
 // 오늘 schedule items (있을 때만). 없으면 fallback 로직 사용.
 const todayScheduleItems = computed(() => {
@@ -510,27 +510,10 @@ const visibleNodes = computed<(WeekNode | null)[]>(() => {
   ]
 })
 
-// 프로젝트가 처음 timeline에 배치된 month의 1일 (1주차 시작일)
-function projectFirstMonthFirstDay(projectId: string): Date | null {
-  let best: { year: number; month: number } | null = null
-  for (const slot of timelineForCalc.value) {
-    if (!slot.projects.some(p => p.id === projectId)) continue
-    const parsed = parseMonthLabel(slot.month)
-    if (!parsed) continue
-    if (!best || (parsed.year < best.year) || (parsed.year === best.year && parsed.month < best.month)) {
-      best = parsed
-    }
-  }
-  return best ? new Date(best.year, best.month - 1, 1) : null
-}
 
-// 현재 주차의 시작일과 첫 배치월 1일 차이 / 7 + 1 = 그 프로젝트의 N주차
+// 그 프로젝트의 N주차 = 계획주차 - 타임라인 시작주차 + 1
 function projectWeekIdx(projectId: string, weekStart: Date): number | null {
-  const firstDay = projectFirstMonthFirstDay(projectId)
-  if (!firstDay) return null
-  const days = Math.floor((weekStart.getTime() - firstDay.getTime()) / (1000 * 60 * 60 * 24))
-  if (days < 0) return null
-  return Math.floor(days / 7) + 1
+  return projectWeekIndexOn(timelineForCalc.value, draftPlan.startDate, projectId, weekStart)
 }
 
 // 현재 주차 vcard용 프로젝트별 progress bar 데이터
@@ -538,6 +521,7 @@ interface ProjectBar {
   project: Project
   weekIdx: number                    // 그 프로젝트의 N주차 (1-based)
   curriculumWeek: WeekCurriculum     // curriculum[weekIdx-1] (반드시 존재)
+  entries: string[]                  // 그 주차의 체크 단위 (신규=설명 1건, 구 데이터=items)
   itemsTotal: number
   itemsDone: number
 }
@@ -559,14 +543,16 @@ const currentWeekProjectBars = computed<ProjectBar[]>(() => {
       const wIdx = projectWeekIdx(p.id, cur.start)
       if (wIdx === null) continue
       const cw = p.curriculum?.find(c => c.week === wIdx)
-      if (!cw || !cw.items?.length) continue
+      const entries = weekEntriesOf(cw)
+      if (!cw || !entries.length) continue
 
       out.push({
         project: p,
         weekIdx: wIdx,
         curriculumWeek: cw,
-        itemsTotal: cw.items.length,
-        itemsDone: weekItemsDoneCount(p.id, cw.week, cw.items.length),
+        entries,
+        itemsTotal: entries.length,
+        itemsDone: weekItemsDoneCount(p.id, cw.week, entries.length),
       })
     }
     d.setDate(d.getDate() + 1)
@@ -656,7 +642,7 @@ onMounted(async () => {
         if (range) {
           currentSchedule.value = await ensureWeekSchedule(
             draftPlan.planId!,
-            { projects: draftPlan.projects, routines: draftPlan.routines },
+            { startDate: draftPlan.startDate, endDate: draftPlan.endDate, projects: draftPlan.projects, routines: draftPlan.routines },
             draftTimeline.value,
             range.weekStart,
             range.weekEnd,

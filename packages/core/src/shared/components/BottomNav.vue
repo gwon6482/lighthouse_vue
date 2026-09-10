@@ -2,7 +2,7 @@
   <nav v-if="visible" class="bn" role="navigation" aria-label="주요 메뉴">
     <ul class="bn__list">
       <li
-        v-for="item in navItems"
+        v-for="item in visibleNavItems"
         :key="item.key"
         class="bn__item"
         :class="{
@@ -38,11 +38,12 @@ import { computed, h } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAchievementStore } from '@/shared/stores/achievement'
 import { useAuthStore } from '@/shared/stores/auth'
+import { features } from '@/shared/config/features'
 
 interface NavItem {
   key: string
   label: string
-  icon: 'briefcase' | 'calendar' | 'home' | 'users' | 'user'
+  icon: 'briefcase' | 'map' | 'home' | 'users' | 'user'
   routeName: string
   center?: boolean
   comingSoon?: boolean
@@ -53,13 +54,23 @@ const router = useRouter()
 const authStore = useAuthStore()
 const achievementStore = useAchievementStore()
 
+// 항목/아이콘 코드는 보존하고, 커리어·커뮤니티는 피처 플래그로만 노출을 제어한다.
+// (2026-07-31 베타: 3탭 = 로드맵 · 홈 · 마이. 플래그 flip 시 재노출)
 const navItems: NavItem[] = [
   { key: 'career',    label: '커리어',   icon: 'briefcase', routeName: 'Career Hub',                          comingSoon: true },
-  { key: 'schedule',  label: '일정',     icon: 'calendar',  routeName: 'Career Achievement Weekly Schedule' },
+  { key: 'schedule',  label: '로드맵',   icon: 'map',       routeName: 'Career Achievement Weekly Schedule' },
   { key: 'home',      label: '홈',       icon: 'home',      routeName: 'Career Achievement',                  center: true },
   { key: 'community', label: '커뮤니티', icon: 'users',     routeName: 'Community',                            comingSoon: true },
   { key: 'my',        label: '마이',     icon: 'user',      routeName: 'MyPage' },
 ]
+
+const visibleNavItems = computed(() =>
+  navItems.filter((item) => {
+    if (item.key === 'career') return features.career
+    if (item.key === 'community') return features.community
+    return true
+  }),
+)
 
 const visible = computed(() =>
   Boolean(route.meta.showBottomNav)
@@ -98,11 +109,11 @@ const Briefcase = () => h('svg', svgProps, [
   h('path', { d: 'M3 13h18' }),
 ])
 
-const Calendar = () => h('svg', svgProps, [
-  h('rect', { x: 3, y: 5, width: 18, height: 16, rx: 2 }),
-  h('path', { d: 'M3 10h18' }),
-  h('path', { d: 'M8 3v4' }),
-  h('path', { d: 'M16 3v4' }),
+// 접힌 지도(Tabler map 계열) — '로드맵' 탭
+const Map = () => h('svg', svgProps, [
+  h('path', { d: 'M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3z' }),
+  h('path', { d: 'M9 4v13' }),
+  h('path', { d: 'M15 7v13' }),
 ])
 
 const Home = () => h('svg', svgProps, [
@@ -123,7 +134,7 @@ const User = () => h('svg', svgProps, [
 
 const iconMap = {
   briefcase: Briefcase,
-  calendar:  Calendar,
+  map:       Map,
   home:      Home,
   users:     Users,
   user:      User,
@@ -159,7 +170,7 @@ const iconMap = {
     margin: 0;
     padding: 0;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     height: 60px;
   }
 

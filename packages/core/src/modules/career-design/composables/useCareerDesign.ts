@@ -1,6 +1,7 @@
 import { ref, reactive, watch } from 'vue'
 import type { CareerPlan, Project, Routine, DraftPlan, TimelineSlot } from '../types/career-design'
 import { req } from '@/shared/api'
+import { DEFAULT_WEEKS } from './useProjectCurriculum'
 
 const DUMMY_PLANS: CareerPlan[] = [
   // ──────────────────────────────────────────────
@@ -1321,6 +1322,7 @@ const draftProject = reactive<Partial<Project>>({
   missedNotification: true,
   notificationTime: '09:00',
   memo: '',
+  weeks: DEFAULT_WEEKS,
   curriculum: [],
   ...savedDraft.draftProject,
 })
@@ -1585,6 +1587,7 @@ export function useCareerDesign() {
     draftProject.missedNotification = true
     draftProject.notificationTime = '09:00'
     draftProject.memo = ''
+    draftProject.weeks = DEFAULT_WEEKS
     draftProject.curriculum = []
   }
 
