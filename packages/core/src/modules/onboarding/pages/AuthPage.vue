@@ -17,7 +17,10 @@
       <!-- ── 회원가입 모드 ── -->
       <template v-if="mode === 'signup'">
         <div class="auth__socials">
-          <button class="auth__social auth__social--kakao" @click="comingSoon('카카오')">
+          <button
+            class="auth__social auth__social--kakao"
+            @click="kakaoEnabled ? startKakao() : comingSoon('카카오')"
+          >
             <span class="auth__social-icon">💬</span>
             카카오로 시작하기
           </button>
@@ -82,10 +85,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/shared/stores/auth'
 import { useAchievementStore } from '@/shared/stores/achievement'
+import { req } from '@/shared/api'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -99,8 +103,32 @@ function goEmailSignup() {
 }
 
 function comingSoon(provider: string) {
-  // SNS 연동(OAuth)은 백엔드 준비 후 2차 연동 예정
+  // 아직 열지 않은 SNS(Apple·구글). 카카오는 아래 startKakao 로 간다.
   alert(`${provider} 연동은 준비 중이에요. 이메일로 가입해 주세요.`)
+}
+
+// ── 소셜 로그인 ──
+// ⚠️ "카카오를 켤지"의 진실은 **API env 하나**다(GET /api/auth/providers).
+//    FE 에도 플래그를 두면 키가 없는데 버튼만 켜지거나 그 반대가 반드시 생긴다.
+const kakaoEnabled = ref(false)
+
+onMounted(async () => {
+  try {
+    const res = await req.get('/api/auth/providers')
+    kakaoEnabled.value = !!res.data?.data?.kakao
+  } catch {
+    // 조회 실패 시엔 켜지 않는다 — 눌러도 안 되는 버튼보다 '준비 중'이 낫다
+    kakaoEnabled.value = false
+  }
+})
+
+function startKakao() {
+  // 서버 302 로 카카오 인가 페이지에 간다. SPA 라우팅이 아니라 **문서 이동**이어야 한다.
+  // 복귀 URL 은 서버가 허용목록(OAUTH_ALLOWED_ORIGINS)으로 다시 검사하므로
+  // 여기서 무엇을 보내든 목록 밖이면 무시된다.
+  const returnTo = `${window.location.origin}/onboarding/oauth`
+  const base = import.meta.env.VITE_API ?? ''
+  window.location.href = `${base}/api/auth/kakao?redirect=${encodeURIComponent(returnTo)}`
 }
 
 // ── 로그인 (기존 사용자) ──

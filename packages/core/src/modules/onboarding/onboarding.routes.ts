@@ -25,6 +25,13 @@ const onboardingRoutes: RouteRecordRaw[] = [
     component: () => import('./pages/SignupWizardPage.vue'),
   },
   {
+    // 소셜 로그인 복귀 지점. API 카카오 콜백이 여기로 302 를 보낸다.
+    // (경로를 바꾸면 API 의 OAUTH 복귀 허용목록·fallback 도 같이 바꿔야 한다)
+    path: '/onboarding/oauth',
+    name: 'Onboarding OAuth Return',
+    component: () => import('./pages/OAuthReturnPage.vue'),
+  },
+  {
     path: '/onboarding/welcome',
     name: 'Onboarding Welcome',
     component: () => import('./pages/WelcomePage.vue'),

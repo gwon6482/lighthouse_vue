@@ -4,7 +4,7 @@
     <section class="complete-hero">
       <div class="complete-icon">🎉</div>
       <h1 class="complete-title">검사 완료!</h1>
-      <p class="complete-sub">수고했어, 검사가 끝났어.<br>결과를 분석하고 있어.</p>
+      <p class="complete-sub">수고하셨습니다, 검사가 끝났어요.<br>결과를 분석하고 있어요.</p>
     </section>
 
     <section class="complete-summary">

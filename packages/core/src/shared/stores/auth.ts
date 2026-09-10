@@ -56,5 +56,11 @@ export const useAuthStore = defineStore('auth', () => {
     delete req.defaults.headers.common['Authorization']
   }
 
-  return { token, user, isLoggedIn, login, logout, fetchMe, setAuth }
+  // 소셜 로그인 복귀(OAuthReturnPage)처럼 유저 정보 없이 토큰만 먼저 받는 경우.
+  // 이어서 fetchMe() 로 유저를 채운다.
+  function applyToken(t: string) {
+    _applyToken(t)
+  }
+
+  return { token, user, isLoggedIn, login, logout, fetchMe, setAuth, applyToken }
 })
