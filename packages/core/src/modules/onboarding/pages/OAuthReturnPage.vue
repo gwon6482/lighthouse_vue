@@ -77,6 +77,15 @@ onMounted(async () => {
     return
   }
 
+  // ⚠️ 소셜 로그인은 콜백에서 **계정이 이미 만들어진다.** 그래서 여기서 곧장 메인으로 보내면
+  //    가입 위저드(이름·나이·성별·진로답변 Q1~Q3)를 통째로 건너뛰게 된다 —
+  //    카카오가 주는 건 이메일·닉네임·나이뿐이고 나머지는 비어 있다.
+  //    가입을 아직 안 마친 계정이면 위저드로 보낸다. 이후 경로는 이메일 가입과 동일하다.
+  if (!authStore.user?.onboarding?.answeredAt) {
+    router.replace({ path: '/onboarding/signup', query: { social: '1' } })
+    return
+  }
+
   // 이메일 로그인(AuthPage.handleLogin)과 같은 분기를 쓴다.
   await achievementStore.loadActivePlan()
   router.replace(achievementStore.hasActivePlan ? '/career-achievement' : '/main/before')

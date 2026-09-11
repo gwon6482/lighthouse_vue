@@ -51,6 +51,19 @@ router.beforeEach(async (to) => {
   if (!auth.user) await auth.fetchMe()
   if (!auth.isLoggedIn) return '/onboarding'
 
+  // 소셜 가입 위저드를 끝내지 않고 이탈한 계정은 다시 위저드로 보낸다.
+  // ⚠️ 이게 없으면 위저드 중간에 앱을 닫은 카카오 가입자가 다음 진입 때 루트 가드를 타고
+  //    곧장 메인으로 가서 이름·나이·성별·진로답변이 영영 빈 채로 남는다.
+  // ⚠️ 판정은 **소셜 항목이 있는가**로 한다. "local 이 없으면 소셜"로 뒤집어 쓰면
+  //    authProviders 가 비어 있는 옛 계정(기본값 [])까지 소셜로 잡혀 위저드에 갇힌다.
+  //    2026-09-09 이전 이메일 가입자는 onboarding 이 없으므로 실제로 당한다.
+  const providers = auth.user?.authProviders ?? []
+  const socialOnly = providers.some((p) => p.provider !== 'local')
+    && !providers.some((p) => p.provider === 'local')
+  if (socialOnly && !auth.user?.onboarding?.answeredAt) {
+    return { path: '/onboarding/signup', query: { social: '1' } }
+  }
+
   // 진로계획 보유 여부로 메인 분기
   const achievement = useAchievementStore()
   await achievement.loadActivePlan()

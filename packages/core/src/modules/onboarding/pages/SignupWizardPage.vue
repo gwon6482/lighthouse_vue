@@ -8,7 +8,7 @@
         </svg>
       </button>
       <div class="wiz__progress">
-        <div class="wiz__progress-fill" :style="{ width: `${Math.max(10, (step / TOTAL) * 100)}%` }" />
+        <div class="wiz__progress-fill" :style="{ width: `${progressPct}%` }" />
       </div>
     </header>
 
@@ -128,17 +128,30 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { req } from '@/shared/api'
 import { useAuthStore } from '@/shared/stores/auth'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 
+// ── social 모드 ───────────────────────────────────────────
+// 소셜 로그인은 콜백에서 **계정이 이미 만들어진다.** 그래서 계정 단계(step 0)는 건너뛰고,
+// 카카오가 준 이름·나이를 채워둔 채 나머지를 이메일 가입과 똑같이 받는다.
+// 제출도 register 가 아니라 complete-profile 로 간다(register 는 409 가 난다).
+const isSocial = route.query.social === '1'
+
 const TOTAL = 6
-const step = ref(0)
+const FIRST_STEP = isSocial ? 1 : 0
+const step = ref(FIRST_STEP)
 const isLast = computed(() => step.value === TOTAL - 1)
+
+// 진행바는 '보이는 구간' 기준으로 센다 — social 은 5단계라 0/6 부터 시작하면 어긋난다.
+const progressPct = computed(() =>
+  Math.max(10, ((step.value - FIRST_STEP) / (TOTAL - FIRST_STEP)) * 100),
+)
 
 const form = reactive({
   email: '',
@@ -150,6 +163,21 @@ const form = reactive({
   q1: null as number | null,
   q2: [] as number[],
   q3: null as number | null,
+})
+
+onMounted(async () => {
+  if (!isSocial) return
+  // 이 경로로 직접 들어왔거나 새로고침해서 유저가 비어 있을 수 있다.
+  if (!authStore.token) {
+    router.replace('/onboarding/auth')
+    return
+  }
+  if (!authStore.user) await authStore.fetchMe()
+
+  // 카카오가 준 값만 프리필한다. 이메일은 위저드에서 묻지 않으므로 화면에 안 쓴다.
+  // ⚠️ 나이는 동의항목(출생연도)에 동의해야 온다 — 없으면 그냥 빈 칸으로 두고 사용자가 채운다.
+  form.name = authStore.user?.name ?? ''
+  form.age = authStore.user?.age ?? null
 })
 
 const Q1 = [
@@ -203,7 +231,9 @@ const canNext = computed(() => {
 
 function back() {
   error.value = ''
-  if (step.value > 0) step.value--
+  // social 은 첫 화면이 step 1 이다. 첫 화면에서 더 뒤로 가면 로그인 화면인데,
+  // 토큰이 있으므로 전역 가드(R5)가 '로그아웃할까요?' 를 물어준다 — 여기서 따로 처리하지 않는다.
+  if (step.value > FIRST_STEP) step.value--
   else router.replace('/onboarding/auth')
 }
 
@@ -253,9 +283,7 @@ async function submit() {
     // 2026-09-09 이전에는 localStorage 에만 넣었고 그 키를 읽는 코드가 어디에도 없어
     // 모든 가입자의 답이 그대로 버려졌다. 이제 서버가 source of truth 다.
     // 필드명은 API 스키마(User.onboarding)를 따른다 — q1/q2/q3 가 아니다.
-    const res = await req.post('/api/auth/register', {
-      email: form.email,
-      password: form.password,
+    const profile = {
       name: form.name,
       age: form.age,
       gender: form.gender,
@@ -264,8 +292,16 @@ async function submit() {
         concerns: form.q2,
         selfAwareness: form.q3,
       },
-    })
-    authStore.setAuth(res.data.token, res.data.user)
+    }
+
+    if (isSocial) {
+      // 계정은 소셜 콜백에서 이미 만들어졌다. 토큰도 이미 있으므로 나머지만 채운다.
+      const res = await req.post('/api/auth/complete-profile', profile)
+      authStore.user = res.data.user
+    } else {
+      const res = await req.post('/api/auth/register', { email: form.email, password: form.password, ...profile })
+      authStore.setAuth(res.data.token, res.data.user)
+    }
 
     // localStorage 는 오프라인 캐시로만 유지한다(다른 화면과 같은 방침).
     // 저장 실패가 가입 자체를 막으면 안 되므로 삼켜준다.

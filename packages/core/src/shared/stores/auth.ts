@@ -10,6 +10,16 @@ export interface AuthUser {
   gender?: 'M' | 'F'
   isActive: boolean
   createdAt: string
+  // 가입 위저드에서 받는 진로답변 Q1~Q3. 소셜 가입자는 콜백 시점에 계정만 만들어지므로
+  // 이 필드 유무가 곧 '가입 위저드를 마쳤는가'의 판단 기준이 된다.
+  onboarding?: {
+    status?: number
+    concerns?: number[]
+    selfAwareness?: number
+    answeredAt?: string
+  }
+  // 소셜 전용 계정에는 provider: 'local' 항목이 없다.
+  authProviders?: { provider: string; providerId: string }[]
 }
 
 const TOKEN_KEY = 'lh_token'
